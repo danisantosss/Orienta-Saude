@@ -19,7 +19,7 @@ Daniel Douglas dos Santos
 
 ## Visão do Produto e Impacto (O Problema)
 
-### Contexto e Problema
+### 1.1 Contexto e Problema
 
 O acesso inicial a orientação em saúde ainda é um desafio para grande parte da população. Muitas pessoas enfrentam dúvidas ao apresentar sintomas, sem saber se devem procurar atendimento imediato ou aguardar evolução do quadro. 
 
@@ -49,7 +49,7 @@ Limitações das soluções atuais:
 
 ---
 
-## Origem da Demanda e Evidências
+### 1.2 Origem da Demanda e Evidências
 
 ### Demanda Externa
 
@@ -81,7 +81,7 @@ Além disso, observa-se que o comportamento de busca por informações médicas 
 
 ---
 
-## Análise de Soluções Existentes (Benchmark)
+### 1.3 Análise de Soluções Existentes (Benchmark)
 
 ### Ada Health
 
@@ -130,7 +130,7 @@ O projeto Orienta Saúde propõe uma abordagem mais direta e objetiva, focada ex
 
 ---
 
-## Público-Alvo
+### 1.4 Público-Alvo
 
 O sistema é voltado para:
 
@@ -155,7 +155,7 @@ Conhecimento básico em navegação web.
 
 ---
 
-## Objetivos do Projeto
+### 1.5 Objetivos do Projeto
 
 ### Objetivo Geral:
 
@@ -170,7 +170,7 @@ Desenvolver uma plataforma web capaz de realizar triagem inicial de sintomas, cl
 
 ---
 
-## Métricas de Sucesso (KPIs)
+### 1.6 Métricas de Sucesso (KPIs)
 
 O sucesso do sistema será avaliado baseado nas seguintes métricas:
 
