@@ -110,8 +110,6 @@ Limitações: Pode gerar múltiplas possibilidades sem indicar a urgência.
 
 ![Benchmark](images/symptomate.jpeg)
 
----
-
 ### Comparação
 
 | Solução      | Pontos Fortes                                      | Limitações                                                                                          |
@@ -119,8 +117,6 @@ Limitações: Pode gerar múltiplas possibilidades sem indicar a urgência.
 | Ada Health  | Possui ampla base de conhecimento médico           | Interface mais complexa e pode gerar respostas longas e pouco objetivas para usuários leigos        |
 | WebMD       | Grande base de conteúdo médico e alta confiabilidade de informações | Foco em conteúdo informativo, sem classificação clara de urgência ou direcionamento prático imediato |
 | Symptomate  | Interface simples e questionário guiado para avaliação de sintomas | Pode apresentar múltiplos resultados sem priorização clara do nível de urgência                     |
-
----
 
 ### Diferencial do Projeto:
 
