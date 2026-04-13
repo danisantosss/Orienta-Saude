@@ -21,7 +21,7 @@ Daniel Douglas dos Santos
 
 ### 1.1 Contexto e Problema
 
-O acesso inicial a orientação em saúde ainda é um desafio para grande parte da população. Muitas pessoas enfrentam dúvidas ao apresentar sintomas, sem saber se devem procurar atendimento imediato ou aguardar evolução do quadro. 
+O acesso inicial a orientação em saúde ainda é um desafio para grande parte da população, muitas pessoas enfrentam dúvidas ao apresentar sintomas sem saber se devem procurar atendimento imediato ou aguardar evolução do problema. 
 
 Esse problema afeta principalmente:
 
@@ -61,15 +61,15 @@ A partir dessa observação, identificou-se a necessidade de uma ferramenta que 
 
 Para validar essa necessidade, foi realizada uma pesquisa por meio de formulário online, com o objetivo de analisar o comportamento das pessoas ao lidar com sintomas de saúde. 
 
-![Gráfico - Busca de sintomas](images/grafico1.jpeg)
+![Grafico1](images/grafico1.jpeg)
 
 Observa-se que a maioria dos participantes já buscou informações sobre sintomas na internet, indicando um comportamento comum entre os usuários. 
 
-![Gráfico - Busca de sintomas](images/grafico2.jpeg)
+![Grafico2](images/grafico2.jpeg)
 
 Observa-se que o maior problema ao buscar sintomas na internet são a quantidade de possibilidades de doenças, causando um sentimento de confusão nas pessoas. 
 
-![Gráfico - Busca de sintomas](images/grafico3.jpeg)
+![Grafico3](images/grafico3.jpeg)
 
 Mais de 90% dos participantes demonstraram interesse em uma plataforma para triagem inicial de sintomas. 
 
