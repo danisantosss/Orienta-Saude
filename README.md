@@ -173,5 +173,4 @@ O sucesso do sistema será avaliado baseado nas seguintes métricas:
 - Tempo de resposta inferior a 3 segundos;
 - Precisão das regras de triagem;
 - Cobertura de sintomas implementados: mínimo de 15 sintomas diferentes.
-
-Latência inferior a 250ms
+- Latência inferior a 250ms
