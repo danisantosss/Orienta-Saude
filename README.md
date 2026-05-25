@@ -17,9 +17,9 @@ Daniel Douglas dos Santos
 
 ---
 
-## Visão do Produto e Impacto (O Problema)
+## 1. Visão do Produto e Impacto (O Problema)
 
-### Contexto e Problema
+### 1.1 Contexto e Problema
 
 O acesso inicial a orientação em saúde ainda é um desafio para grande parte da população. Muitas pessoas enfrentam dúvidas ao apresentar sintomas, sem saber se devem procurar atendimento imediato ou aguardar evolução do quadro. 
 
@@ -49,7 +49,7 @@ Limitações das soluções atuais:
 
 ---
 
-## Origem da Demanda e Evidências
+## 1.2 Origem da Demanda e Evidências
 
 ### Demanda Externa
 
@@ -81,7 +81,7 @@ Além disso, observa-se que o comportamento de busca por informações médicas 
 
 ---
 
-## Análise de Soluções Existentes (Benchmark)
+## 1.3 Análise de Soluções Existentes (Benchmark)
 
 ### Ada Health
 
@@ -130,7 +130,7 @@ O projeto Orienta Saúde propõe uma abordagem mais direta e objetiva, focada ex
 
 ---
 
-## Público-Alvo
+## 1.4 Público-Alvo
 
 O sistema é voltado para:
 
@@ -155,7 +155,7 @@ Conhecimento básico em navegação web.
 
 ---
 
-## Objetivos do Projeto
+## 1.5 Objetivos do Projeto
 
 ### Objetivo Geral:
 
@@ -163,19 +163,306 @@ Desenvolver uma plataforma web capaz de realizar triagem inicial de sintomas, cl
 
 ### Objetivo Específicos:
 
-- Implementar sistema de classificação de risco baseado em regras;
+- Implementar um sistema de análise de sintomas com apoio de IA generativa e arquitetura RAG; 
 - Permitir entrada estruturada de sintomas;
-- Armazenar histórico de triagens;
+- Desenvolver uma base de conhecimento médica para recuperação contextual de informações; 
 - Desenvolver interface intuitiva e acessível.
 
 ---
 
-## Métricas de Sucesso (KPIs)
+## 1.6 Métricas de Sucesso (KPIs)
 
 O sucesso do sistema será avaliado baseado nas seguintes métricas:
 
 - Tempo de resposta inferior a 3 segundos;
-- Precisão das regras de triagem;
+- Precisão das respostas geradas pela IA;
 - Cobertura de sintomas implementados: mínimo de 15 sintomas diferentes.
 
 Latência inferior a 250ms
+
+# 2. Engenharia de Requisitos
+
+## 2.1 Personas
+
+### Persona 1 – Maria Eduarda
+
+**Contexto:**  
+Maria tem 21 anos e trabalha em escritório. Costuma pesquisar sintomas na internet quando sente algum desconforto.
+
+#### Objetivos
+
+- Entender se os sintomas são graves;
+- Saber quando procurar atendimento médico;
+- Receber orientações rápidas.
+
+#### Principais dificuldades
+
+- Encontrar informações confiáveis;
+- Ansiedade ao pesquisar sintomas;
+- Dificuldade com termos médicos.
+
+---
+
+### Persona 2 – Gustavo Mafra
+
+**Contexto:**  
+Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem necessidade.
+
+#### Objetivos
+
+- Identificar rapidamente o nível de urgência;
+- Evitar deslocamentos desnecessários;
+- Receber orientações práticas.
+
+#### Principais dificuldades
+
+- Falta de tempo;
+- Dificuldade em decidir se o caso é urgente;
+- Informações contraditórias na internet.
+
+---
+
+# 2.2 Casos de Uso Principais
+![CasoDeUso](images/casodeuso.png)
+
+---
+
+# 2.3 Requisitos Funcionais (RF)
+
+- RF01 - O sistema deve permitir que o usuário informe sintomas por meio de descrição textual. 
+- RF02 - O sistema deve permitir que o usuário informe sua idade para auxiliar na triagem. 
+- RF03 - O sistema deve permitir que o usuário envie os dados preenchidos para análise. 
+- RF04 - O sistema deve validar se as informações mínimas necessárias foram preenchidas antes da análise. 
+- RF05 - O sistema deve utilizar recuperação contextual de conhecimento (RAG) para buscar informações médicas relacionadas aos sintomas informados. 
+- RF06 - O sistema deve permitir que a IA generativa analise os sintomas informados juntamente com o contexto recuperado. 
+- RF07 - O sistema deve apresentar possíveis condições relacionadas aos sintomas informados. 
+- RF08 - O sistema deve apresentar um nível estimado de urgência classificado em leve, moderado, urgente ou emergência. 
+- RF09 - O sistema deve apresentar orientações educativas com base na análise realizada. 
+- RF10 - O sistema deve solicitar informações adicionais caso os dados fornecidos sejam insuficientes para uma análise confiável. 
+
+---
+
+# 2.4 Requisitos Não Funcionais (RNF)
+
+- RNF01 - O sistema deve apresentar os resultados da análise em tempo adequado após o envio das informações pelo usuário.- 
+- RNF02 - O sistema deve suportar múltiplos usuários simultaneamente sem perda significativa de desempenho.
+- RNF03 - O sistema deve possuir interface simples, intuitiva e de fácil utilização. 
+- RNF04 - O sistema deve ser responsivo e compatível com dispositivos móveis e desktops. 
+- RNF05 - O sistema deve garantir alta disponibilidade da plataforma. 
+- RNF06 - O sistema deve proteger os dados processados contra acessos indevidos. 
+- RNF07 - O sistema deve utilizar Java com Spring Boot no desenvolvimento do backend. 
+- RNF08 - O sistema deve utilizar React com Vite e TypeScript no desenvolvimento do frontend. 
+- RNF09 - O sistema deve utilizar MySQL como sistema gerenciador de banco de dados. 
+- RNF10 - O sistema deve utilizar integração com API de IA generativa para processamento das análises. 
+
+---
+
+# 2.5 Regras de Negócio
+
+- RN01 - Apenas usuários autenticados poderão acessar histórico.
+- RN02 - O sistema deverá apresentar um nível estimado de urgência classificado em leve, moderado, urgente ou emergência.
+- RN03 - O sistema não fornecerá diagnósticos definitivos.
+- RN04 - O sistema deverá apresentar apenas possíveis condições relacionadas aos sintomas informados.
+- RN05 - Em casos classificados como emergência, o sistema deverá recomendar imediatamente a busca por atendimento médico presencial.
+- RN06 - O usuário deverá informar sintomas e dados mínimos necessários para que a análise seja realizada. 
+- RN07 - O sistema deverá solicitar mais informações caso a análise não possua confiança suficiente.
+- RN08 - O sistema deverá validar os dados obrigatórios antes de processar a análise.
+
+---
+
+# 2.6 Fora do Escopo
+- Realização de consultas médicas online. 
+- Emissão de receitas médicas. 
+- Diagnóstico médico definitivo. 
+- Integração com hospitais, clínicas ou planos de saúde. 
+- Atendimento emergencial em tempo real. 
+- Monitoramento em tempo real de sinais vitais. 
+- Integração com dispositivos médicos ou smartwatches.
+- Agendamento de consultas médicas. 
+
+---
+
+# 3. Fluxos e Comportamento do Sistema
+
+## 3.1 Fluxo Principal do Usuário
+Diagrama de Atividades:
+
+![DiagramaAtv](images/diagrama-atv.png)
+
+Diagrama de Sequência:
+
+![DiagramaSeq](images/diagrama-seq.png)
+
+## Fluxos Alternativos
+
+### Fluxo Alternativo 1 – Usuário não informa sintomas
+
+1. Usuário acessa a tela de triagem;
+2. Sistema solicita sintomas;
+3. Usuário tenta continuar sem preencher;
+4. Sistema exibe mensagem de erro;
+5. Usuário permanece na mesma tela.
+
+---
+
+### Fluxo Alternativo 2 – Informações insuficientes
+
+1. Usuário informa poucos sintomas;
+2. Sistema identifica insuficiência de dados;
+3. Sistema solicita mais detalhes;
+4. Usuário complementa informações.
+
+---
+
+### Fluxo Alternativo 3 – Cancelamento da triagem
+
+1. Usuário inicia a triagem;
+2. Usuário cancela processo;
+3. Sistema interrompe análise;
+4. Usuário retorna à tela inicial.
+
+---
+
+# 4. Mockups e Experiência do Usuário (UX)
+
+## 4.1 Fluxo De Navegação
+![Navegacao](images/Navegacao.png)
+
+## 4.2 Mockups das Telas
+Para o desenvolvimento dos mockups e protótipos da interface do sistema Orienta
+Saúde, foi utilizada o Figma, permitindo a criação visual das telas e navegação.
+Os protótipos desenvolvidos representam o fluxo principal do sistema, incluindo a
+tela inicial, cadastro de usuário, triagem de sintomas e visualização dos resultados.
+
+Protótipo navegável:
+https://www.figma.com/design/MwANCyJFVVgYpLfWUfv4zg/TCC?node-id=0-1&t=Vnxvd5OEJAm97btt-1
+
+### Tela Inicial:
+
+![Tela1](images/TelaInicial.png)
+
+A tela inicial apresenta o sistema Orienta Saúde ao usuário, explicando de forma
+simples o objetivo da plataforma e permitindo iniciar o processo de triagem de
+sintomas. Nessa tela, o usuário pode acessar o sistema, realizar login ou cadastro e
+iniciar uma nova triagem.
+
+### Tela de entrada de dados:
+
+![Tela2](images/TelaDados.png)
+
+A tela de entrada de dados permite que o usuário realize seu cadastro na plataforma
+Orienta Saúde, informando dados pessoais necessários para acesso ao sistema.
+Nessa tela, o usuário pode preencher informações como nome, e-mail, telefone,
+data de nascimento e senha para criar sua conta e iniciar a triagem de sintomas.
+
+### Fluxo Principal:
+
+![Tela3](images/TelaPrincipal.png)
+
+A tela de fluxo principal representa a principal funcionalidade do sistema Orienta
+Saúde, permitindo que o usuário informe seus sintomas e acompanhe o progresso
+da triagem. Nessa etapa, o usuário pode selecionar ou descrever sintomas,
+responder perguntas complementares e avançar pelas etapas da análise até
+receber o resultado da triagem com orientações educativas e nível estimado de urgência.
+
+### Tela de Resultado:
+
+![Tela4](images/TelaResultado.png)
+
+A tela de resultado apresenta ao usuário a análise realizada pelo sistema com base
+nos sintomas informados durante a triagem. Nessa etapa, o usuário pode visualizar
+possíveis condições relacionadas aos sintomas, o nível estimado de urgência e
+orientações educativas sobre quando procurar atendimento médico ou quais
+cuidados tomar.
+
+## 4.3 Fluxo de Interação do Usuário
+1- O usuário acessa a plataforma através da tela inicial
+
+![Tela1](images/TelaInicial.png)
+
+2- O usuário realiza login ou cria uma nova conta para acessar o sistema.
+
+![Tela2](images/TelaDados.png)
+
+3- Após acessar o sistema, o usuário inicia uma nova triagem, informa os
+sintomas e intensidade.
+
+![Tela3](images/TelaPrincipal.png)
+
+4- O usuário visualiza possíveis condições relacionadas, nível de urgência e
+orientações educativas.
+
+![Tela4](images/TelaResultado.png)
+
+---
+# 5. Arquitetura do Sistema
+
+## 5.1 Diagrama C4
+### Nível 1 - Diagrama de Contexto:
+
+![DiagramaC1](images/C1.png)
+
+### Nível 2 - Diagrama de Containers:
+
+![DiagramaC2](images/C2.png)
+
+### Nível 3 - Diagrama de Componentes:
+
+![DiagramaC3](images/C3.png)
+
+## 5.2 Modelo de Dados
+### DER (diagrama entidade relacionamento):
+
+![DiagramaDER](images/DER.png)
+
+### Esquema Relacional:
+
+![DiagramaER](images/ER.png)
+
+### Modelo de Documentos (NoSQL):
+
+![DiagramaSQL](images/NoSQL.png)
+
+## 5.3 Principais Componentes
+
+- Java Spring Boot
+- React
+- Vite
+- TypeScript
+- MySQL
+- Gemini API
+- Arquitetura RAG
+
+---
+
+# 5.4 Stack Tecnológica
+
+## Java Spring Boot
+
+Escolhido pela facilidade na criação de APIs REST, organização em camadas e integração com banco de dados e serviços externos.
+
+---
+
+## React
+
+Escolhido pela criação de interfaces modernas, componentização e melhor experiência do usuário.
+
+---
+
+## TypeScript
+
+Escolhido pela tipagem estática, reduzindo erros e melhorando a manutenção do código.
+
+---
+
+## MySQL
+
+Escolhido pela confiabilidade, facilidade de modelagem relacional e integração com Spring Boot.
+
+---
+
+## Gemini API
+
+Escolhida por ser gratuito e pela capacidade de interpretar linguagem natural e gerar respostas contextualizadas.
+
+---
