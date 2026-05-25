@@ -13,7 +13,7 @@ Daniel Douglas dos Santos
 27/02/2026 
 
 ## Versão:
-1.0 
+1.1
 
 ---
 
