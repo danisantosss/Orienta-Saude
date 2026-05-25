@@ -177,8 +177,7 @@ O sucesso do sistema será avaliado baseado nas seguintes métricas:
 - Tempo de resposta inferior a 3 segundos;
 - Precisão das respostas geradas pela IA;
 - Cobertura de sintomas implementados: mínimo de 15 sintomas diferentes.
-
-Latência inferior a 250ms
+- Latência inferior a 250ms
 
 # 2. Engenharia de Requisitos
 
@@ -222,12 +221,12 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 
 ---
 
-# 2.2 Casos de Uso Principais
+## 2.2 Casos de Uso Principais
 ![CasoDeUso](images/casodeuso.png)
 
 ---
 
-# 2.3 Requisitos Funcionais (RF)
+## 2.3 Requisitos Funcionais (RF)
 
 - RF01 - O sistema deve permitir que o usuário informe sintomas por meio de descrição textual. 
 - RF02 - O sistema deve permitir que o usuário informe sua idade para auxiliar na triagem. 
@@ -242,7 +241,7 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 
 ---
 
-# 2.4 Requisitos Não Funcionais (RNF)
+## 2.4 Requisitos Não Funcionais (RNF)
 
 - RNF01 - O sistema deve apresentar os resultados da análise em tempo adequado após o envio das informações pelo usuário.- 
 - RNF02 - O sistema deve suportar múltiplos usuários simultaneamente sem perda significativa de desempenho.
@@ -257,7 +256,7 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 
 ---
 
-# 2.5 Regras de Negócio
+## 2.5 Regras de Negócio
 
 - RN01 - Apenas usuários autenticados poderão acessar histórico.
 - RN02 - O sistema deverá apresentar um nível estimado de urgência classificado em leve, moderado, urgente ou emergência.
@@ -270,7 +269,7 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 
 ---
 
-# 2.6 Fora do Escopo
+## 2.6 Fora do Escopo
 - Realização de consultas médicas online. 
 - Emissão de receitas médicas. 
 - Diagnóstico médico definitivo. 
