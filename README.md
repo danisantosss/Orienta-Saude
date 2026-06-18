@@ -13,7 +13,7 @@ Daniel Douglas dos Santos
 27/02/2026 
 
 ## Versão:
-1.1
+1.4
 
 ---
 
@@ -440,28 +440,37 @@ orientações educativas.
 
 Escolhido pela facilidade na criação de APIs REST, organização em camadas e integração com banco de dados e serviços externos.
 
----
 
 ## React
 
 Escolhido pela criação de interfaces modernas, componentização e melhor experiência do usuário.
 
----
 
 ## TypeScript
 
 Escolhido pela tipagem estática, reduzindo erros e melhorando a manutenção do código.
 
----
 
 ## MySQL
 
 Escolhido pela confiabilidade, facilidade de modelagem relacional e integração com Spring Boot.
 
----
 
 ## Gemini API
 
 Escolhida por ser gratuito e pela capacidade de interpretar linguagem natural e gerar respostas contextualizadas.
 
 ---
+
+# 6. Segurança e Privacidade 
+
+O Orienta Saúde adotará boas práticas de segurança para proteger os dados dos usuários. O sistema contará com autenticação e controle de acesso, garantindo que cada usuário visualize apenas suas próprias informações. 
+ 
+Também serão aplicadas medidas para reduzir riscos relacionados ao OWASP Top 10, como validação das entradas, proteção contra ataques comuns e uso de consultas seguras ao banco de dados. As senhas serão armazenadas de forma criptografada e toda a comunicação ocorrerá por meio de HTTPS. 
+
+## 6.1 Privacidade e LGPD 
+
+O sistema coletará apenas os dados necessários para seu funcionamento, como nome, e-mail, senha e histórico de triagens. Essas informações serão armazenadas de forma segura e utilizadas exclusivamente para fornecer o serviço. 
+ 
+Em conformidade com a LGPD, o usuário poderá solicitar a exclusão de sua conta e de seus dados pessoais, que serão removidos do sistema, salvo quando houver obrigação legal de retenção. 
+ 
