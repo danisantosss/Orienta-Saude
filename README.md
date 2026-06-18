@@ -161,7 +161,7 @@ Conhecimento básico em navegação web.
 
 Desenvolver uma plataforma web capaz de realizar triagem inicial de sintomas, classificando o nível de urgência e fornecendo orientações educativas ao usuário. 
 
-### Objetivo Específicos:
+### Objetivos Específicos:
 
 - Implementar um sistema de análise de sintomas com apoio de IA generativa e arquitetura RAG; 
 - Permitir entrada estruturada de sintomas;
@@ -424,13 +424,58 @@ orientações educativas.
 
 ## 5.3 Principais Componentes
 
-- Java Spring Boot
-- React
-- Vite
-- TypeScript
-- MySQL
-- Gemini API
-- Arquitetura RAG
+O sistema Orienta Saúde foi dividido em módulos responsáveis pela interface, processamento das triagens, integração com IA e persistência dos dados. Essa separação facilita a manutenção, escalabilidade e organização da arquitetura do software. 
+ 
+A API é o núcleo principal do sistema, responsável por processar as requisições recebidas do frontend e executar as regras de negócio da aplicação. 
+ 
+Principais responsabilidades: 
+- Receber os sintomas informados pelo usuário 
+- Validar dados das requisições 
+- Controlar o fluxo de triagem 
+- Integrar com serviços de IA 
+- Consultar a base de conhecimento médica 
+- Persistir dados no banco MySQL 
+
+ A API foi estruturada seguindo o padrão em camadas: 
+- Controllers 
+- Services 
+- Repositories 
+- Sistema de Autenticação 
+
+O sistema de autenticação controla o acesso de usuários e administradores ao sistema. 
+
+Principais funcionalidades: 
+- Cadastro de usuários 
+- Login 
+- Controle de sessão 
+- Proteção de rotas 
+- Diferenciação entre usuário comum e administrador 
+
+Esse módulo garante segurança e privacidade das informações armazenadas.  
+
+O módulo RAG (Retrieval-Augmented Generation) realiza a recuperação contextual de informações médicas antes da geração da resposta pela IA. 
+
+Responsabilidades: 
+- Buscar conteúdos médicos relevantes 
+- Recuperar contexto baseado nos sintomas 
+- Melhorar a precisão das respostas geradas 
+- Reduzir respostas genéricas da IA 
+- Esse módulo é uma das partes mais importantes do projeto, pois combina recuperação de conhecimento com IA generativa. 
+ 
+Fonte da Base de Conhecimento 
+ 
+A base de conhecimento utilizada pelo módulo RAG será composta por documentos educativos sobre sintomas e orientações em saúde, elaborados a partir de fontes públicas e confiáveis, como Ministério da Saúde, OMS e Fiocruz. 
+Os conteúdos serão organizados e indexados para recuperação contextual durante a análise dos sintomas informados pelo usuário, auxiliando a geração de orientações educativas e a classificação inicial de urgência. 
+Camada de Persistência é responsável pelo armazenamento dos dados da aplicação.  
+
+- Dados armazenados: 
+- Usuários 
+- Históricos de triagem 
+- Sintomas 
+- Resultados gerados pela IA 
+- Dados administrativos 
+
+A persistência é realizada utilizando banco relacional MySQL.
 
 ---
 
