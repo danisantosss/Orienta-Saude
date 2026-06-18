@@ -434,7 +434,7 @@ orientações educativas.
 
 ---
 
-# 5.4 Stack Tecnológica
+## 5.4 Stack Tecnológica
 
 ## Java Spring Boot
 
