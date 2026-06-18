@@ -516,6 +516,8 @@ BRASIL. _Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dad
 
 A tela de Histórico de Triagens permite que o usuário visualize todas as triagens realizadas anteriormente de forma organizada e cronológica. Nela são exibidos a data e horário da consulta, os principais sintomas informados, o nível de urgência identificado e um botão para acessar os detalhes completos de cada análise, junto com filtros para facilitar a busca. 
 
+![Mockup](images/mockup.png)
+
 ## 9.2 Repositório do Projeto
 
 Repositório contendo todas as informações do projeto:
