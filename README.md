@@ -174,10 +174,10 @@ Desenvolver uma plataforma web capaz de realizar triagem inicial de sintomas, cl
 
 O sucesso do sistema será avaliado baseado nas seguintes métricas:
 
-- Tempo de resposta inferior a 3 segundos;
+- Tempo médio de resposta da triagem inferior a 10 segundos;
 - Precisão das respostas geradas pela IA;
-- Cobertura de sintomas implementados: mínimo de 15 sintomas diferentes.
-- Latência inferior a 250ms
+- Cobertura de sintomas implementados: mínimo de 15 sintomas diferentes;
+- Satisfação dos usuários superior a 80% em pesquisas de feedback.
 
 # 2. Engenharia de Requisitos
 
@@ -473,7 +473,10 @@ Também serão aplicadas medidas para reduzir riscos relacionados ao OWASP Top 1
 O sistema coletará apenas os dados necessários para seu funcionamento, como nome, e-mail, senha e histórico de triagens. Essas informações serão armazenadas de forma segura e utilizadas exclusivamente para fornecer o serviço. 
  
 Em conformidade com a LGPD, o usuário poderá solicitar a exclusão de sua conta e de seus dados pessoais, que serão removidos do sistema, salvo quando houver obrigação legal de retenção. 
+
  
+O Orienta Saúde não realiza diagnósticos médicos e não substitui consulta, avaliação ou acompanhamento profissional. As respostas fornecidas pela inteligência artificial possuem caráter exclusivamente educativo e de orientação inicial. Em situações classificadas como urgentes ou emergenciais, o usuário será orientado a procurar atendimento médico presencial imediatamente.
+
 ---
 
 # 7. Planejamento do Projeto
