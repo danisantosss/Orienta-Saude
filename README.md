@@ -474,3 +474,60 @@ O sistema coletará apenas os dados necessários para seu funcionamento, como no
  
 Em conformidade com a LGPD, o usuário poderá solicitar a exclusão de sua conta e de seus dados pessoais, que serão removidos do sistema, salvo quando houver obrigação legal de retenção. 
  
+---
+
+# 7. Planejamento do Projeto
+
+| Marco | Descrição | Prazo |
+| :---: | :--- | :---: |
+| **M1** | Finalização do documento RFC | Junho/2026 |
+| **M2** | Início do desenvolvimento do projeto | Julho/2026 |
+| **M3** | Desenvolvimento das funcionalidades essenciais, incluindo autenticação, cadastro de usuários e triagem de sintomas | Agosto/2026 |
+| **M4** | Implementação da integração com IA e RAG, além do histórico de triagens e melhorias na interface | Setembro/2026 |
+| **M5** | Integração de todos os módulos, otimizações e refinamento da experiência do usuário | Outubro/2026 |
+| **M6** | Realização de testes funcionais, correção de falhas e validação do funcionamento da plataforma | Novembro/2026 |
+| **M7** | Entrega da versão final do sistema do Trabalho de Conclusão de Curso | Dezembro/2026 |
+
+---
+
+# 8. Referências
+
+GITHUB. _GitHub._ Disponível em: https://github.com. Acesso em: 27 fev. 2026. 
+
+ADA HEALTH. _Ada Health._ Disponível em: https://ada.com/pt/. Acesso em: 23 mar. 2026. 
+ 
+SYMPTOMATE. _Symptomate: AI Symptom Checker._ Disponível em: https://symptomate.com/. Acesso em: 23 mar 2026. 
+ 
+GOOGLE. _Gemini API Documentation._ Disponível em: https://ai.google.dev/gemini-api/docs. Acesso em: 18 mai. 2026. 
+ 
+SPRING. _Spring Boot Documentation._ Disponível em: https://spring.io/projects/spring-boot. Acesso em: 18 mai. 2026. 
+ 
+REACT. _React Documentation._ Disponível em: https://react.dev. Acesso em: 18 mai. 2026. 
+ 
+ORACLE. _MySQL 8.0 Reference Manual._ Disponível em: https://dev.mysql.com/doc/. Acesso em: 18 mai. 2026. 
+ 
+BRASIL. _Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD)._ Disponível em: https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm. Acesso em: 11 jun. 2026.
+
+---
+
+# 9. Apêndices
+
+## 9.1 Mockups
+
+A tela de Histórico de Triagens permite que o usuário visualize todas as triagens realizadas anteriormente de forma organizada e cronológica. Nela são exibidos a data e horário da consulta, os principais sintomas informados, o nível de urgência identificado e um botão para acessar os detalhes completos de cada análise, junto com filtros para facilitar a busca. 
+
+## 9.2 Repositório do Projeto
+
+Repositório contendo todas as informações do projeto:
+
+Github: https://github.com/danisantosss/Orienta-Saude 
+
+## 9.3 Protótipo Navegável
+
+Protótipo contendo todas as telas do projeto:
+
+Figma: https://www.figma.com/design/MwANCyJFVVgYpLfWUfv4zg/TCC?node-id=0-1&t=AtYAu8utmddZUWFQ-1
+
+# 10. Parecer do Comitê de Avaliação 
+
+Em Andamento...
