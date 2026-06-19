@@ -464,7 +464,8 @@ Responsabilidades:
  
 Fonte da Base de Conhecimento 
  
-A base de conhecimento utilizada pelo módulo RAG será composta por documentos educativos sobre sintomas e orientações em saúde, elaborados a partir de fontes públicas e confiáveis, como Ministério da Saúde, OMS e Fiocruz. 
+A base de conhecimento utilizada pelo módulo RAG será composta por documentos educativos sobre sintomas e orientações em saúde, elaborados a partir de fontes públicas e confiáveis, como Ministério da Saúde, OMS e Fiocruz.
+
 Os conteúdos serão organizados e indexados para recuperação contextual durante a análise dos sintomas informados pelo usuário, auxiliando a geração de orientações educativas e a classificação inicial de urgência. 
 Camada de Persistência é responsável pelo armazenamento dos dados da aplicação.  
 
