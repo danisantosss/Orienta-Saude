@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: orienta-saude
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+---
+# Profile: dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/orienta_saude?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:orienta-saude-dev-secret-key-min-256-bits-for-hs256-algorithm}
+    expiration-ms: 86400000  # 24 horas
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: gemini-pro
+    timeout-ms: 15000
+
+---
+# Profile: prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: 86400000
+  gemini:
+    api-key: ${GEMINI_API_KEY}
+    model: gemini-pro
+    timeout-ms: 15000

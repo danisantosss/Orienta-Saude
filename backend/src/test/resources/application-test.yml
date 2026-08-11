@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+
+app:
+  jwt:
+    secret: test-secret-key-min-256-bits-for-hs256-algorithm-testing-only
+    expiration-ms: 86400000
+  gemini:
+    api-key: test-key
+    model: gemini-pro
+    timeout-ms: 5000
