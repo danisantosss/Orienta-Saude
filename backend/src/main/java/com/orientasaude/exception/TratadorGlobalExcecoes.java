@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -73,6 +74,21 @@ public class TratadorGlobalExcecoes {
                 .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErroResponse> tratarCredenciaisInvalidas(
+            BadCredentialsException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .erro("Não Autorizado")
+                .mensagem("Credenciais inválidas")
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resposta);
     }
 
     @ExceptionHandler(Exception.class)

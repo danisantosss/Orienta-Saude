@@ -1,6 +1,8 @@
 package com.orientasaude.controller;
 
+import com.orientasaude.dto.request.LoginRequest;
 import com.orientasaude.dto.request.RegistroRequest;
+import com.orientasaude.dto.response.AutenticacaoResponse;
 import com.orientasaude.dto.response.MensagemResponse;
 import com.orientasaude.service.AutenticacaoService;
 import jakarta.validation.Valid;
@@ -33,5 +35,15 @@ public class AutenticacaoController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new MensagemResponse("Cadastro realizado com sucesso"));
+    }
+
+    /**
+     * POST /api/auth/login
+     * Autentica um usuário e retorna o token JWT.
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AutenticacaoResponse> login(@Valid @RequestBody LoginRequest request) {
+        AutenticacaoResponse resposta = autenticacaoService.login(request);
+        return ResponseEntity.ok(resposta);
     }
 }
