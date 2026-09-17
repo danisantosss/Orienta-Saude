@@ -3,21 +3,30 @@ export type UrgencyLevel = 'LEVE' | 'MODERADO' | 'URGENTE' | 'EMERGENCIA';
 export type SessionStatus = 'IN_PROGRESS' | 'ANALYZING' | 'COMPLETED' | 'CANCELLED' | 'ERROR';
 export type MessageRole = 'SYSTEM' | 'USER' | 'ASSISTANT';
 
-// Auth
 export interface LoginRequest {
   email: string;
-  password: string;
+  senha: string;
 }
 
 export interface RegisterRequest {
-  name: string;
+  nome: string;
   email: string;
-  password: string;
+  senha: string;
 }
 
 export interface AuthResponse {
   token: string;
-  expiresIn: number;
+  expiraEm: number;
+}
+
+// Error
+export interface ApiErrorResponse {
+  timestamp: string;
+  status: number;
+  erro: string;
+  mensagem: string;
+  caminho: string;
+  campos?: Record<string, string>;
 }
 
 // Triage

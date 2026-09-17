@@ -1,9 +1,23 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
 function App() {
   return (
-    <div>
-      <h1>Orienta Saúde</h1>
-      <p>Plataforma de triagem inicial de sintomas</p>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
