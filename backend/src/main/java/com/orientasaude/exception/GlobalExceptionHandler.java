@@ -21,9 +21,9 @@ import java.util.Map;
  * Não expõe stack traces ao cliente.
  */
 @RestControllerAdvice
-public class TratadorGlobalExcecoes {
+public class GlobalExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(TratadorGlobalExcecoes.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroResponse> tratarValidacao(

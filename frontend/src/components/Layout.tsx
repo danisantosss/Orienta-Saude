@@ -2,10 +2,10 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 export default function Layout() {
-  const { isAuthenticated, logout } = useAuth();
+  const { autenticado, logout } = useAuth();
   const navigate = useNavigate();
 
-  function handleLogout() {
+  function sair() {
     logout();
     navigate('/login');
   }
@@ -15,16 +15,16 @@ export default function Layout() {
       <header className="layout-header">
         <Link to="/" className="logo">Orienta Saúde</Link>
         <nav>
-          {isAuthenticated ? (
+          {autenticado ? (
             <>
-              <Link to="/triage">Nova triagem</Link>
-              <Link to="/history">Histórico</Link>
-              <button onClick={handleLogout}>Sair</button>
+              <Link to="/triagem">Nova triagem</Link>
+              <Link to="/historico">Histórico</Link>
+              <button onClick={sair}>Sair</button>
             </>
           ) : (
             <>
               <Link to="/login">Entrar</Link>
-              <Link to="/register">Cadastrar</Link>
+              <Link to="/cadastro">Cadastrar</Link>
             </>
           )}
         </nav>

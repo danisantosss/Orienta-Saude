@@ -23,7 +23,7 @@ import java.util.Collections;
  */
 @Component
 @RequiredArgsConstructor
-public class JwtFiltroAutenticacao extends OncePerRequestFilter {
+public class JwtAutenticacaoFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UsuarioRepository usuarioRepository;
