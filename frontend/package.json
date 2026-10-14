@@ -19,15 +19,20 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.6.8",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^2.0.5",
     "eslint": "^9.9.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^15.15.0",
     "jsdom": "^25.0.0",
     "typescript": "^5.5.4",
+    "typescript-eslint": "^8.71.2",
     "vite": "^5.4.3",
     "vitest": "^2.0.5"
   }
