@@ -1,33 +1,33 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import * as authApi from '../api/auth';
 import { tokenStorage } from '../api/client';
-import type { LoginRequest, RegisterRequest } from '../types';
+import type { LoginRequest, RegistroRequest } from '../types';
 
-interface AuthUser {
+interface UsuarioAutenticado {
   id: number;
   email: string;
 }
 
 interface AuthContextValue {
-  user: AuthUser | null;
+  usuario: UsuarioAutenticado | null;
   token: string | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-  login: (data: LoginRequest) => Promise<void>;
-  register: (data: RegisterRequest) => Promise<void>;
+  autenticado: boolean;
+  carregando: boolean;
+  login: (dados: LoginRequest) => Promise<void>;
+  registrar: (dados: RegistroRequest) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function decodeUser(token: string): AuthUser | null {
+function decodificarUsuario(token: string): UsuarioAutenticado | null {
   try {
     const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+    const decodificado = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+    if (decodificado.exp && decodificado.exp * 1000 < Date.now()) {
       return null;
     }
-    return { id: Number(decoded.sub), email: decoded.email };
+    return { id: Number(decodificado.sub), email: decodificado.email };
   } catch {
     return null;
   }
@@ -35,43 +35,43 @@ function decodeUser(token: string): AuthUser | null {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [usuario, setUsuario] = useState<UsuarioAutenticado | null>(null);
+  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    const stored = tokenStorage.get();
-    if (stored) {
-      const decodedUser = decodeUser(stored);
-      if (decodedUser) {
-        setToken(stored);
-        setUser(decodedUser);
+    const tokenSalvo = tokenStorage.get();
+    if (tokenSalvo) {
+      const usuarioDecodificado = decodificarUsuario(tokenSalvo);
+      if (usuarioDecodificado) {
+        setToken(tokenSalvo);
+        setUsuario(usuarioDecodificado);
       } else {
         tokenStorage.clear();
       }
     }
-    setLoading(false);
+    setCarregando(false);
   }, []);
 
-  async function login(data: LoginRequest) {
-    const response = await authApi.login(data);
-    tokenStorage.set(response.token);
-    setToken(response.token);
-    setUser(decodeUser(response.token));
+  async function login(dados: LoginRequest) {
+    const resposta = await authApi.login(dados);
+    tokenStorage.set(resposta.token);
+    setToken(resposta.token);
+    setUsuario(decodificarUsuario(resposta.token));
   }
 
-  async function register(data: RegisterRequest) {
-    await authApi.register(data);
+  async function registrar(dados: RegistroRequest) {
+    await authApi.registrar(dados);
   }
 
   function logout() {
     tokenStorage.clear();
     setToken(null);
-    setUser(null);
+    setUsuario(null);
   }
 
   const value = useMemo(
-    () => ({ user, token, isAuthenticated: !!token, loading, login, register, logout }),
-    [user, token, loading]
+    () => ({ usuario, token, autenticado: !!token, carregando, login, registrar, logout }),
+    [usuario, token, carregando]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

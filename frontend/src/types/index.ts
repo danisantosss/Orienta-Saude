@@ -1,26 +1,27 @@
-// Enums
-export type UrgencyLevel = 'LEVE' | 'MODERADO' | 'URGENTE' | 'EMERGENCIA';
-export type SessionStatus = 'IN_PROGRESS' | 'ANALYZING' | 'COMPLETED' | 'CANCELLED' | 'ERROR';
-export type MessageRole = 'SYSTEM' | 'USER' | 'ASSISTANT';
+// Enums (mesmos valores dos enums do backend)
+export type NivelUrgencia = 'LEVE' | 'MODERADO' | 'URGENTE' | 'EMERGENCIA';
+export type StatusSessao = 'EM_PROGRESSO' | 'ANALISANDO' | 'CONCLUIDA' | 'CANCELADA' | 'ERRO';
+export type PapelMensagem = 'SISTEMA' | 'USUARIO' | 'ASSISTENTE';
 
+// Autenticação
 export interface LoginRequest {
   email: string;
   senha: string;
 }
 
-export interface RegisterRequest {
+export interface RegistroRequest {
   nome: string;
   email: string;
   senha: string;
 }
 
-export interface AuthResponse {
+export interface AutenticacaoResponse {
   token: string;
   expiraEm: number;
 }
 
-// Error
-export interface ApiErrorResponse {
+// Erro
+export interface ErroResponse {
   timestamp: string;
   status: number;
   erro: string;
@@ -29,56 +30,52 @@ export interface ApiErrorResponse {
   campos?: Record<string, string>;
 }
 
-// Triage
-export interface TriageStartRequest {
-  symptoms: string;
-  age: number;
+// Triagem
+export interface IniciarTriagemRequest {
+  sintomas: string;
+  idade: number;
 }
 
-export interface TriageMessageRequest {
-  content: string;
+export interface IniciarTriagemResponse {
+  sessaoId: number;
+  primeiraPergunta: string;
 }
 
-export interface TriageMessageResponse {
-  question: string;
-  isComplete: boolean;
+export interface EnviarMensagemRequest {
+  conteudo: string;
 }
 
-export interface TriageSessionResponse {
+export interface MensagemTriagemResponse {
+  pergunta: string;
+  completa: boolean;
+}
+
+export interface SessaoTriagemResponse {
   id: number;
-  initialSymptoms: string;
-  patientAge: number;
-  status: SessionStatus;
-  startedAt: string;
-  completedAt: string | null;
-  urgencyLevel: UrgencyLevel | null;
+  sintomasIniciais: string;
+  idadePaciente: number;
+  status: StatusSessao;
+  iniciadaEm: string;
+  finalizadaEm: string | null;
+  nivelUrgencia: NivelUrgencia | null;
 }
 
-export interface TriageResultResponse {
+export interface ResultadoTriagemResponse {
   id: number;
-  sessionId: number;
-  urgencyLevel: UrgencyLevel;
-  conditions: string[];
-  educationalExplanation: string;
-  generalGuidance: string;
-  warningSigns: string[];
-  whenToSeekCare: string;
+  sessaoId: number;
+  nivelUrgencia: NivelUrgencia;
+  condicoes: string[];
+  explicacaoEducativa: string;
+  orientacoesGerais: string;
+  sinaisAlerta: string[];
+  quandoBuscarAtendimento: string;
   disclaimer: string;
-  limitationsNote: string | null;
+  notaLimitacao: string | null;
 }
 
-// Error
-export interface ErrorResponse {
-  timestamp: string;
-  status: number;
-  error: string;
-  message: string;
-  path: string;
-}
-
-// User
-export interface UserProfile {
-  name: string;
+// Usuário
+export interface PerfilUsuario {
+  nome: string;
   email: string;
-  createdAt: string;
+  criadoEm: string;
 }
