@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register';
+import Cadastro from './pages/Cadastro';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/cadastro" element={<Cadastro />} />
           </Route>
         </Routes>
       </AuthProvider>

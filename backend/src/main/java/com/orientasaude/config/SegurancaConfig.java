@@ -1,6 +1,6 @@
 package com.orientasaude.config;
 
-import com.orientasaude.security.JwtFiltroAutenticacao;
+import com.orientasaude.security.JwtAutenticacaoFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SegurancaConfig {
 
-    private final JwtFiltroAutenticacao jwtFiltroAutenticacao;
+    private final JwtAutenticacaoFilter jwtAutenticacaoFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,7 +41,7 @@ public class SegurancaConfig {
                 .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFiltroAutenticacao, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAutenticacaoFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
