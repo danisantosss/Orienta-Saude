@@ -64,4 +64,17 @@ class AutenticacaoControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas"));
     }
+
+    @Test
+    void registrarEmailDuplicadoRetornaConflito() throws Exception {
+        String corpo = """
+                {"nome": "João Souza", "email": "joao@exemplo.com", "senha": "senhaSegura123"}
+                """;
+        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON).content(corpo))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON).content(corpo))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409));
+    }
 }
