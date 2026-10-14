@@ -1,7 +1,7 @@
 package com.orientasaude.security;
 
-import com.orientasaude.model.Usuario;
-import com.orientasaude.repository.UsuarioRepository;
+import com.orientasaude.model.User;
+import com.orientasaude.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,34 +18,34 @@ import java.io.IOException;
 import java.util.Collections;
 
 /**
- * Filtro que intercepta cada requisição, extrai o token JWT do header Authorization,
- * valida e carrega o usuário no SecurityContext.
+ * Filter that intercepts every request, extracts the JWT from the Authorization header,
+ * validates it and loads the user into the SecurityContext.
  */
 @Component
 @RequiredArgsConstructor
-public class JwtFiltroAutenticacao extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String token = extrairToken(request);
+        String token = extractToken(request);
 
-        if (token != null && jwtTokenProvider.validarToken(token)) {
-            Long usuarioId = jwtTokenProvider.extrairUsuarioId(token);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Long userId = jwtTokenProvider.extractUserId(token);
 
-            Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+            User user = userRepository.findById(userId).orElse(null);
 
-            if (usuario != null && usuario.getAtivo()) {
-                UsernamePasswordAuthenticationToken autenticacao =
-                        new UsernamePasswordAuthenticationToken(usuario, null, Collections.emptyList());
-                autenticacao.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            if (user != null && user.getActive()) {
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(autenticacao);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
 
@@ -53,9 +53,9 @@ public class JwtFiltroAutenticacao extends OncePerRequestFilter {
     }
 
     /**
-     * Extrai o token do header "Authorization: Bearer xxx".
+     * Extracts the token from the "Authorization: Bearer xxx" header.
      */
-    private String extrairToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
             return header.substring(7);

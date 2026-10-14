@@ -8,34 +8,34 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  function validar(): string | null {
+  function validate(): string | null {
     if (!email.trim()) return 'Informe o email.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Email inválido.';
-    if (!senha) return 'Informe a senha.';
+    if (!password) return 'Informe a senha.';
     return null;
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const erroValidacao = validar();
-    if (erroValidacao) {
-      setErro(erroValidacao);
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
       return;
     }
-    setErro(null);
+    setError(null);
     setLoading(true);
     try {
-      await login({ email, senha });
+      await login({ email, password });
       navigate('/triage');
     } catch (err) {
       if (axios.isAxiosError<ApiErrorResponse>(err) && err.response) {
-        setErro(err.response.data.mensagem ?? 'Não foi possível entrar.');
+        setError(err.response.data.message ?? 'Não foi possível entrar.');
       } else {
-        setErro('Não foi possível entrar. Tente novamente.');
+        setError('Não foi possível entrar. Tente novamente.');
       }
     } finally {
       setLoading(false);
@@ -47,13 +47,13 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="auth-form" noValidate>
         <h1>Entrar</h1>
 
-        {erro && <p role="alert" className="form-error">{erro}</p>}
+        {error && <p role="alert" className="form-error">{error}</p>}
 
         <label htmlFor="email">Email</label>
         <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
 
-        <label htmlFor="senha">Senha</label>
-        <input id="senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} autoComplete="current-password" />
+        <label htmlFor="password">Senha</label>
+        <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
 
         <button type="submit" disabled={loading}>
           {loading ? 'Entrando...' : 'Entrar'}

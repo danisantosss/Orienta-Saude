@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MensagemTriagemResponse {
-    private String pergunta;
-    private boolean completa;
+public class StartTriageResponse {
+    private Long sessionId;
+    private String firstQuestion;
 }

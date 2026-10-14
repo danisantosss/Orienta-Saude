@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * DTO de resposta após login bem-sucedido.
- * Contém o token JWT e o tempo de expiração.
+ * Response DTO returned after a successful login.
+ * Contains the JWT and its expiration time.
  */
 @Data
 @AllArgsConstructor
-public class AutenticacaoResponse {
+public class AuthResponse {
 
     private String token;
-    private long expiraEm;
+    private long expiresIn;
 }

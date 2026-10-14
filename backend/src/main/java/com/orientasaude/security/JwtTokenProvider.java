@@ -10,52 +10,52 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
- * Componente responsável por gerar e validar tokens JWT.
- * O token contém o ID do usuário como subject e expira em 24 horas.
+ * Component that generates and validates JWTs.
+ * The token carries the user ID as its subject and expires after 24 hours.
  */
 @Component
 public class JwtTokenProvider {
 
-    private final SecretKey chaveSecreta;
-    private final long expiracaoMs;
+    private final SecretKey secretKey;
+    private final long expirationMs;
 
     public JwtTokenProvider(
-            @Value("${app.jwt.secret}") String segredo,
-            @Value("${app.jwt.expiration-ms}") long expiracaoMs) {
-        this.chaveSecreta = Keys.hmacShaKeyFor(segredo.getBytes(StandardCharsets.UTF_8));
-        this.expiracaoMs = expiracaoMs;
+            @Value("${app.jwt.secret}") String secret,
+            @Value("${app.jwt.expiration-ms}") long expirationMs) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMs = expirationMs;
     }
 
     /**
-     * Gera um token JWT para o usuário informado.
+     * Generates a JWT for the given user.
      */
-    public String gerarToken(Long usuarioId, String email) {
-        Date agora = new Date();
-        Date expiracao = new Date(agora.getTime() + expiracaoMs);
+    public String generateToken(Long userId, String email) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
-                .subject(usuarioId.toString())
+                .subject(userId.toString())
                 .claim("email", email)
-                .issuedAt(agora)
-                .expiration(expiracao)
-                .signWith(chaveSecreta)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(secretKey)
                 .compact();
     }
 
     /**
-     * Extrai o ID do usuário a partir do token.
+     * Extracts the user ID from the token.
      */
-    public Long extrairUsuarioId(String token) {
-        Claims claims = extrairClaims(token);
+    public Long extractUserId(String token) {
+        Claims claims = extractClaims(token);
         return Long.parseLong(claims.getSubject());
     }
 
     /**
-     * Valida se o token é íntegro e não expirou.
+     * Checks that the token is intact and not expired.
      */
-    public boolean validarToken(String token) {
+    public boolean validateToken(String token) {
         try {
-            extrairClaims(token);
+            extractClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -63,15 +63,15 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Retorna o tempo de expiração em milissegundos.
+     * Returns the expiration time in milliseconds.
      */
-    public long getExpiracaoMs() {
-        return expiracaoMs;
+    public long getExpirationMs() {
+        return expirationMs;
     }
 
-    private Claims extrairClaims(String token) {
+    private Claims extractClaims(String token) {
         return Jwts.parser()
-                .verifyWith(chaveSecreta)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

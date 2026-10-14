@@ -1,6 +1,6 @@
 package com.orientasaude.config;
 
-import com.orientasaude.security.JwtFiltroAutenticacao;
+import com.orientasaude.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +13,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Configuração de segurança do Spring Security.
- * - Endpoints /api/auth/** são públicos (cadastro e login)
- * - Demais endpoints exigem token JWT válido
- * - Sessão stateless (sem cookies de sessão)
- * - Filtro JWT intercepta antes do filtro padrão do Spring
+ * Spring Security configuration.
+ * - /api/auth/** endpoints are public (registration and login)
+ * - All other endpoints require a valid JWT
+ * - Stateless session (no session cookies)
+ * - JWT filter runs before Spring's default authentication filter
  */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SegurancaConfig {
+public class SecurityConfig {
 
-    private final JwtFiltroAutenticacao jwtFiltroAutenticacao;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,7 +41,7 @@ public class SegurancaConfig {
                 .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFiltroAutenticacao, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

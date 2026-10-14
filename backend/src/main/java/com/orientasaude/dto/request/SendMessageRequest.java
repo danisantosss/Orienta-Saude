@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EnviarMensagemRequest {
+public class SendMessageRequest {
 
     @NotBlank(message = "O conteúdo da mensagem é obrigatório")
-    private String conteudo;
+    private String content;
 }

@@ -15,7 +15,7 @@
     <artifactId>orienta-saude</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Orienta Saúde</name>
-    <description>Plataforma de triagem inicial de sintomas com IA e RAG</description>
+    <description>Initial symptom triage platform with AI and RAG</description>
 
     <properties>
         <java.version>17</java.version>
@@ -119,7 +119,7 @@
                 </configuration>
             </plugin>
 
-            <!-- JaCoCo - Cobertura de testes (threshold 75%) -->
+            <!-- JaCoCo - test coverage (75% threshold) -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

@@ -4,56 +4,56 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import type { ApiErrorResponse } from '../types';
 
-type Campo = 'nome' | 'email' | 'senha';
+type Field = 'name' | 'email' | 'password';
 
 export default function Register() {
   const { register, login } = useAuth();
   const navigate = useNavigate();
-  const [nome, setNome] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erros, setErros] = useState<Partial<Record<Campo, string>>>({});
-  const [erroGeral, setErroGeral] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  function validar(): Partial<Record<Campo, string>> {
-    const novosErros: Partial<Record<Campo, string>> = {};
-    if (nome.trim().length < 2 || nome.trim().length > 120) {
-      novosErros.nome = 'O nome deve ter entre 2 e 120 caracteres.';
+  function validate(): Partial<Record<Field, string>> {
+    const newErrors: Partial<Record<Field, string>> = {};
+    if (name.trim().length < 2 || name.trim().length > 120) {
+      newErrors.name = 'O nome deve ter entre 2 e 120 caracteres.';
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      novosErros.email = 'Email inválido.';
+      newErrors.email = 'Email inválido.';
     }
-    if (senha.length < 8 || senha.length > 128) {
-      novosErros.senha = 'A senha deve ter entre 8 e 128 caracteres.';
+    if (password.length < 8 || password.length > 128) {
+      newErrors.password = 'A senha deve ter entre 8 e 128 caracteres.';
     }
-    return novosErros;
+    return newErrors;
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const validacao = validar();
-    if (Object.keys(validacao).length > 0) {
-      setErros(validacao);
+    const validation = validate();
+    if (Object.keys(validation).length > 0) {
+      setErrors(validation);
       return;
     }
-    setErros({});
-    setErroGeral(null);
+    setErrors({});
+    setGeneralError(null);
     setLoading(true);
     try {
-      await register({ nome, email, senha });
-      await login({ email, senha }); // backend não retorna token no registro, então logamos em seguida
+      await register({ name, email, password });
+      await login({ email, password }); // the backend does not return a token on registration, so we log in right after
       navigate('/triage');
     } catch (err) {
       if (axios.isAxiosError<ApiErrorResponse>(err) && err.response) {
-        const dados = err.response.data;
-        if (dados.campos) {
-          setErros(dados.campos as Partial<Record<Campo, string>>);
+        const data = err.response.data;
+        if (data.fields) {
+          setErrors(data.fields as Partial<Record<Field, string>>);
         } else {
-          setErroGeral(dados.mensagem ?? 'Não foi possível concluir o cadastro.');
+          setGeneralError(data.message ?? 'Não foi possível concluir o cadastro.');
         }
       } else {
-        setErroGeral('Não foi possível concluir o cadastro. Tente novamente.');
+        setGeneralError('Não foi possível concluir o cadastro. Tente novamente.');
       }
     } finally {
       setLoading(false);
@@ -65,19 +65,19 @@ export default function Register() {
       <form onSubmit={handleSubmit} className="auth-form" noValidate>
         <h1>Criar conta</h1>
 
-        {erroGeral && <p role="alert" className="form-error">{erroGeral}</p>}
+        {generalError && <p role="alert" className="form-error">{generalError}</p>}
 
-        <label htmlFor="nome">Nome</label>
-        <input id="nome" value={nome} onChange={(e) => setNome(e.target.value)} autoComplete="name" />
-        {erros.nome && <p className="field-error">{erros.nome}</p>}
+        <label htmlFor="name">Nome</label>
+        <input id="name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+        {errors.name && <p className="field-error">{errors.name}</p>}
 
         <label htmlFor="email">Email</label>
         <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-        {erros.email && <p className="field-error">{erros.email}</p>}
+        {errors.email && <p className="field-error">{errors.email}</p>}
 
-        <label htmlFor="senha">Senha</label>
-        <input id="senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} autoComplete="new-password" />
-        {erros.senha && <p className="field-error">{erros.senha}</p>}
+        <label htmlFor="password">Senha</label>
+        <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+        {errors.password && <p className="field-error">{errors.password}</p>}
 
         <button type="submit" disabled={loading}>
           {loading ? 'Criando conta...' : 'Criar conta'}

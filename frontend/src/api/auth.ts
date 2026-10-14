@@ -7,5 +7,5 @@ export async function login(data: LoginRequest): Promise<AuthResponse> {
 }
 
 export async function register(data: RegisterRequest): Promise<void> {
-  await apiClient.post('/api/auth/registro', data);
+  await apiClient.post('/api/auth/register', data);
 }

@@ -8,17 +8,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO de requisição para cadastro de novo usuário.
- * Coleta apenas dados mínimos conforme LGPD: nome, email e senha.
+ * Request DTO for registering a new user.
+ * Collects only the minimum data required by LGPD: name, email and password.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroRequest {
+public class RegisterRequest {
 
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 2, max = 120, message = "O nome deve ter entre 2 e 120 caracteres")
-    private String nome;
+    private String name;
 
     @NotBlank(message = "O email é obrigatório")
     @Email(message = "O email deve estar em formato válido")
@@ -26,5 +26,5 @@ public class RegistroRequest {
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, max = 128, message = "A senha deve ter entre 8 e 128 caracteres")
-    private String senha;
+    private String password;
 }

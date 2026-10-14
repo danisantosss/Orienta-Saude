@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO de requisição para login do usuário.
+ * Request DTO for user login.
  */
 @Data
 @NoArgsConstructor
@@ -19,5 +19,5 @@ public class LoginRequest {
     private String email;
 
     @NotBlank(message = "A senha é obrigatória")
-    private String senha;
+    private String password;
 }

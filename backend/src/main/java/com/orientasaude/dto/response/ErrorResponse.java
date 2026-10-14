@@ -10,20 +10,20 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * DTO padronizado para respostas de erro da API.
- * Inclui timestamp, status HTTP, mensagem e opcionalmente erros de validação por campo.
+ * Standard DTO for API error responses.
+ * Includes timestamp, HTTP status, message and, optionally, per-field validation errors.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErroResponse {
+public class ErrorResponse {
 
     private LocalDateTime timestamp;
     private int status;
-    private String erro;
-    private String mensagem;
-    private String caminho;
-    private Map<String, String> campos;
+    private String error;
+    private String message;
+    private String path;
+    private Map<String, String> fields;
 }

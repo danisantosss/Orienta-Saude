@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Entidade que representa um usuário cadastrado no sistema.
- * Armazena apenas dados mínimos conforme LGPD: nome, email e senha.
+ * Entity representing a registered user.
+ * Stores only the minimum data required by LGPD: name, email and password.
  */
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Usuario {
     @NotBlank
     @Size(min = 2, max = 120)
     @Column(nullable = false, length = 120)
-    private String nome;
+    private String name;
 
     @NotBlank
     @Email
@@ -40,31 +40,31 @@ public class Usuario {
     private String email;
 
     @NotBlank
-    @Column(name = "senha_hash", nullable = false)
-    private String senhaHash;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-    @Column(name = "criado_em", nullable = false, updatable = false)
-    private LocalDateTime criadoEm;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "atualizado_em")
-    private LocalDateTime atualizadoEm;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @Builder.Default
     @Column(nullable = false)
-    private Boolean ativo = true;
+    private Boolean active = true;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<SessaoTriagem> sessoes = new ArrayList<>();
+    private List<TriageSession> triageSessions = new ArrayList<>();
 
     @PrePersist
-    protected void aoSerCriado() {
-        this.criadoEm = LocalDateTime.now();
-        this.atualizadoEm = LocalDateTime.now();
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected void aoSerAtualizado() {
-        this.atualizadoEm = LocalDateTime.now();
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

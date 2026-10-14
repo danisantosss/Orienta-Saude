@@ -5,28 +5,28 @@ export type MessageRole = 'SYSTEM' | 'USER' | 'ASSISTANT';
 
 export interface LoginRequest {
   email: string;
-  senha: string;
+  password: string;
 }
 
 export interface RegisterRequest {
-  nome: string;
+  name: string;
   email: string;
-  senha: string;
+  password: string;
 }
 
 export interface AuthResponse {
   token: string;
-  expiraEm: number;
+  expiresIn: number;
 }
 
 // Error
 export interface ApiErrorResponse {
   timestamp: string;
   status: number;
-  erro: string;
-  mensagem: string;
-  caminho: string;
-  campos?: Record<string, string>;
+  error: string;
+  message: string;
+  path: string;
+  fields?: Record<string, string>;
 }
 
 // Triage
@@ -65,15 +65,6 @@ export interface TriageResultResponse {
   whenToSeekCare: string;
   disclaimer: string;
   limitationsNote: string | null;
-}
-
-// Error
-export interface ErrorResponse {
-  timestamp: string;
-  status: number;
-  error: string;
-  message: string;
-  path: string;
 }
 
 // User

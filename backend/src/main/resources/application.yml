@@ -29,7 +29,7 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET:orienta-saude-dev-secret-key-min-256-bits-for-hs256-algorithm}
-    expiration-ms: 86400000  # 24 horas
+    expiration-ms: 86400000  # 24 hours
   gemini:
     api-key: ${GEMINI_API_KEY:}
     model: gemini-pro

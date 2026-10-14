@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IniciarTriagemRequest {
+public class StartTriageRequest {
 
     @NotBlank(message = "Os sintomas são obrigatórios")
     @Size(min = 10, max = 1000, message = "Os sintomas devem ter entre 10 e 1000 caracteres")
-    private String sintomas;
+    private String symptoms;
 
     @NotNull(message = "A idade é obrigatória")
     @Min(value = 1, message = "A idade deve ser no mínimo 1")
     @Max(value = 120, message = "A idade deve ser no máximo 120")
-    private Integer idade;
+    private Integer age;
 }
