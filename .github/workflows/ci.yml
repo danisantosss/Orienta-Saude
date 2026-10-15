@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [dev]
   pull_request:
     branches: [main]
 
@@ -38,6 +36,14 @@ jobs:
           path: backend/target/site/jacoco/
           if-no-files-found: ignore
 
+      - name: Arquivos para o SonarCloud
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-backend
+          path: |
+            backend/target/classes/
+            backend/target/site/jacoco/jacoco.xml
+
   frontend:
     name: Frontend (lint, build, Vitest ≥ 25%)
     runs-on: ubuntu-latest
@@ -66,3 +72,31 @@ jobs:
           name: cobertura-frontend
           path: frontend/coverage/
           if-no-files-found: ignore
+
+  sonarcloud:
+    name: SonarCloud (quality gate)
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sonar-backend
+          path: backend/target
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: cobertura-frontend
+          path: frontend/coverage
+
+      # O lcov do Vitest usa caminhos relativos a frontend/; o Sonar lê a partir da raiz
+      - name: Ajustar caminhos do lcov
+        run: sed -i 's#^SF:src/#SF:frontend/src/#' frontend/coverage/lcov.info
+
+      - name: Análise SonarCloud
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
