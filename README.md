@@ -160,7 +160,7 @@ O documento RFC completo — contexto, personas, requisitos funcionais e não fu
 ## 👤 Autor
 
 **Daniel Douglas dos Santos**
-Projeto de TCC — Universidade Católica de Santa Catarina
+Projeto de TCC - Universidade Católica de Santa Catarina
 
 ---
 
