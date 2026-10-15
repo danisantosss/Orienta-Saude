@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [dev]
+    branches: [dev, main]
   pull_request:
     branches: [main]
 
@@ -78,6 +78,8 @@ jobs:
   sonarcloud:
     name: SonarCloud (quality gate)
     needs: [backend, frontend]
+    # O plano gratuito do SonarCloud só analisa a main e os PRs para ela
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
