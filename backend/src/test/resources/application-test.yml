@@ -12,5 +12,6 @@ app:
     expiration-ms: 86400000
   gemini:
     api-key: test-key
-    model: gemini-pro
+    modelo-texto: modelo-de-teste
+    modelo-embedding: embedding-de-teste
     timeout-ms: 5000

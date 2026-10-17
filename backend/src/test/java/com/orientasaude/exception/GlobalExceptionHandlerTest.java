@@ -30,4 +30,13 @@ class GlobalExceptionHandlerTest {
         assertThat(resposta.getStatusCode().value()).isEqualTo(500);
         assertThat(resposta.getBody().getMensagem()).doesNotContain("detalhe interno");
     }
+
+    @Test
+    void iaIndisponivelRetorna503ComMensagemAmigavel() {
+        ResponseEntity<ErroResponse> resposta =
+                handler.tratarIaIndisponivel(new IaIndisponivelException("timeout interno"), request);
+
+        assertThat(resposta.getStatusCode().value()).isEqualTo(503);
+        assertThat(resposta.getBody().getMensagem()).doesNotContain("timeout interno");
+    }
 }
