@@ -39,4 +39,22 @@ class GlobalExceptionHandlerTest {
         assertThat(resposta.getStatusCode().value()).isEqualTo(503);
         assertThat(resposta.getBody().getMensagem()).doesNotContain("timeout interno");
     }
+
+    @Test
+    void transicaoInvalidaRetorna422() {
+        ResponseEntity<ErroResponse> resposta =
+                handler.tratarTransicaoInvalida(new TransicaoInvalidaException("Sessão não está em andamento"), request);
+
+        assertThat(resposta.getStatusCode().value()).isEqualTo(422);
+        assertThat(resposta.getBody().getMensagem()).isEqualTo("Sessão não está em andamento");
+    }
+
+    @Test
+    void entradaInvalidaRetorna400() {
+        ResponseEntity<ErroResponse> resposta =
+                handler.tratarEntradaInvalida(new EntradaInvalidaException("Descreva melhor os sintomas"), request);
+
+        assertThat(resposta.getStatusCode().value()).isEqualTo(400);
+        assertThat(resposta.getBody().getMensagem()).isEqualTo("Descreva melhor os sintomas");
+    }
 }
