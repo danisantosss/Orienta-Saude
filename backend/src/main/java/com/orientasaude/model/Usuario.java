@@ -7,7 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @ToString.Exclude
     @NotBlank
     @Column(name = "senha_hash", nullable = false)
     private String senhaHash;
@@ -53,6 +56,8 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean ativo = true;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<SessaoTriagem> sessoes = new ArrayList<>();
