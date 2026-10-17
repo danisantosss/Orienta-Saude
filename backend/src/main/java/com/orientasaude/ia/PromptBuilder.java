@@ -21,7 +21,7 @@ public class PromptBuilder {
 
     public String montarPromptEntrevista(SessaoTriagem sessao, List<MensagemTriagem> mensagens) {
         long perguntasFeitas = mensagens.stream()
-                .filter(m -> m.getPapel() == PapelMensagem.ASSISTENTE)
+                .filter(MensagemTriagem::isPerguntaDaEntrevista)
                 .count();
 
         StringBuilder prompt = new StringBuilder()
@@ -53,7 +53,7 @@ public class PromptBuilder {
     private String montarHistorico(List<MensagemTriagem> mensagens) {
         StringBuilder historico = new StringBuilder();
         for (MensagemTriagem mensagem : mensagens) {
-            if (mensagem.getPapel() == PapelMensagem.ASSISTENTE) {
+            if (mensagem.isPerguntaDaEntrevista()) {
                 historico.append("\nPergunta: ").append(mensagem.getConteudo());
             } else if (mensagem.getPapel() == PapelMensagem.USUARIO) {
                 historico.append("\nResposta: ").append(mensagem.getConteudo());

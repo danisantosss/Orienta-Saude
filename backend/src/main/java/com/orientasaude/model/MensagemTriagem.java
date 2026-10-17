@@ -46,6 +46,15 @@ public class MensagemTriagem {
     @Column(name = "criada_em", nullable = false, updatable = false)
     private LocalDateTime criadaEm;
 
+    /**
+     * Regra única de contagem da entrevista: toda mensagem do ASSISTENTE é uma pergunta.
+     * Avisos e orientações vão na resposta da API e nunca são gravados como mensagem,
+     * por isso os limites de 2 e 10 perguntas contam só este papel.
+     */
+    public boolean isPerguntaDaEntrevista() {
+        return papel == PapelMensagem.ASSISTENTE;
+    }
+
     @PrePersist
     protected void aoSerCriada() {
         this.criadaEm = LocalDateTime.now();

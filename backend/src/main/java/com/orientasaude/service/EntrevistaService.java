@@ -5,7 +5,6 @@ import com.orientasaude.ia.GeminiClient;
 import com.orientasaude.ia.PromptBuilder;
 import com.orientasaude.model.MensagemTriagem;
 import com.orientasaude.model.SessaoTriagem;
-import com.orientasaude.model.enums.PapelMensagem;
 import com.orientasaude.repository.MensagemTriagemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class EntrevistaService {
 
     private long contar(List<MensagemTriagem> mensagens) {
         return mensagens.stream()
-                .filter(m -> m.getPapel() == PapelMensagem.ASSISTENTE)
+                .filter(MensagemTriagem::isPerguntaDaEntrevista)
                 .count();
     }
 }
