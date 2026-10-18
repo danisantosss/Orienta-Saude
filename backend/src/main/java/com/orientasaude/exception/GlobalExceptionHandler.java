@@ -76,6 +76,23 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
     }
 
+    @ExceptionHandler(IaIndisponivelException.class)
+    public ResponseEntity<ErroResponse> tratarIaIndisponivel(
+            IaIndisponivelException ex, HttpServletRequest request) {
+
+        log.warn("IA indisponível em {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .erro("Serviço Indisponível")
+                .mensagem("O serviço de triagem está temporariamente indisponível. Tente novamente em instantes.")
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(resposta);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErroResponse> tratarCredenciaisInvalidas(
             BadCredentialsException ex, HttpServletRequest request) {

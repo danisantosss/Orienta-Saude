@@ -32,8 +32,9 @@ app:
     expiration-ms: 86400000  # 24 horas
   gemini:
     api-key: ${GEMINI_API_KEY:}
-    model: gemini-pro
-    timeout-ms: 15000
+    modelo-texto: ${GEMINI_MODELO_TEXTO:gemini-3.5-flash-lite}
+    modelo-embedding: ${GEMINI_MODELO_EMBEDDING:gemini-embedding-001}
+    timeout-ms: 10000  # 10 s por chamada (Req 4.7 e 6.7)
 
 ---
 # Profile: prod
@@ -57,5 +58,6 @@ app:
     expiration-ms: 86400000
   gemini:
     api-key: ${GEMINI_API_KEY}
-    model: gemini-pro
-    timeout-ms: 15000
+    modelo-texto: ${GEMINI_MODELO_TEXTO:gemini-3.5-flash-lite}
+    modelo-embedding: ${GEMINI_MODELO_EMBEDDING:gemini-embedding-001}
+    timeout-ms: 10000  # 10 s por chamada (Req 4.7 e 6.7)
