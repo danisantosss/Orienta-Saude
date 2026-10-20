@@ -1,5 +1,6 @@
 package com.orientasaude.model;
 
+import com.orientasaude.model.enums.MotivoEncerramento;
 import com.orientasaude.model.enums.StatusSessao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -9,7 +10,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +36,8 @@ public class SessaoTriagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -52,17 +57,25 @@ public class SessaoTriagem {
     @Builder.Default
     private StatusSessao status = StatusSessao.EM_PROGRESSO;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "motivo_encerramento", length = 20)
+    private MotivoEncerramento motivoEncerramento;
+
     @Column(name = "iniciada_em", nullable = false, updatable = false)
     private LocalDateTime iniciadaEm;
 
     @Column(name = "finalizada_em")
     private LocalDateTime finalizadaEm;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("ordemSequencia ASC")
     @Builder.Default
     private List<MensagemTriagem> mensagens = new ArrayList<>();
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
     private ResultadoTriagem resultado;
 

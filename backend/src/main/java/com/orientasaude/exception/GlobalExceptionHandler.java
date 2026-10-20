@@ -76,6 +76,36 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
     }
 
+    @ExceptionHandler(EntradaInvalidaException.class)
+    public ResponseEntity<ErroResponse> tratarEntradaInvalida(
+            EntradaInvalidaException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .erro("Erro de Validação")
+                .mensagem(ex.getMessage())
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.badRequest().body(resposta);
+    }
+
+    @ExceptionHandler(TransicaoInvalidaException.class)
+    public ResponseEntity<ErroResponse> tratarTransicaoInvalida(
+            TransicaoInvalidaException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .erro("Operação Inválida")
+                .mensagem(ex.getMessage())
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(resposta);
+    }
+
     @ExceptionHandler(IaIndisponivelException.class)
     public ResponseEntity<ErroResponse> tratarIaIndisponivel(
             IaIndisponivelException ex, HttpServletRequest request) {
