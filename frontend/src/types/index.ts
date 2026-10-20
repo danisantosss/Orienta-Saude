@@ -46,8 +46,9 @@ export interface EnviarMensagemRequest {
 }
 
 export interface MensagemTriagemResponse {
-  pergunta: string;
+  pergunta: string | null;
   completa: boolean;
+  aviso: string | null;
 }
 
 export interface SessaoTriagemResponse {
@@ -60,17 +61,48 @@ export interface SessaoTriagemResponse {
   nivelUrgencia: NivelUrgencia | null;
 }
 
+export interface Pagina<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
+}
+
+export interface FiltroHistorico {
+  pagina?: number;
+  tamanho?: number;
+  inicio?: string;
+  fim?: string;
+  nivelUrgencia?: NivelUrgencia;
+}
+
+export interface FonteResultado {
+  sintoma: string;
+  fonte: string;
+  url: string;
+}
+
+export interface PerguntaResposta {
+  pergunta: string;
+  resposta: string | null;
+}
+
 export interface ResultadoTriagemResponse {
-  id: number;
   sessaoId: number;
+  sintomasIniciais: string;
+  idadePaciente: number;
   nivelUrgencia: NivelUrgencia;
   condicoes: string[];
   explicacaoEducativa: string;
   orientacoesGerais: string;
   sinaisAlerta: string[];
   quandoBuscarAtendimento: string;
-  disclaimer: string;
   notaLimitacao: string | null;
+  disclaimer: string;
+  fontes: FonteResultado[];
+  perguntasERespostas: PerguntaResposta[];
+  concluidaEm: string | null;
 }
 
 // Usuário

@@ -96,3 +96,433 @@ select {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
+
+/* ---------- Componentes compartilhados (tasks 15 e 16) ---------- */
+
+:root {
+  /* Tons do protótipo no Figma */
+  --color-marinho: #1e3a8a;
+  --color-marinho-escuro: #172f70;
+  --color-verde: #15803d;
+  --color-painel: #eaf2f5;
+  --color-lilas: #eef0fd;
+
+  /* Fundos dos selos de urgência com contraste mínimo de 4,5:1 com o texto */
+  --badge-leve: #15803d;
+  --badge-moderado: #facc15;
+  --badge-urgente: #c2410c;
+  --badge-emergencia: #b91c1c;
+}
+
+.somente-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.cartao {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.cartao h2 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.texto-secundario {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.botao-primario,
+.botao-secundario {
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  min-height: 44px;
+}
+
+.botao-primario {
+  background: var(--color-marinho);
+  color: #fff;
+  border: none;
+}
+
+.botao-primario:hover:not(:disabled) {
+  background: var(--color-marinho-escuro);
+}
+
+.botao-primario:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.botao-secundario {
+  background: var(--color-surface);
+  color: var(--color-marinho);
+  border: 1px solid var(--color-marinho);
+}
+
+.form-error {
+  color: #b91c1c;
+  margin: var(--spacing-sm) 0;
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.disclaimer {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.disclaimer-confirmacao {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-top: var(--spacing-sm);
+  font-weight: 600;
+}
+
+.disclaimer-confirmacao input {
+  width: 20px;
+  height: 20px;
+}
+
+.carregamento {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.carregamento-roda {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-marinho);
+  border-radius: var(--radius-full);
+  animation: girar 0.8s linear infinite;
+}
+
+.carregamento-demora {
+  flex-basis: 100%;
+  color: var(--color-text-secondary);
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carregamento-roda { animation: none; }
+}
+
+.toast {
+  position: fixed;
+  right: var(--spacing-md);
+  bottom: var(--spacing-md);
+  background: var(--color-verde);
+  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  color: #fff;
+}
+
+.badge-leve { background: var(--badge-leve); }
+.badge-moderado { background: var(--badge-moderado); color: var(--color-text); }
+.badge-urgente { background: var(--badge-urgente); }
+.badge-emergencia { background: var(--badge-emergencia); }
+
+.aviso-limitacao {
+  background: #fefce8;
+  border-left: 4px solid #ca8a04;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-md) 0;
+}
+
+/* ---------- Página de Triagem ---------- */
+
+.pagina-triagem {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.progresso ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.etapa {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.etapa-numero {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--color-text);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.etapa-atual .etapa-numero { border-color: var(--color-verde); color: var(--color-verde); }
+.etapa-concluida .etapa-numero { background: var(--color-verde); border-color: var(--color-verde); color: #fff; }
+
+.etapa-descricao {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.painel-triagem {
+  background: var(--color-painel);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.painel-triagem h1 {
+  font-size: var(--font-size-2xl);
+  margin: var(--spacing-lg) 0 var(--spacing-xs);
+}
+
+.painel-triagem label {
+  display: block;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.painel-triagem textarea,
+.painel-triagem input[type='number'] {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid #94a3b8;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.campo-idade { max-width: 140px; }
+
+.contador {
+  text-align: right;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.sintomas-comuns {
+  border: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.sintomas-comuns legend {
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.opcao-sintoma {
+  background: var(--color-surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: 48px;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+}
+
+.opcao-sintoma[aria-pressed='true'] {
+  border-color: var(--color-marinho);
+  background: #dbeafe;
+  font-weight: 600;
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+.chat {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.balao {
+  max-width: 85%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.balao-assistente { align-self: flex-start; background: var(--color-surface); }
+.balao-usuario { align-self: flex-end; background: var(--color-marinho); color: #fff; }
+
+.linha-resposta {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: stretch;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ---------- Página de Resultado ---------- */
+
+.pagina-resultado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.alerta-emergencia {
+  background: var(--badge-emergencia);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.grade-resultado {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.conteudo-resultado,
+.coluna-orientacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.resumo-triagem h3 {
+  font-size: var(--font-size-base);
+  margin-top: var(--spacing-md);
+}
+
+.resumo-triagem dt { font-weight: 600; margin-top: var(--spacing-sm); }
+
+.destaque-lilas { background: var(--color-lilas); }
+
+.lista-condicoes {
+  margin: var(--spacing-sm) 0 var(--spacing-md) var(--spacing-lg);
+  font-weight: 600;
+}
+
+.recomendacao p { margin-top: var(--spacing-sm); }
+.recomendacao-urgente { border-left: 6px solid var(--badge-urgente); }
+.recomendacao-moderado { border-left: 6px solid #ca8a04; }
+.recomendacao-leve { border-left: 6px solid var(--badge-leve); }
+.recomendacao-emergencia { border-left: 6px solid var(--badge-emergencia); }
+
+.sinais-alerta ul,
+.coluna-orientacoes ul { margin-left: var(--spacing-lg); }
+
+/* Tablet */
+@media (min-width: 768px) {
+  .pagina-triagem,
+  .pagina-resultado { padding: var(--spacing-lg); }
+  .grade-resultado { grid-template-columns: 1fr 2fr; }
+  .coluna-orientacoes { grid-column: 1 / -1; }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .pagina-triagem { grid-template-columns: 320px 1fr; align-items: start; }
+  .grade-resultado { grid-template-columns: 280px 1fr 320px; }
+  .coluna-orientacoes { grid-column: auto; }
+}
+
+/* ---------- Cabeçalho (Layout) ---------- */
+
+.layout-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.layout-header .logo {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.layout-header .logo::before {
+  content: '♥ ';
+  color: var(--color-verde);
+}
+
+.layout-header nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.layout-header nav a {
+  color: var(--color-text);
+}
+
+.layout-header nav button {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  color: var(--color-text);
+}
+
+/* Celular: etapas em linha, sem descrição, para o aviso ficar visível sem rolar */
+@media (max-width: 767px) {
+  .progresso { padding: var(--spacing-md); }
+  .progresso h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .progresso ol { flex-direction: row; justify-content: space-between; margin-top: 0; gap: var(--spacing-sm); }
+  .etapa { flex-direction: column; text-align: center; gap: var(--spacing-xs); font-size: var(--font-size-sm); }
+  .etapa-descricao { display: none; }
+  .etapa-numero { width: 36px; height: 36px; }
+}
