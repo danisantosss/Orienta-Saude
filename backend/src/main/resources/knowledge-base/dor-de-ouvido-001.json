@@ -1,0 +1,34 @@
+{
+  "id": "dor-de-ouvido-001",
+  "sintoma": "dor de ouvido",
+  "palavrasChave": [
+    "dor de ouvido",
+    "otite",
+    "ouvido entupido",
+    "secreção no ouvido",
+    "ouvido latejando"
+  ],
+  "fonte": "Ministério da Saúde (Cadernos de Atenção Básica nº 28, v. II)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/publicacoes/acolhimento_demanda_espontanea_queixas_comuns_cab28v2.pdf",
+  "conteudo": "A dor de ouvido é comum após resfriados (otite média) ou após contato com água, como em piscinas (otite externa). Pode vir com febre, sensação de ouvido tampado e saída de secreção. Muitos casos de otite média melhoram em poucos dias, mas a avaliação define a necessidade de tratamento. Inchaço e vermelhidão atrás da orelha ou rigidez de nuca são sinais de gravidade.",
+  "condicoesRelacionadas": [
+    "otite média aguda",
+    "otite externa",
+    "rolha de cera",
+    "disfunção da tuba auditiva"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Desconforto leve após resfriado, sem febre",
+    "moderado": "Dor moderada com febre baixa ou saída de secreção pelo ouvido",
+    "urgente": "Dor intensa com febre alta ou que não melhora em 2 a 3 dias",
+    "emergencia": "Inchaço e vermelhidão atrás da orelha, rigidez de nuca, confusão mental ou paralisia de um lado do rosto"
+  },
+  "orientacoesGerais": "Manter o ouvido seco, não introduzir hastes ou objetos no canal auditivo e procurar avaliação se houver secreção ou febre.",
+  "sinaisAlerta": [
+    "Inchaço atrás da orelha",
+    "Rigidez de nuca",
+    "Paralisia de um lado do rosto",
+    "Perda súbita da audição",
+    "Febre alta"
+  ]
+}

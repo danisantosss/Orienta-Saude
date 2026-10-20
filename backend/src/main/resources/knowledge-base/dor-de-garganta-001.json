@@ -1,0 +1,34 @@
+{
+  "id": "dor-de-garganta-001",
+  "sintoma": "dor de garganta",
+  "palavrasChave": [
+    "dor de garganta",
+    "garganta inflamada",
+    "amigdalite",
+    "faringite",
+    "dor para engolir",
+    "placas na garganta"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/amidalite-ou-amigdalite/",
+  "conteudo": "A dor de garganta costuma ser causada por inflamação da faringe ou das amígdalas. A maior parte dos casos é viral e melhora em poucos dias. A amigdalite bacteriana costuma vir com febre, placas de pus nas amígdalas, gânglios inchados no pescoço e ausência de tosse, e precisa de avaliação profissional para definir o tratamento.",
+  "condicoesRelacionadas": [
+    "faringite viral",
+    "amigdalite bacteriana",
+    "resfriado comum",
+    "mononucleose"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor leve com coriza e tosse, sem febre alta",
+    "moderado": "Dor com febre, placas na garganta ou gânglios inchados no pescoço",
+    "urgente": "Dor intensa que impede de engolir líquidos ou febre alta persistente",
+    "emergencia": "Dificuldade para respirar, babar por não conseguir engolir saliva ou não conseguir abrir a boca"
+  },
+  "orientacoesGerais": "Ingerir líquidos com frequência, preferir alimentos macios, repousar a voz e evitar fumo. Procurar avaliação se houver febre e placas na garganta.",
+  "sinaisAlerta": [
+    "Dificuldade para respirar",
+    "Não conseguir engolir líquidos ou a própria saliva",
+    "Dificuldade para abrir a boca",
+    "Inchaço importante no pescoço"
+  ]
+}

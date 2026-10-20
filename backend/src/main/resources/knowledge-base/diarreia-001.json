@@ -1,0 +1,35 @@
+{
+  "id": "diarreia-001",
+  "sintoma": "diarreia",
+  "palavrasChave": [
+    "diarreia",
+    "fezes líquidas",
+    "intestino solto",
+    "evacuações frequentes",
+    "desarranjo"
+  ],
+  "fonte": "Ministério da Saúde",
+  "urlFonte": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dda",
+  "conteudo": "A diarreia aguda é a eliminação de fezes líquidas ou amolecidas três ou mais vezes ao dia, geralmente por vírus, bactérias ou parasitas transmitidos por água ou alimentos contaminados. Costuma durar até 14 dias. O principal risco é a desidratação, especialmente em crianças pequenas e idosos. A reposição de líquidos, incluindo o soro de reidratação oral distribuído pelo SUS, é a base do cuidado.",
+  "condicoesRelacionadas": [
+    "gastroenterite viral",
+    "intoxicação alimentar",
+    "infecção bacteriana intestinal",
+    "parasitose intestinal"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Poucas evacuações por dia, sem sangue, bebendo e urinando normalmente",
+    "moderado": "Diarreia por mais de 3 dias ou muitas evacuações com sede intensa",
+    "urgente": "Sinais de desidratação (boca seca, pouca urina, olhos fundos) ou sangue nas fezes",
+    "emergencia": "Sonolência, desmaio, incapacidade de beber líquidos ou ausência de urina por muitas horas"
+  },
+  "orientacoesGerais": "Aumentar a ingestão de líquidos e usar soro de reidratação oral, manter a alimentação habitual em pequenas porções, lavar bem as mãos e os alimentos e consumir água tratada ou fervida.",
+  "sinaisAlerta": [
+    "Sangue nas fezes",
+    "Boca muito seca e pouca urina",
+    "Olhos fundos",
+    "Sonolência ou confusão",
+    "Vômitos que impedem beber líquidos",
+    "Febre alta"
+  ]
+}

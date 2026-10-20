@@ -1,0 +1,35 @@
+{
+  "id": "febre-001",
+  "sintoma": "febre",
+  "palavrasChave": [
+    "febre",
+    "temperatura alta",
+    "calafrio",
+    "corpo quente",
+    "febril"
+  ],
+  "fonte": "Ministério da Saúde (Cadernos de Atenção Básica nº 28, v. II)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/publicacoes/acolhimento_demanda_espontanea_queixas_comuns_cab28v2.pdf",
+  "conteudo": "Febre é a elevação da temperatura corporal acima de 37,8 °C, geralmente uma resposta do organismo a infecções virais ou bacterianas. Na maioria dos adultos, febre baixa de curta duração e sem outros sinais de gravidade costuma ser autolimitada. A avaliação considera a duração, a intensidade, a idade da pessoa e os sintomas associados, como manchas na pele, rigidez de nuca, dificuldade para respirar ou confusão mental.",
+  "condicoesRelacionadas": [
+    "infecção viral",
+    "infecção bacteriana",
+    "arboviroses como dengue",
+    "infecção urinária"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Febre abaixo de 38,5 °C, há menos de 3 dias, com bom estado geral",
+    "moderado": "Febre persistente por mais de 3 dias ou acima de 39 °C",
+    "urgente": "Febre acima de 40 °C, febre em pessoa com doença crônica ou imunidade baixa, ou acompanhada de vômitos persistentes",
+    "emergencia": "Febre com convulsão, confusão mental, rigidez de nuca, manchas roxas na pele ou falta de ar"
+  },
+  "orientacoesGerais": "Manter boa hidratação, repousar, usar roupas leves e medir a temperatura com termômetro em intervalos regulares. Procurar avaliação se a febre durar mais de 3 dias.",
+  "sinaisAlerta": [
+    "Febre acima de 40 °C",
+    "Convulsão",
+    "Confusão mental ou sonolência excessiva",
+    "Rigidez de nuca",
+    "Manchas roxas na pele",
+    "Falta de ar"
+  ]
+}

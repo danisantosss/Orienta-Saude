@@ -1,0 +1,36 @@
+{
+  "id": "nausea-vomito-001",
+  "sintoma": "náusea e vômito",
+  "palavrasChave": [
+    "náusea",
+    "enjoo",
+    "vômito",
+    "vomitando",
+    "ânsia",
+    "mal-estar no estômago"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/dicas/257_doencas_alimentos_agua.html",
+  "conteudo": "Náusea e vômito são sintomas comuns de infecções gastrointestinais e de doenças transmitidas por água e alimentos contaminados, geralmente acompanhados de diarreia e cólicas. Também podem ocorrer em enxaqueca, labirintite, gravidez e efeitos de medicamentos. Na maioria dos casos melhoram em 1 a 2 dias; o principal cuidado é evitar a desidratação.",
+  "condicoesRelacionadas": [
+    "gastroenterite",
+    "intoxicação alimentar",
+    "enxaqueca",
+    "labirintite"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Poucos episódios, conseguindo beber líquidos",
+    "moderado": "Vômitos por mais de 24 horas ou que dificultam a alimentação",
+    "urgente": "Vômitos persistentes que impedem a hidratação ou com febre alta e dor abdominal forte",
+    "emergencia": "Vômito com sangue ou parecido com borra de café, rigidez de nuca, confusão mental ou sinais graves de desidratação"
+  },
+  "orientacoesGerais": "Fazer pausa na alimentação sólida, ingerir líquidos em pequenos goles e com frequência e retomar a alimentação leve aos poucos.",
+  "sinaisAlerta": [
+    "Vômito com sangue",
+    "Sinais de desidratação",
+    "Dor abdominal intensa",
+    "Rigidez de nuca",
+    "Confusão mental",
+    "Vômitos após pancada na cabeça"
+  ]
+}

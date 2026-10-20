@@ -1,0 +1,36 @@
+{
+  "id": "dor-ao-urinar-001",
+  "sintoma": "dor ao urinar",
+  "palavrasChave": [
+    "dor ao urinar",
+    "ardência ao urinar",
+    "queimação para urinar",
+    "vontade frequente de urinar",
+    "cistite",
+    "infecção urinária",
+    "urina com sangue"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/cistite/",
+  "conteudo": "Ardência ou dor ao urinar, vontade frequente e urgente de urinar e desconforto no baixo ventre são sinais típicos de cistite, a infecção da bexiga, mais comum em mulheres. Precisa de avaliação profissional para confirmação e tratamento. Febre, calafrios e dor nas costas na altura dos rins sugerem que a infecção pode ter atingido os rins.",
+  "condicoesRelacionadas": [
+    "cistite",
+    "infecção urinária",
+    "pielonefrite",
+    "uretrite"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Desconforto leve e passageiro, sem febre",
+    "moderado": "Ardência e vontade frequente de urinar por mais de um dia, sem febre",
+    "urgente": "Sintomas urinários com febre, calafrios ou dor nas costas na altura dos rins, ou em gestantes",
+    "emergencia": "Febre alta com confusão mental, queda de pressão ou incapacidade de urinar"
+  },
+  "orientacoesGerais": "Ingerir bastante água, não segurar a urina por muito tempo e procurar avaliação para confirmação e tratamento adequados.",
+  "sinaisAlerta": [
+    "Febre e calafrios",
+    "Dor nas costas na altura dos rins",
+    "Sangue na urina",
+    "Gravidez",
+    "Não conseguir urinar"
+  ]
+}
