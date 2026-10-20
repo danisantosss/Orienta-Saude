@@ -1,32 +1,48 @@
 package com.orientasaude.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orientasaude.config.RagConfig;
 import com.orientasaude.dto.request.EnviarMensagemRequest;
 import com.orientasaude.dto.request.IniciarTriagemRequest;
 import com.orientasaude.dto.response.IniciarTriagemResponse;
 import com.orientasaude.dto.response.MensagemTriagemResponse;
+import com.orientasaude.dto.response.ResultadoTriagemResponse;
 import com.orientasaude.exception.EntradaInvalidaException;
 import com.orientasaude.exception.IaIndisponivelException;
 import com.orientasaude.exception.RecursoNaoEncontradoException;
 import com.orientasaude.exception.TransicaoInvalidaException;
+import com.orientasaude.ia.AnaliseGerada;
+import com.orientasaude.ia.ValidadorEtico;
 import com.orientasaude.model.MensagemTriagem;
+import com.orientasaude.model.ResultadoTriagem;
 import com.orientasaude.model.SessaoTriagem;
 import com.orientasaude.model.Usuario;
 import com.orientasaude.model.enums.MotivoEncerramento;
+import com.orientasaude.model.enums.NivelUrgencia;
 import com.orientasaude.model.enums.PapelMensagem;
 import com.orientasaude.model.enums.StatusSessao;
+import com.orientasaude.rag.BaseConhecimento;
+import com.orientasaude.rag.ContextoRag;
+import com.orientasaude.rag.RagService;
 import com.orientasaude.repository.MensagemTriagemRepository;
+import com.orientasaude.repository.ResultadoTriagemRepository;
 import com.orientasaude.repository.SessaoTriagemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -34,15 +50,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Testa o fluxo da triagem (tasks 9.3, 11.1 e 11.3) com repositórios e entrevista simulados.
+ * Testa o fluxo da triagem (tasks 9.3, 11.1, 11.3 e 13.3) com repositórios, entrevista,
+ * RAG e análise simulados.
  */
 class TriagemServiceTest {
 
     private final SessaoTriagemRepository sessaoRepository = mock(SessaoTriagemRepository.class);
     private final MensagemTriagemRepository mensagemRepository = mock(MensagemTriagemRepository.class);
     private final EntrevistaService entrevistaService = mock(EntrevistaService.class);
-    private final TriagemService service =
-            new TriagemService(sessaoRepository, mensagemRepository, entrevistaService);
+    private final ResultadoTriagemRepository resultadoRepository = mock(ResultadoTriagemRepository.class);
+    private final RagService ragService = mock(RagService.class);
+    private final AnaliseService analiseService = mock(AnaliseService.class);
+    private final BaseConhecimento baseConhecimento = criarBaseConhecimento();
+    private final TriagemService service = new TriagemService(sessaoRepository, mensagemRepository,
+            resultadoRepository, entrevistaService, ragService, analiseService, baseConhecimento, new ObjectMapper());
 
     private final Usuario dono = Usuario.builder().id(1L).nome("Ana").email("ana@exemplo.com").build();
     private final Usuario outro = Usuario.builder().id(2L).nome("Beto").email("beto@exemplo.com").build();
@@ -231,5 +252,183 @@ class TriagemServiceTest {
 
         assertThatThrownBy(() -> service.encerrar(10L, dono))
                 .isInstanceOf(TransicaoInvalidaException.class);
+    }
+
+    // ---------- analisar e obterResultado (task 13.3) ----------
+
+    private static BaseConhecimento criarBaseConhecimento() {
+        RagConfig config = new RagConfig();
+        config.setPadraoDocumentos("classpath:knowledge-base/*.json");
+        return new BaseConhecimento(config, new ObjectMapper());
+    }
+
+    private final AnaliseGerada analise = new AnaliseGerada(NivelUrgencia.MODERADO, List.of("gripe", "dengue"),
+            "Os sintomas podem estar relacionados a uma infecção viral.", "Repouso e hidratação.",
+            List.of("Falta de ar", "Manchas vermelhas"), "Procure uma unidade de saúde se não melhorar em 3 dias.");
+
+    private void prepararAnalise(MotivoEncerramento motivo, ContextoRag contexto) {
+        sessao.setStatus(StatusSessao.ANALISANDO);
+        sessao.setMotivoEncerramento(motivo);
+        when(mensagemRepository.findBySessaoIdOrderByOrdemSequenciaAsc(10L)).thenReturn(List.of(
+                MensagemTriagem.builder().papel(PapelMensagem.SISTEMA).conteudo("Febre e dor no corpo").ordemSequencia(1).build(),
+                MensagemTriagem.builder().papel(PapelMensagem.ASSISTENTE).conteudo("Há quanto tempo?").ordemSequencia(2).build(),
+                MensagemTriagem.builder().papel(PapelMensagem.USUARIO).conteudo("Dois dias").ordemSequencia(3).build(),
+                MensagemTriagem.builder().papel(PapelMensagem.ASSISTENTE).conteudo("Tem manchas na pele?").ordemSequencia(4).build()));
+        when(ragService.recuperar(any(), anyList())).thenReturn(contexto);
+        when(analiseService.analisar(any(), anyList(), any())).thenReturn(analise);
+    }
+
+    private ResultadoTriagem resultadoSalvo() {
+        ArgumentCaptor<SessaoTriagem> salva = ArgumentCaptor.forClass(SessaoTriagem.class);
+        verify(sessaoRepository).save(salva.capture());
+        return salva.getValue().getResultado();
+    }
+
+    @Test
+    void analisarPersisteResultadoComDisclaimerEConcluiASessao() {
+        prepararAnalise(MotivoEncerramento.SUFICIENTE,
+                new ContextoRag("contexto", List.of("febre-001", "dor-no-corpo-001", "gripe-001"), null));
+
+        ResultadoTriagemResponse resposta = service.analisar(10L, dono);
+
+        assertThat(sessao.getStatus()).isEqualTo(StatusSessao.CONCLUIDA);
+        assertThat(sessao.getFinalizadaEm()).isNotNull();
+        ResultadoTriagem resultado = resultadoSalvo();
+        assertThat(resultado.getSessao()).isSameAs(sessao);
+        assertThat(resultado.getDisclaimer()).isEqualTo(ValidadorEtico.DISCLAIMER);
+        assertThat(resultado.getNivelUrgencia()).isEqualTo(NivelUrgencia.MODERADO);
+        assertThat(resultado.getCondicoesJson()).isEqualTo("[\"gripe\",\"dengue\"]");
+        assertThat(resultado.getSinaisAlerta()).isEqualTo("[\"Falta de ar\",\"Manchas vermelhas\"]");
+        assertThat(resultado.getDocumentosRagUsados()).isEqualTo("[\"febre-001\",\"dor-no-corpo-001\",\"gripe-001\"]");
+        assertThat(resultado.getNotaLimitacao()).isNull();
+
+        assertThat(resposta.getSessaoId()).isEqualTo(10L);
+        assertThat(resposta.getDisclaimer()).isEqualTo(ValidadorEtico.DISCLAIMER);
+        assertThat(resposta.getCondicoes()).containsExactly("gripe", "dengue");
+        assertThat(resposta.getSinaisAlerta()).containsExactly("Falta de ar", "Manchas vermelhas");
+        assertThat(resposta.getFontes()).hasSize(3)
+                .allSatisfy(fonte -> assertThat(fonte.url()).startsWith("https://"));
+        assertThat(resposta.getPerguntasERespostas()).hasSize(2);
+        assertThat(resposta.getPerguntasERespostas().get(0).pergunta()).isEqualTo("Há quanto tempo?");
+        assertThat(resposta.getPerguntasERespostas().get(0).resposta()).isEqualTo("Dois dias");
+        assertThat(resposta.getPerguntasERespostas().get(1).resposta()).isNull();
+    }
+
+    @Test
+    void coletaInconclusivaEPoucosDocumentosEntramNaNotaDeLimitacao() {
+        prepararAnalise(MotivoEncerramento.LIMITE_PERGUNTAS,
+                new ContextoRag("contexto", List.of("febre-001"), RagService.NOTA_POUCOS_DOCUMENTOS));
+
+        ResultadoTriagemResponse resposta = service.analisar(10L, dono);
+
+        assertThat(resposta.getNotaLimitacao())
+                .contains(TriagemService.NOTA_COLETA_INCONCLUSIVA)
+                .contains(RagService.NOTA_POUCOS_DOCUMENTOS);
+    }
+
+    @Test
+    void encerramentoAntecipadoEntraNaNotaDeLimitacao() {
+        prepararAnalise(MotivoEncerramento.ANTECIPADO, new ContextoRag("contexto", List.of(), RagService.NOTA_SEM_DOCUMENTOS));
+
+        ResultadoTriagemResponse resposta = service.analisar(10L, dono);
+
+        assertThat(resposta.getNotaLimitacao())
+                .contains(TriagemService.NOTA_ENCERRAMENTO_ANTECIPADO)
+                .contains(RagService.NOTA_SEM_DOCUMENTOS);
+        assertThat(resultadoSalvo().getDocumentosRagUsados()).isEqualTo("[]");
+    }
+
+    @Test
+    void analisarSessaoJaConcluidaDevolveOResultadoExistenteSemChamarAIa() {
+        prepararAnalise(MotivoEncerramento.SUFICIENTE, new ContextoRag("contexto", List.of(), null));
+        sessao.setStatus(StatusSessao.CONCLUIDA);
+        sessao.setFinalizadaEm(LocalDateTime.now());
+        when(resultadoRepository.findBySessaoId(10L)).thenReturn(Optional.of(ResultadoTriagem.builder()
+                .sessao(sessao).nivelUrgencia(NivelUrgencia.LEVE).condicoesJson("[\"resfriado\"]")
+                .explicacaoEducativa("e").orientacoesGerais("o").sinaisAlerta("[\"s\"]")
+                .quandoBuscarAtendimento("q").disclaimer(ValidadorEtico.DISCLAIMER)
+                .documentosRagUsados("[\"coriza-001\"]").build()));
+
+        ResultadoTriagemResponse resposta = service.analisar(10L, dono);
+
+        assertThat(resposta.getNivelUrgencia()).isEqualTo(NivelUrgencia.LEVE);
+        assertThat(resposta.getCondicoes()).containsExactly("resfriado");
+        assertThat(resposta.getFontes()).extracting(fonte -> fonte.sintoma()).containsExactly("coriza e nariz entupido");
+        verify(ragService, never()).recuperar(any(), anyList());
+        verify(analiseService, never()).analisar(any(), anyList(), any());
+        verify(sessaoRepository, never()).save(any());
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = StatusSessao.class, names = {"EM_PROGRESSO", "CANCELADA", "ERRO"})
+    void analisarSessaoQueNaoEstaAnalisandoRetornaTransicaoInvalida(StatusSessao status) {
+        sessao.setStatus(status);
+
+        assertThatThrownBy(() -> service.analisar(10L, dono)).isInstanceOf(TransicaoInvalidaException.class);
+        verify(analiseService, never()).analisar(any(), anyList(), any());
+    }
+
+    @Test
+    void analisarSessaoDeOutroUsuarioRetornaNaoEncontrada() {
+        sessao.setStatus(StatusSessao.ANALISANDO);
+
+        assertThatThrownBy(() -> service.analisar(10L, outro)).isInstanceOf(RecursoNaoEncontradoException.class);
+        verify(analiseService, never()).analisar(any(), anyList(), any());
+    }
+
+    @Test
+    void falhaDaIaNaAnaliseMantemASessaoAnalisandoParaTentarDeNovo() {
+        prepararAnalise(MotivoEncerramento.SUFICIENTE, new ContextoRag("contexto", List.of(), null));
+        when(analiseService.analisar(any(), anyList(), any())).thenThrow(new IaIndisponivelException("fora"));
+
+        assertThatThrownBy(() -> service.analisar(10L, dono)).isInstanceOf(IaIndisponivelException.class);
+        assertThat(sessao.getStatus()).isEqualTo(StatusSessao.ANALISANDO);
+        verify(sessaoRepository, never()).save(any());
+    }
+
+    @Test
+    void analiseConcorrenteQueJaGravouOResultadoDevolveOExistente() {
+        prepararAnalise(MotivoEncerramento.SUFICIENTE, new ContextoRag("contexto", List.of(), null));
+        when(sessaoRepository.save(any(SessaoTriagem.class))).thenThrow(new DataIntegrityViolationException("duplicado"));
+        when(resultadoRepository.findBySessaoId(10L)).thenReturn(Optional.of(ResultadoTriagem.builder()
+                .sessao(sessao).nivelUrgencia(NivelUrgencia.URGENTE).condicoesJson("[\"x\"]")
+                .explicacaoEducativa("e").orientacoesGerais("o").sinaisAlerta("[]")
+                .quandoBuscarAtendimento("q").disclaimer(ValidadorEtico.DISCLAIMER).build()));
+
+        ResultadoTriagemResponse resposta = service.analisar(10L, dono);
+
+        assertThat(resposta.getNivelUrgencia()).isEqualTo(NivelUrgencia.URGENTE);
+        assertThat(resposta.getFontes()).isEmpty();
+    }
+
+    @Test
+    void obterResultadoDeSessaoConcluida() {
+        sessao.setStatus(StatusSessao.CONCLUIDA);
+        when(mensagemRepository.findBySessaoIdOrderByOrdemSequenciaAsc(anyLong())).thenReturn(List.of());
+        when(resultadoRepository.findBySessaoId(10L)).thenReturn(Optional.of(ResultadoTriagem.builder()
+                .sessao(sessao).nivelUrgencia(NivelUrgencia.EMERGENCIA).condicoesJson("[\"infarto\"]")
+                .explicacaoEducativa("e").orientacoesGerais("o").sinaisAlerta("[\"Dor no peito\"]")
+                .quandoBuscarAtendimento("Ligue 192 agora.").disclaimer(ValidadorEtico.DISCLAIMER)
+                .documentosRagUsados("[\"dor-no-peito-001\", \"id-removido-da-base\"]").build()));
+
+        ResultadoTriagemResponse resposta = service.obterResultado(10L, dono);
+
+        assertThat(resposta.getNivelUrgencia()).isEqualTo(NivelUrgencia.EMERGENCIA);
+        assertThat(resposta.getFontes()).hasSize(1);
+        assertThat(resposta.getPerguntasERespostas()).isEmpty();
+    }
+
+    @Test
+    void obterResultadoDeSessaoNaoConcluidaRetornaTransicaoInvalida() {
+        sessao.setStatus(StatusSessao.ANALISANDO);
+
+        assertThatThrownBy(() -> service.obterResultado(10L, dono)).isInstanceOf(TransicaoInvalidaException.class);
+    }
+
+    @Test
+    void obterResultadoDeOutroUsuarioRetornaNaoEncontrada() {
+        sessao.setStatus(StatusSessao.CONCLUIDA);
+
+        assertThatThrownBy(() -> service.obterResultado(10L, outro)).isInstanceOf(RecursoNaoEncontradoException.class);
     }
 }

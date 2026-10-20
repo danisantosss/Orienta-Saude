@@ -19,14 +19,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Teste de integração da triagem pela API (tasks 9.4 e 11.2), com MySQL real (Testcontainers)
+ * Teste de integração da triagem pela API (tasks 9.4, 11.2 e 13.4), com MySQL real (Testcontainers)
  * e o Gemini simulado.
  */
 @SpringBootTest
@@ -188,5 +193,94 @@ class TriagemControllerTest {
                 .andExpect(jsonPath("$.aviso").isNotEmpty());
 
         assertThat(sessaoRepository.findById(sessaoId).orElseThrow().getStatus()).isEqualTo(StatusSessao.ANALISANDO);
+    }
+
+    // ---------- análise e resultado (task 13.4) ----------
+
+    private static final String ANALISE_JSON = """
+            {"nivelUrgencia": "MODERADO", "condicoes": ["gripe", "dengue"],
+             "explicacaoEducativa": "Os sintomas podem estar relacionados a uma infecção viral.",
+             "orientacoesGerais": "Repouso e hidratação.",
+             "sinaisAlerta": ["Falta de ar", "Manchas vermelhas na pele"],
+             "quandoBuscarAtendimento": "Procure uma unidade básica de saúde se não melhorar em 3 dias."}
+            """;
+
+    private long sessaoProntaParaAnalise(String token) throws Exception {
+        when(geminiClient.gerarTexto(anyString())).thenReturn("Há quanto tempo você tem febre?");
+        long sessaoId = iniciarTriagem(token);
+        responder(token, sessaoId, "Desde ontem");
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/encerrar").header("Authorization", token))
+                .andExpect(status().isOk());
+        return sessaoId;
+    }
+
+    @Test
+    void analisaComBuscaPorPalavrasChaveEDevolveOResultadoCompleto() throws Exception {
+        String token = cadastrarELogar();
+        long sessaoId = sessaoProntaParaAnalise(token);
+        when(geminiClient.gerarEmbeddings(anyList())).thenThrow(new IaIndisponivelException("embeddings fora"));
+        when(geminiClient.gerarJson(anyString())).thenReturn(ANALISE_JSON);
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sessaoId").value(sessaoId))
+                .andExpect(jsonPath("$.nivelUrgencia").value("MODERADO"))
+                .andExpect(jsonPath("$.condicoes[0]").value("gripe"))
+                .andExpect(jsonPath("$.disclaimer").isNotEmpty())
+                .andExpect(jsonPath("$.notaLimitacao").isNotEmpty())
+                .andExpect(jsonPath("$.fontes[0].url").isNotEmpty())
+                .andExpect(jsonPath("$.perguntasERespostas[0].pergunta").value("Há quanto tempo você tem febre?"))
+                .andExpect(jsonPath("$.perguntasERespostas[0].resposta").value("Desde ontem"));
+
+        assertThat(sessaoRepository.findById(sessaoId).orElseThrow().getStatus()).isEqualTo(StatusSessao.CONCLUIDA);
+
+        mockMvc.perform(get("/api/triagem/" + sessaoId + "/resultado").header("Authorization", token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nivelUrgencia").value("MODERADO"))
+                .andExpect(jsonPath("$.sinaisAlerta[1]").value("Manchas vermelhas na pele"));
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nivelUrgencia").value("MODERADO"));
+        verify(geminiClient, times(1)).gerarJson(anyString());
+    }
+
+    @Test
+    void falhaDaIaNaAnaliseRetorna503EPermiteTentarDeNovo() throws Exception {
+        String token = cadastrarELogar();
+        long sessaoId = sessaoProntaParaAnalise(token);
+        when(geminiClient.gerarJson(anyString())).thenThrow(new IaIndisponivelException("fora do ar"));
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isServiceUnavailable());
+        assertThat(sessaoRepository.findById(sessaoId).orElseThrow().getStatus()).isEqualTo(StatusSessao.ANALISANDO);
+
+        doReturn(ANALISE_JSON).when(geminiClient).gerarJson(anyString());
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void analisarOuVerResultadoForaDeHoraRetorna422() throws Exception {
+        String token = cadastrarELogar();
+        when(geminiClient.gerarTexto(anyString())).thenReturn("Há quanto tempo você tem febre?");
+        long sessaoId = iniciarTriagem(token);
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isUnprocessableEntity());
+        mockMvc.perform(get("/api/triagem/" + sessaoId + "/resultado").header("Authorization", token))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void resultadoDeOutroUsuarioRetorna404() throws Exception {
+        String tokenDono = cadastrarELogar();
+        String tokenOutro = cadastrarELogar();
+        long sessaoId = sessaoProntaParaAnalise(tokenDono);
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", tokenOutro))
+                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/triagem/" + sessaoId + "/resultado").header("Authorization", tokenOutro))
+                .andExpect(status().isNotFound());
     }
 }

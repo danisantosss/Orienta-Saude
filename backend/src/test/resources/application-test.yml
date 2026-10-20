@@ -15,3 +15,6 @@ app:
     modelo-texto: modelo-de-teste
     modelo-embedding: embedding-de-teste
     timeout-ms: 5000
+    intervalo-tentativas-ms: 0
+  rag:
+    indexar-na-inicializacao: false

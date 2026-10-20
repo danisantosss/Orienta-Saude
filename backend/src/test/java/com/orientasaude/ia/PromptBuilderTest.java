@@ -97,4 +97,53 @@ class PromptBuilderTest {
                 .contains("responda apenas: " + PromptBuilder.MARCADOR_ENTREVISTA_COMPLETA)
                 .doesNotContain("Ainda NÃO encerre a entrevista");
     }
+
+    // ---------- análise final (task 13.1) ----------
+
+    private List<MensagemTriagem> entrevistaCompleta() {
+        return List.of(
+                mensagem(PapelMensagem.SISTEMA, "Dor de cabeça forte há dois dias", 1),
+                mensagem(PapelMensagem.ASSISTENTE, "Você tem febre?", 2),
+                mensagem(PapelMensagem.USUARIO, "Sim, 38 graus", 3));
+    }
+
+    @Test
+    void promptDeAnaliseTrazEntrevistaContextoEFormatoJson() {
+        String prompt = promptBuilder.montarPromptAnalise(criarSessao(), entrevistaCompleta(), "[febre-001] Fonte: Ministério da Saúde");
+
+        assertThat(prompt)
+                .contains("Paciente: 34 anos")
+                .contains("Sintomas iniciais: Dor de cabeça forte há dois dias")
+                .contains("Pergunta: Você tem febre?")
+                .contains("Resposta: Sim, 38 graus")
+                .contains("[febre-001] Fonte: Ministério da Saúde")
+                .contains("\"nivelUrgencia\"")
+                .contains("\"quandoBuscarAtendimento\"")
+                .contains("EMERGENCIA")
+                .contains("192")
+                .contains("NÃO prescreva medicamentos");
+    }
+
+    @Test
+    void promptDeAnaliseNuncaContemDadosQueIdentificamOUsuario() {
+        String prompt = promptBuilder.montarPromptAnalise(criarSessao(), entrevistaCompleta(), "contexto");
+
+        assertThat(prompt)
+                .doesNotContain("Maria")
+                .doesNotContain("Joaquina")
+                .doesNotContain("maria.joaquina@exemplo.com")
+                .doesNotContain("4242")
+                .doesNotContain("77");
+    }
+
+    @Test
+    void promptDeReforcoListaOsTermosProibidosEPedeParaReescrever() {
+        String prompt = promptBuilder.montarPromptReforco("PROMPT BASE", List.of("você tem", "paracetamol"));
+
+        assertThat(prompt)
+                .startsWith("PROMPT BASE")
+                .contains("você tem")
+                .contains("paracetamol")
+                .contains("Reescreva");
+    }
 }
