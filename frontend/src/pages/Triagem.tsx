@@ -60,7 +60,7 @@ export default function Triagem() {
     }
     setErrosLocais(erros);
     if (Object.keys(erros).length === 0) {
-      triagem.iniciar({ sintomas, idade: idadeNumero });
+      void triagem.iniciar({ sintomas, idade: idadeNumero });
     }
   }
 
@@ -69,7 +69,7 @@ export default function Triagem() {
     const conteudo = resposta.trim();
     if (!conteudo) return;
     setResposta('');
-    triagem.responder(conteudo);
+    void triagem.responder(conteudo);
   }
 
   const emEntrevista = triagem.sessaoId !== null;
@@ -80,7 +80,7 @@ export default function Triagem() {
     <div role="alert" className="form-error">
       <p>{triagem.erro}</p>
       {emEntrevista && (
-        <button type="button" className="botao-secundario" onClick={() => triagem.repetir()}>Tentar novamente</button>
+        <button type="button" className="botao-secundario" onClick={() => { void triagem.repetir(); }}>Tentar novamente</button>
       )}
     </div>
   );
@@ -189,7 +189,7 @@ export default function Triagem() {
                   type="button"
                   className="botao-secundario"
                   disabled={triagem.carregando}
-                  onClick={() => triagem.encerrar()}
+                  onClick={() => { void triagem.encerrar(); }}
                 >
                   Encerrar entrevista e ver resultado
                 </button>
