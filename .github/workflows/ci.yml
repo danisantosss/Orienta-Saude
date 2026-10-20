@@ -100,3 +100,14 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # O painel do SonarCloud nem sempre está acessível; se o quality gate falhar, lista os problemas no log
+      - name: Listar problemas do SonarCloud
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          curl -sS -u "$SONAR_TOKEN:" \
+            "https://sonarcloud.io/api/issues/search?componentKeys=danisantosss_Orienta-Saude&pullRequest=$PR&issueStatuses=OPEN,CONFIRMED&ps=100" \
+            | jq -r '.issues[] | "\(.type) \(.severity) \(.rule) \(.component):\(.line // "-") \(.message)"'
