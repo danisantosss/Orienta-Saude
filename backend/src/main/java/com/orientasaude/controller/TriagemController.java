@@ -4,6 +4,7 @@ import com.orientasaude.dto.request.EnviarMensagemRequest;
 import com.orientasaude.dto.request.IniciarTriagemRequest;
 import com.orientasaude.dto.response.IniciarTriagemResponse;
 import com.orientasaude.dto.response.MensagemTriagemResponse;
+import com.orientasaude.dto.response.ResultadoTriagemResponse;
 import com.orientasaude.model.Usuario;
 import com.orientasaude.service.TriagemService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,5 +62,27 @@ public class TriagemController {
             @PathVariable Long id,
             @AuthenticationPrincipal Usuario usuario) {
         return ResponseEntity.ok(triagemService.encerrar(id, usuario));
+    }
+
+    /**
+     * POST /api/triagem/{id}/analisar
+     * Gera o resultado com RAG + Gemini. Repetir a chamada devolve o mesmo resultado.
+     */
+    @PostMapping("/{id}/analisar")
+    public ResponseEntity<ResultadoTriagemResponse> analisar(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(triagemService.analisar(id, usuario));
+    }
+
+    /**
+     * GET /api/triagem/{id}/resultado
+     * Devolve o resultado de uma triagem concluída.
+     */
+    @GetMapping("/{id}/resultado")
+    public ResponseEntity<ResultadoTriagemResponse> obterResultado(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(triagemService.obterResultado(id, usuario));
     }
 }
