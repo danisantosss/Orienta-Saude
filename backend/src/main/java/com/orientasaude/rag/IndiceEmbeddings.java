@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Guarda em memória o embedding de cada documento da base de conhecimento.
@@ -27,7 +28,7 @@ public class IndiceEmbeddings {
     private final BaseConhecimento base;
     private final GeminiClient geminiClient;
     private final RagConfig config;
-    private volatile Map<String, float[]> vetores = Map.of();
+    private final AtomicReference<Map<String, float[]>> vetores = new AtomicReference<>(Map.of());
 
     public IndiceEmbeddings(BaseConhecimento base, GeminiClient geminiClient, RagConfig config) {
         this.base = base;
@@ -49,7 +50,7 @@ public class IndiceEmbeddings {
      * Indexa a base se ainda não estiver indexada. Devolve true quando os vetores estão prontos.
      */
     public synchronized boolean garantirIndexado() {
-        if (!vetores.isEmpty()) {
+        if (!vetores.get().isEmpty()) {
             return true;
         }
         List<DocumentoConhecimento> documentos = base.listar();
@@ -64,7 +65,7 @@ public class IndiceEmbeddings {
             for (int i = 0; i < documentos.size(); i++) {
                 novos.put(documentos.get(i).id(), gerados.get(i));
             }
-            vetores = Map.copyOf(novos);
+            vetores.set(Map.copyOf(novos));
             log.info("Embeddings gerados para {} documentos da base de conhecimento", novos.size());
             return true;
         } catch (IaIndisponivelException e) {
@@ -74,6 +75,6 @@ public class IndiceEmbeddings {
     }
 
     public Optional<float[]> vetorDe(String idDocumento) {
-        return Optional.ofNullable(vetores.get(idDocumento));
+        return Optional.ofNullable(vetores.get().get(idDocumento));
     }
 }
