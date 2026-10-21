@@ -50,7 +50,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Testa o fluxo da triagem (tasks 9.3, 11.1, 11.3 e 13.3) com repositórios, entrevista,
+ * Testa o fluxo da triagem com repositórios, entrevista,
  * RAG e análise simulados.
  */
 class TriagemServiceTest {
@@ -89,7 +89,7 @@ class TriagemServiceTest {
         when(mensagemRepository.save(any(MensagemTriagem.class))).thenAnswer(inv -> inv.getArgument(0));
     }
 
-    // ---------- iniciar (task 9.3) ----------
+    // ---------- iniciar ----------
 
     @Test
     void iniciarCriaSessaoSanitizadaComMensagemDoSistemaEPrimeiraPergunta() {
@@ -133,7 +133,7 @@ class TriagemServiceTest {
                 .isInstanceOf(IaIndisponivelException.class);
     }
 
-    // ---------- enviarMensagem (task 11.1) ----------
+    // ---------- enviarMensagem ----------
 
     @Test
     void enviarMensagemGravaRespostaEProximaPerguntaNaOrdem() {
@@ -191,7 +191,7 @@ class TriagemServiceTest {
                 .isInstanceOf(EntradaInvalidaException.class);
     }
 
-    // ---------- isolamento de dados (task 11.2, Propriedade 1) ----------
+    // ---------- isolamento de dados ----------
 
     @Test
     void sessaoDeOutroUsuarioRetornaNaoEncontrada() {
@@ -210,7 +210,7 @@ class TriagemServiceTest {
                 .isInstanceOf(RecursoNaoEncontradoException.class);
     }
 
-    // ---------- falhas e encerramentos (task 11.3) ----------
+    // ---------- falhas e encerramentos ----------
 
     @Test
     void falhaDaIaAoGerarPerguntaEhPropagadaParaDesfazerARespostaGravada() {
@@ -254,7 +254,7 @@ class TriagemServiceTest {
                 .isInstanceOf(TransicaoInvalidaException.class);
     }
 
-    // ---------- analisar e obterResultado (task 13.3) ----------
+    // ---------- analisar e obterResultado ----------
 
     private static BaseConhecimento criarBaseConhecimento() {
         RagConfig config = new RagConfig();

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-/** Tempo que a mensagem de sucesso fica visível (Requisito 10.3). */
+/** Tempo que a mensagem de sucesso fica visível. */
 export const DURACAO_TOAST_MS = 3000;
 
 interface ToastProps {

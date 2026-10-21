@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class RagConfig {
 
-    /** Similaridade de cosseno mínima para um documento entrar no contexto (Requisito 5.2). */
+    /** Similaridade de cosseno mínima para um documento entrar no contexto. */
     private double limiarSimilaridade = 0.7;
 
     /** Quantidade máxima de documentos enviados ao prompt. */

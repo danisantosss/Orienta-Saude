@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Task 12.3: embeddings dos documentos gerados uma vez e mantidos em memória.
+ * Embeddings dos documentos gerados uma vez e mantidos em memória.
  */
 class IndiceEmbeddingsTest {
 

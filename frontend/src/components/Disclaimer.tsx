@@ -9,7 +9,7 @@ interface DisclaimerProps {
 }
 
 /**
- * Aviso de que o serviço é educativo (Requisito 14). Com `aoConfirmar`, exige que o usuário
+ * Aviso de que o serviço é educativo. Com `aoConfirmar`, exige que o usuário
  * marque que leu antes de continuar (14.2).
  */
 export default function Disclaimer({ texto = TEXTO_DISCLAIMER, confirmado = false, aoConfirmar }: DisclaimerProps) {

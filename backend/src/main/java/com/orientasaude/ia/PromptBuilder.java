@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Monta os prompts enviados ao Gemini.
  * Usa somente idade, sintomas e o histórico de perguntas e respostas:
- * nunca nome, email ou id do usuário (Requisito 15.3).
+ * nunca nome, email ou id do usuário.
  */
 @Component
 public class PromptBuilder {

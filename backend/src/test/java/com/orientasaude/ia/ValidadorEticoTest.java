@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Task 13.2: Propriedade 2 (urgência sempre válida) e Propriedade 4 (sem diagnóstico definitivo nem prescrição).
+ * Urgência sempre válida e nenhuma resposta com diagnóstico definitivo ou prescrição.
  */
 class ValidadorEticoTest {
 

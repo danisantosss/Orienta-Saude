@@ -8,7 +8,7 @@ export interface MensagemChat {
   conteudo: string;
 }
 
-/** Depois desse tempo a tela avisa que está demorando mais que o esperado (Requisito 9.4). */
+/** Depois desse tempo a tela avisa que está demorando mais que o esperado. */
 export const AVISO_DEMORA_MS = 10000;
 
 const ERRO_TEMPO_ESGOTADO = 'A operação passou de 30 segundos e foi cancelada. Tente novamente.';
@@ -19,7 +19,7 @@ const ERRO_GENERICO = 'Não foi possível concluir. Verifique sua conexão e ten
  * Estado e ações da triagem: início, entrevista, encerramento e análise.
  * Quando a entrevista termina, a análise é pedida automaticamente.
  * Se algo falhar, a última ação fica guardada e `repetir` a executa de novo,
- * sem perder o que já foi coletado (Requisitos 4.7 e 9.5).
+ * sem perder o que já foi coletado.
  */
 export function useTriagem() {
   const [sessaoId, setSessaoId] = useState<number | null>(null);

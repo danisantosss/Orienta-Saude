@@ -3,7 +3,7 @@ interface IndicadorCarregamentoProps {
   demorando?: boolean;
 }
 
-/** Indicador de carregamento acessível, com aviso de demora depois de 10 s (Requisitos 9.2 e 9.4). */
+/** Indicador de carregamento acessível, com aviso de demora depois de 10 s. */
 export default function IndicadorCarregamento({ mensagem, demorando = false }: IndicadorCarregamentoProps) {
   return (
     <div className="carregamento" role="status" aria-live="polite">

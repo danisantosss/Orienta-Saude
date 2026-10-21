@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Teste de integração da triagem pela API (tasks 9.4, 11.2 e 13.4), com MySQL real (Testcontainers)
+ * Teste de integração da triagem pela API, com MySQL real (Testcontainers)
  * e o Gemini simulado.
  */
 @SpringBootTest
@@ -195,7 +195,7 @@ class TriagemControllerTest {
         assertThat(sessaoRepository.findById(sessaoId).orElseThrow().getStatus()).isEqualTo(StatusSessao.ANALISANDO);
     }
 
-    // ---------- análise e resultado (task 13.4) ----------
+    // ---------- análise e resultado ----------
 
     private static final String ANALISE_JSON = """
             {"nivelUrgencia": "MODERADO", "condicoes": ["gripe", "dengue"],

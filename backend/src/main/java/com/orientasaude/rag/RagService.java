@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Monta a consulta da triagem (sintomas + respostas), recupera os documentos e transforma
- * o resultado no contexto do prompt de análise (Requisitos 5.1, 5.2, 5.4 e 5.8).
+ * o resultado no contexto do prompt de análise.
  */
 @Service
 public class RagService {

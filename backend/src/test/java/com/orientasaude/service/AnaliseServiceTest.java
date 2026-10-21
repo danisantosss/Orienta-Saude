@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Task 13.1: análise final com contexto do RAG, parse do JSON, novas tentativas e limite de tempo.
+ * Análise final com contexto do RAG, parse do JSON, novas tentativas e limite de tempo.
  */
 class AnaliseServiceTest {
 

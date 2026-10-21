@@ -126,7 +126,7 @@ public class TriagemService {
     }
 
     /**
-     * Encerramento antecipado pedido pelo usuário (Requisito 4.6).
+     * Encerramento antecipado pedido pelo usuário.
      */
     @Transactional
     public MensagemTriagemResponse encerrar(Long sessaoId, Usuario usuario) {
@@ -137,8 +137,8 @@ public class TriagemService {
 
     /**
      * Gera o resultado da triagem: RAG + análise do Gemini + validação ética, grava o resultado
-     * com o disclaimer e conclui a sessão (Propriedade 3).
-     * Idempotente (Propriedade 7): uma sessão já concluída devolve o resultado gravado, sem chamar a IA.
+     * com o disclaimer e conclui a sessão.
+     * Idempotente: uma sessão já concluída devolve o resultado gravado, sem chamar a IA.
      * Não é uma transação única de propósito: a análise pode levar até 30 s e não deve segurar
      * uma conexão do banco. Se a IA falhar, nada é gravado e a sessão continua ANALISANDO.
      */

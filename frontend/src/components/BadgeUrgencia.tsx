@@ -15,7 +15,7 @@ const ICONES: Record<NivelUrgencia, string> = {
 };
 
 /**
- * Nível de urgência com cor, ícone e rótulo próprios (Requisito 7.5): a forma do ícone
+ * Nível de urgência com cor, ícone e rótulo próprios: a forma do ícone
  * também muda, para quem não distingue cores.
  */
 export default function BadgeUrgencia({ nivel }: { nivel: NivelUrgencia }) {

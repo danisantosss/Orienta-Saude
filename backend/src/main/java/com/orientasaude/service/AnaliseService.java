@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Gera a análise final com o Gemini (Requisitos 6.1, 6.2 e 6.7).
+ * Gera a análise final com o Gemini.
  * Faz a primeira chamada e até 2 novas tentativas, com intervalo entre elas e um limite total
  * de tempo. Uma tentativa falha quando o Gemini cai, quando o JSON vem inválido ou incompleto,
  * ou quando o ValidadorEtico encontra diagnóstico ou prescrição; nesse último caso a próxima

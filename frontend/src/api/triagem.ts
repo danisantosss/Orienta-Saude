@@ -9,7 +9,7 @@ import type {
   SessaoTriagemResponse,
 } from '../types';
 
-/** Cada chamada da triagem é cancelada depois de 30 s (Requisito 9.5). */
+/** Cada chamada da triagem é cancelada depois de 30 s. */
 export const LIMITE_REQUISICAO_MS = 30000;
 
 const opcoes = { timeout: LIMITE_REQUISICAO_MS };

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Resultado completo da triagem: classificação, orientações, disclaimer, fontes consultadas
- * e as perguntas e respostas da entrevista (Requisitos 6.1 e 8.3).
+ * e as perguntas e respostas da entrevista.
  */
 @Data
 @Builder

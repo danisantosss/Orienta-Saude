@@ -76,7 +76,7 @@ public class ValidadorEtico {
 
     /**
      * Converte o nível vindo da IA. Qualquer valor fora dos quatro níveis vira URGENTE,
-     * o mais prudente sem alarmar como emergência, e fica registrado no log (Propriedade 2).
+     * o mais prudente sem alarmar como emergência, e fica registrado no log.
      */
     public NivelUrgencia interpretarNivel(String valor) {
         String normalizado = valor == null ? "" : normalizar(valor).trim().toUpperCase();

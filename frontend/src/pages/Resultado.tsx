@@ -8,7 +8,7 @@ import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import Toast from '../components/Toast';
 import type { NivelUrgencia, ResultadoTriagemResponse } from '../types';
 
-/** O que fazer em cada nível (Requisitos 7.1 a 7.4). */
+/** O que fazer em cada nível. */
 export const RECOMENDACOES: Record<NivelUrgencia, string> = {
   EMERGENCIA: 'Procure atendimento médico presencial imediatamente: vá ao pronto-socorro mais próximo ou ligue para o SAMU (192).',
   URGENTE: 'Procure atendimento médico em até 24 horas.',
@@ -30,7 +30,7 @@ function formatarData(data: string | null): string | null {
 
 /**
  * Página de resultado (rota /resultado/:id). Emergência vem antes de tudo e o aviso legal
- * é sempre o último bloco (Requisitos 7.1 e 14.3).
+ * é sempre o último bloco.
  */
 export default function Resultado() {
   const { id } = useParams();

@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Carrega os documentos da base de conhecimento quando a aplicação sobe.
  * Um documento inválido (sem fonte, sem conteúdo, id repetido...) impede a aplicação de subir:
- * é melhor falhar no deploy do que dar orientação sem fonte (Requisitos 5.3 e 5.5).
+ * é melhor falhar no deploy do que dar orientação sem fonte.
  */
 @Component
 public class BaseConhecimento {

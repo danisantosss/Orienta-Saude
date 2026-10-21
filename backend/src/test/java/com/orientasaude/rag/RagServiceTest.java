@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Task 12.5: consulta, contexto para o prompt e avisos de limitação (Requisitos 5.1, 5.2, 5.4, 5.8).
+ * Consulta, contexto para o prompt e avisos de limitação.
  */
 class RagServiceTest {
 

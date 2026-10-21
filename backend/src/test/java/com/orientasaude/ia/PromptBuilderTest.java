@@ -98,7 +98,7 @@ class PromptBuilderTest {
                 .doesNotContain("Ainda NÃO encerre a entrevista");
     }
 
-    // ---------- análise final (task 13.1) ----------
+    // ---------- análise final ----------
 
     private List<MensagemTriagem> entrevistaCompleta() {
         return List.of(

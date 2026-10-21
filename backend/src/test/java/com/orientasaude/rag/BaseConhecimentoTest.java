@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Task 12.2: carga e validação dos documentos da base de conhecimento (Requisitos 5.3 e 5.5).
+ * Carga e validação dos documentos da base de conhecimento.
  */
 class BaseConhecimentoTest {
 

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
  * Recupera os documentos mais parecidos com a consulta.
  * Caminho principal: embedding da consulta + similaridade de cosseno, filtro pelo limiar (0,7)
  * e no máximo 10 documentos. Se os embeddings falharem ou passarem do tempo limite (8 s),
- * usa busca por palavras-chave, para a triagem nunca parar por causa do RAG (Requisitos 5.6 e 5.7).
+ * usa busca por palavras-chave, para a triagem nunca parar por causa do RAG.
  */
 @Component
 public class BuscadorDocumentos {

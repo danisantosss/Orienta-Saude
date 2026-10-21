@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Task 12.4: busca por similaridade de cosseno com limiar, limite e alternativa por palavras-chave.
+ * Busca por similaridade de cosseno com limiar, limite e alternativa por palavras-chave.
  */
 class BuscadorDocumentosTest {
 
