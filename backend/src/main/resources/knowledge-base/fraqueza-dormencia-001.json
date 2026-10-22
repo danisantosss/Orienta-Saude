@@ -1,0 +1,37 @@
+{
+  "id": "fraqueza-dormencia-001",
+  "sintoma": "fraqueza ou dormência em um lado do corpo",
+  "palavrasChave": [
+    "fraqueza em um lado",
+    "dormência",
+    "formigamento",
+    "boca torta",
+    "fala enrolada",
+    "avc",
+    "derrame",
+    "perda de força"
+  ],
+  "fonte": "Ministério da Saúde (Linhas de Cuidado)",
+  "urlFonte": "https://linhasdecuidado.saude.gov.br/portal/acidente-vascular-cerebral-(AVC)-no-adulto/sou-paciente",
+  "conteudo": "Fraqueza ou dormência súbita em um lado do corpo, boca torta, fala enrolada ou dificuldade para entender, perda de visão e tontura intensa são sinais de acidente vascular cerebral (AVC). O AVC é uma emergência: quanto mais cedo o atendimento, maiores as chances de recuperação. Deve-se ligar imediatamente para o SAMU (192) e anotar o horário de início dos sintomas.",
+  "condicoesRelacionadas": [
+    "acidente vascular cerebral",
+    "ataque isquêmico transitório",
+    "hipoglicemia",
+    "enxaqueca com aura"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Formigamento passageiro após ficar muito tempo na mesma posição, que some ao mover o membro",
+    "moderado": "Formigamento leve e recorrente nas mãos ou pés, sem fraqueza",
+    "urgente": "Sintomas neurológicos que surgiram e já desapareceram completamente",
+    "emergencia": "Fraqueza ou dormência súbita em um lado do corpo, boca torta, fala alterada ou perda de visão, mesmo que pareçam melhorar"
+  },
+  "orientacoesGerais": "Diante de sinais de AVC, ligar para o SAMU (192), anotar o horário do início dos sintomas e não oferecer comida, bebida ou medicamentos à pessoa.",
+  "sinaisAlerta": [
+    "Boca torta",
+    "Fraqueza em braço ou perna de um lado",
+    "Fala enrolada",
+    "Perda de visão",
+    "Dor de cabeça súbita e intensa"
+  ]
+}

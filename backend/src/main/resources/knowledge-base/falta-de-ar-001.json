@@ -1,0 +1,36 @@
+{
+  "id": "falta-de-ar-001",
+  "sintoma": "falta de ar",
+  "palavrasChave": [
+    "falta de ar",
+    "dificuldade para respirar",
+    "chiado no peito",
+    "respiração curta",
+    "cansaço ao respirar",
+    "asma"
+  ],
+  "fonte": "Ministério da Saúde",
+  "urlFonte": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/asma",
+  "conteudo": "A falta de ar (dispneia) é a sensação de dificuldade para respirar. Pode ocorrer em crises de asma, com chiado no peito, tosse e aperto no peito, em infecções respiratórias, em problemas do coração e em crises de ansiedade. Falta de ar que surge de repente, em repouso, ou que piora rapidamente é um sinal de alerta e requer atendimento imediato.",
+  "condicoesRelacionadas": [
+    "crise de asma",
+    "infecção respiratória",
+    "pneumonia",
+    "insuficiência cardíaca",
+    "crise de ansiedade"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Leve desconforto ao fazer grandes esforços, que passa com repouso",
+    "moderado": "Chiado e falta de ar leves em pessoa com asma conhecida, que melhoram com o plano de cuidado orientado pelo médico",
+    "urgente": "Falta de ar que piora ao longo do dia ou acompanhada de febre",
+    "emergencia": "Falta de ar em repouso, dificuldade para falar frases completas, lábios arroxeados, dor no peito ou confusão mental"
+  },
+  "orientacoesGerais": "Manter-se em posição sentada e confortável, afastar-se de fumaça, poeira e outros gatilhos e seguir o plano de cuidado orientado pela equipe de saúde, quando houver.",
+  "sinaisAlerta": [
+    "Falta de ar em repouso",
+    "Dificuldade para falar",
+    "Lábios ou unhas arroxeados",
+    "Dor no peito",
+    "Sonolência ou confusão mental"
+  ]
+}

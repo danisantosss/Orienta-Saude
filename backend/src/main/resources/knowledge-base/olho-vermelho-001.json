@@ -1,0 +1,34 @@
+{
+  "id": "olho-vermelho-001",
+  "sintoma": "olho vermelho",
+  "palavrasChave": [
+    "olho vermelho",
+    "conjuntivite",
+    "olho coçando",
+    "secreção no olho",
+    "olho lacrimejando",
+    "remela"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/dicas/231_conjuntivite.html",
+  "conteudo": "A conjuntivite é a inflamação da membrana que recobre o olho, causando vermelhidão, lacrimejamento, coceira, sensação de areia e secreção. Pode ser viral, bacteriana ou alérgica. As formas infecciosas são contagiosas, por isso a higiene das mãos é essencial. Dor ocular intensa, piora da visão ou sensibilidade forte à luz não são típicas e precisam de avaliação rápida.",
+  "condicoesRelacionadas": [
+    "conjuntivite viral",
+    "conjuntivite bacteriana",
+    "conjuntivite alérgica",
+    "corpo estranho no olho"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Vermelhidão e coceira leves, sem dor e sem alteração da visão",
+    "moderado": "Secreção amarelada ou sintomas que não melhoram em alguns dias",
+    "urgente": "Dor ocular importante, sensibilidade forte à luz ou visão embaçada",
+    "emergencia": "Perda súbita da visão, trauma no olho ou contato com produto químico"
+  },
+  "orientacoesGerais": "Lavar as mãos com frequência, não coçar os olhos, limpar a secreção com gaze e soro fisiológico, não compartilhar toalhas e evitar lentes de contato até a melhora.",
+  "sinaisAlerta": [
+    "Dor intensa no olho",
+    "Piora da visão",
+    "Sensibilidade forte à luz",
+    "Trauma ou produto químico no olho"
+  ]
+}

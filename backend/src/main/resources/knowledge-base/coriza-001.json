@@ -1,0 +1,34 @@
+{
+  "id": "coriza-001",
+  "sintoma": "coriza e nariz entupido",
+  "palavrasChave": [
+    "coriza",
+    "nariz escorrendo",
+    "nariz entupido",
+    "congestão nasal",
+    "espirros",
+    "resfriado"
+  ],
+  "fonte": "Fiocruz (Canal Saúde)",
+  "urlFonte": "https://www.canalsaude.fiocruz.br/noticias/noticiaAberta/voce-sabe-a-diferenca-entre-gripes-e-os-resfriados-2016-03-29",
+  "conteudo": "Coriza, espirros e nariz entupido são típicos do resfriado comum, uma infecção viral leve que costuma melhorar em até uma semana. A gripe, causada pelo vírus influenza, começa de forma mais abrupta, com febre alta, dor no corpo e cansaço intenso. Rinite alérgica também causa coriza e espirros, mas sem febre.",
+  "condicoesRelacionadas": [
+    "resfriado comum",
+    "rinite alérgica",
+    "gripe",
+    "sinusite"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Coriza e espirros sem febre ou com febre baixa, com bom estado geral",
+    "moderado": "Sintomas por mais de 10 dias ou dor na face e secreção espessa",
+    "urgente": "Febre alta persistente ou piora após melhora inicial",
+    "emergencia": "Falta de ar, lábios arroxeados ou confusão mental"
+  },
+  "orientacoesGerais": "Manter hidratação, lavar o nariz com soro fisiológico, repousar, lavar as mãos com frequência e cobrir a boca e o nariz ao espirrar.",
+  "sinaisAlerta": [
+    "Falta de ar",
+    "Febre alta por mais de 3 dias",
+    "Dor intensa na face",
+    "Piora após melhora inicial"
+  ]
+}

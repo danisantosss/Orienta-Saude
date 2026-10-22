@@ -1,0 +1,36 @@
+{
+  "id": "dor-no-corpo-001",
+  "sintoma": "dor no corpo",
+  "palavrasChave": [
+    "dor no corpo",
+    "dor muscular",
+    "dor nas articulações",
+    "dor atrás dos olhos",
+    "dengue",
+    "manchas vermelhas",
+    "moleza"
+  ],
+  "fonte": "Ministério da Saúde",
+  "urlFonte": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue",
+  "conteudo": "Dor no corpo e nas articulações com febre alta de início súbito, dor atrás dos olhos, dor de cabeça e manchas vermelhas na pele são sintomas típicos de dengue e de outras arboviroses. Na dengue, o período mais delicado costuma ser quando a febre baixa, entre o 3º e o 7º dia, quando podem surgir sinais de alarme. A hidratação abundante é a principal medida de cuidado.",
+  "condicoesRelacionadas": [
+    "dengue",
+    "chikungunya",
+    "gripe",
+    "infecção viral"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor no corpo leve após esforço físico, sem febre",
+    "moderado": "Dor no corpo com febre, em área com casos de dengue, sem sinais de alarme",
+    "urgente": "Dor abdominal intensa, vômitos persistentes ou sangramento de gengiva ou nariz",
+    "emergencia": "Tontura ou desmaio, extremidades frias, sangramento importante, falta de ar ou sonolência excessiva"
+  },
+  "orientacoesGerais": "Beber bastante líquido, repousar e procurar a unidade de saúde para avaliação se houver febre com dor no corpo. Evitar se automedicar.",
+  "sinaisAlerta": [
+    "Dor abdominal intensa e contínua",
+    "Vômitos persistentes",
+    "Sangramento de gengiva ou nariz",
+    "Tontura ou desmaio",
+    "Sonolência ou irritabilidade"
+  ]
+}

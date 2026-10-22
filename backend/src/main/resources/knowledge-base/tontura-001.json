@@ -1,0 +1,36 @@
+{
+  "id": "tontura-001",
+  "sintoma": "tontura",
+  "palavrasChave": [
+    "tontura",
+    "vertigem",
+    "labirintite",
+    "sensação de girar",
+    "desequilíbrio",
+    "zonzo"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/labirintite/",
+  "conteudo": "Tontura é uma sensação de desequilíbrio ou de que o ambiente está girando (vertigem). Pode ter origem no ouvido interno, como na labirintite, e também em queda de pressão, desidratação, hipoglicemia e ansiedade. A tontura que surge junto com fraqueza em um lado do corpo, fala enrolada ou alteração da visão pode indicar AVC e é uma emergência.",
+  "condicoesRelacionadas": [
+    "labirintite",
+    "vertigem posicional",
+    "queda de pressão arterial",
+    "desidratação",
+    "hipoglicemia"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Tontura breve ao levantar rápido, que passa em segundos",
+    "moderado": "Episódios repetidos de vertigem por dias, com náusea, sem outros sinais neurológicos",
+    "urgente": "Tontura intensa que impede de ficar de pé ou com vômitos persistentes",
+    "emergencia": "Tontura com fraqueza ou dormência em um lado do corpo, fala enrolada, perda de visão, dor de cabeça súbita ou desmaio"
+  },
+  "orientacoesGerais": "Sentar ou deitar ao sentir tontura, levantar devagar, manter hidratação e alimentação regular e evitar dirigir durante as crises.",
+  "sinaisAlerta": [
+    "Fraqueza ou dormência em um lado do corpo",
+    "Fala enrolada",
+    "Perda ou alteração da visão",
+    "Desmaio",
+    "Dor de cabeça súbita e intensa"
+  ]
+}

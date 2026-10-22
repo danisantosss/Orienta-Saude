@@ -17,7 +17,7 @@ import static com.orientasaude.ia.PromptBuilder.MINIMO_PERGUNTAS;
 
 /**
  * Conduz a entrevista adaptativa: pede ao Gemini a próxima pergunta
- * e aplica os limites de no mínimo 2 e no máximo 10 perguntas (Propriedade 5).
+ * e aplica os limites de no mínimo 2 e no máximo 10 perguntas.
  * Não persiste nada; quem grava as mensagens é o TriagemService.
  */
 @Service

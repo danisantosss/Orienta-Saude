@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Monta os prompts enviados ao Gemini.
  * Usa somente idade, sintomas e o histórico de perguntas e respostas:
- * nunca nome, email ou id do usuário (Requisito 15.3).
+ * nunca nome, email ou id do usuário.
  */
 @Component
 public class PromptBuilder {
@@ -48,6 +48,52 @@ public class PromptBuilder {
                     .append(MARCADOR_ENTREVISTA_COMPLETA).append(".");
         }
         return prompt.toString();
+    }
+
+    /**
+     * Prompt da análise final: entrevista completa + contexto recuperado pelo RAG, com resposta em JSON.
+     */
+    public String montarPromptAnalise(SessaoTriagem sessao, List<MensagemTriagem> mensagens, String contextoRag) {
+        return new StringBuilder()
+                .append("Você é um assistente educativo de triagem de saúde.\n")
+                .append("Analise as informações abaixo e oriente a pessoa sobre o nível de urgência.\n\n")
+                .append("Paciente: ").append(sessao.getIdadePaciente()).append(" anos\n")
+                .append("Sintomas iniciais: ").append(sessao.getSintomasIniciais()).append("\n")
+                .append("Informações coletadas na entrevista:").append(montarHistorico(mensagens)).append("\n\n")
+                .append("Contexto de fontes confiáveis:\n").append(contextoRag).append("\n\n")
+                .append("Níveis de urgência:\n")
+                .append("- EMERGENCIA: risco imediato; procurar o pronto-socorro agora ou ligar para o SAMU (192)\n")
+                .append("- URGENTE: procurar atendimento médico em até 24 horas\n")
+                .append("- MODERADO: agendar consulta em até 7 dias\n")
+                .append("- LEVE: cuidados em casa e observação dos sintomas\n\n")
+                .append("Responda OBRIGATORIAMENTE em JSON, neste formato:\n")
+                .append("{\n")
+                .append("  \"nivelUrgencia\": \"LEVE|MODERADO|URGENTE|EMERGENCIA\",\n")
+                .append("  \"condicoes\": [\"condição 1\", \"condição 2\"],\n")
+                .append("  \"explicacaoEducativa\": \"...\",\n")
+                .append("  \"orientacoesGerais\": \"...\",\n")
+                .append("  \"sinaisAlerta\": [\"sinal 1\", \"sinal 2\"],\n")
+                .append("  \"quandoBuscarAtendimento\": \"...\"\n")
+                .append("}\n\n")
+                .append("Regras OBRIGATÓRIAS:\n")
+                .append("- NÃO afirme diagnóstico (use \"pode estar relacionado a\")\n")
+                .append("- NÃO prescreva medicamentos, dosagens ou tratamentos\n")
+                .append("- NÃO use termos como \"você tem\" ou \"diagnóstico confirmado\"\n")
+                .append("- Entre 1 e 5 condições possivelmente relacionadas\n")
+                .append("- Na dúvida entre dois níveis, escolha o mais grave\n")
+                .append("- Use linguagem simples e baseie-se no contexto das fontes quando ele existir\n")
+                .append("- Inclua sempre a recomendação de procurar avaliação de um profissional de saúde")
+                .toString();
+    }
+
+    /**
+     * Prompt de reforço: o mesmo prompt de análise com os trechos proibidos encontrados na resposta anterior.
+     */
+    public String montarPromptReforco(String promptAnalise, List<String> termosProibidos) {
+        return promptAnalise
+                + "\n\nATENÇÃO: a resposta anterior foi recusada porque continha os trechos proibidos: "
+                + String.join(", ", termosProibidos)
+                + ".\nReescreva a resposta inteira sem esses trechos, sem afirmar diagnóstico e sem citar medicamentos ou doses.";
     }
 
     private String montarHistorico(List<MensagemTriagem> mensagens) {

@@ -1,0 +1,35 @@
+{
+  "id": "dor-de-cabeca-001",
+  "sintoma": "dor de cabeça",
+  "palavrasChave": [
+    "dor de cabeça",
+    "cefaleia",
+    "enxaqueca",
+    "cabeça latejando",
+    "pressão na cabeça"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/dicas/56cefaleia.html",
+  "conteudo": "A dor de cabeça (cefaleia) é uma das queixas mais comuns. A maioria dos casos é primária, como a cefaleia tensional e a enxaqueca, e não indica doença grave. A enxaqueca costuma ser latejante, de um lado da cabeça, e pode vir com náusea e sensibilidade à luz e ao som. Fatores como estresse, privação de sono, jejum prolongado e excesso de telas podem desencadear crises. Uma dor de cabeça súbita e muito intensa, ou acompanhada de sinais neurológicos, precisa de avaliação imediata.",
+  "condicoesRelacionadas": [
+    "cefaleia tensional",
+    "enxaqueca",
+    "sinusite",
+    "hipertensão arterial descontrolada"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor leve a moderada, semelhante a episódios anteriores, que melhora com repouso",
+    "moderado": "Dor frequente, que piora ao longo das semanas ou atrapalha as atividades diárias",
+    "urgente": "Dor muito forte acompanhada de febre e vômitos, ou após pancada na cabeça",
+    "emergencia": "Dor súbita e explosiva (a pior da vida), com rigidez de nuca, desmaio, confusão, fraqueza ou alteração da fala ou da visão"
+  },
+  "orientacoesGerais": "Repousar em ambiente calmo e com pouca luz, manter hidratação e alimentação regular, dormir bem e anotar quando as crises acontecem para identificar gatilhos.",
+  "sinaisAlerta": [
+    "Dor súbita e muito intensa",
+    "Rigidez de nuca com febre",
+    "Fraqueza ou dormência em um lado do corpo",
+    "Alteração da fala ou da visão",
+    "Dor após pancada na cabeça",
+    "Confusão mental"
+  ]
+}

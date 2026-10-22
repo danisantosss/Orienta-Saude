@@ -34,7 +34,13 @@ app:
     api-key: ${GEMINI_API_KEY:}
     modelo-texto: ${GEMINI_MODELO_TEXTO:gemini-3.5-flash-lite}
     modelo-embedding: ${GEMINI_MODELO_EMBEDDING:gemini-embedding-001}
-    timeout-ms: 10000  # 10 s por chamada (Req 4.7 e 6.7)
+    timeout-ms: 10000  # 10 s por chamada
+    intervalo-tentativas-ms: 2000  # espera entre as tentativas da análise final
+    limite-total-analise-ms: 30000 # análise final: 1 chamada + até 2 novas tentativas, 30 s no total
+  rag:
+    limiar-similaridade: 0.7
+    maximo-documentos: 10
+    timeout-busca-ms: 8000
 
 ---
 # Profile: prod
@@ -60,4 +66,10 @@ app:
     api-key: ${GEMINI_API_KEY}
     modelo-texto: ${GEMINI_MODELO_TEXTO:gemini-3.5-flash-lite}
     modelo-embedding: ${GEMINI_MODELO_EMBEDDING:gemini-embedding-001}
-    timeout-ms: 10000  # 10 s por chamada (Req 4.7 e 6.7)
+    timeout-ms: 10000  # 10 s por chamada
+    intervalo-tentativas-ms: 2000  # espera entre as tentativas da análise final
+    limite-total-analise-ms: 30000 # análise final: 1 chamada + até 2 novas tentativas, 30 s no total
+  rag:
+    limiar-similaridade: 0.7
+    maximo-documentos: 10
+    timeout-busca-ms: 8000

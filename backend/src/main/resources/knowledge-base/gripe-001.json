@@ -1,0 +1,35 @@
+{
+  "id": "gripe-001",
+  "sintoma": "sintomas de gripe",
+  "palavrasChave": [
+    "gripe",
+    "influenza",
+    "febre e tosse",
+    "dor no corpo e febre",
+    "cansaço",
+    "calafrios"
+  ],
+  "fonte": "Ministério da Saúde",
+  "urlFonte": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gripe-influenza",
+  "conteudo": "A gripe é uma infecção respiratória causada pelo vírus influenza, com início súbito de febre, tosse, dor de garganta, dor no corpo, dor de cabeça e cansaço. A maioria das pessoas se recupera em uma a duas semanas. Idosos, gestantes, crianças pequenas e pessoas com doenças crônicas têm maior risco de complicações e devem procurar avaliação precocemente. A vacinação anual é a principal forma de prevenção.",
+  "condicoesRelacionadas": [
+    "gripe (influenza)",
+    "covid-19",
+    "resfriado comum",
+    "pneumonia"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Febre e dor no corpo em adulto saudável, sem falta de ar",
+    "moderado": "Sintomas de gripe em pessoa de grupo de risco ou febre por mais de 3 dias",
+    "urgente": "Piora dos sintomas após alguns dias ou febre alta persistente",
+    "emergencia": "Falta de ar, dor no peito, lábios arroxeados, confusão mental ou queda da pressão"
+  },
+  "orientacoesGerais": "Repousar, manter hidratação e alimentação, evitar contato próximo com outras pessoas enquanto tiver sintomas e manter a vacinação em dia.",
+  "sinaisAlerta": [
+    "Falta de ar",
+    "Dor no peito",
+    "Lábios arroxeados",
+    "Confusão mental",
+    "Piora após melhora inicial"
+  ]
+}

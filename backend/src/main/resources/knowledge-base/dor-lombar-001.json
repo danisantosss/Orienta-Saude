@@ -1,0 +1,35 @@
+{
+  "id": "dor-lombar-001",
+  "sintoma": "dor nas costas",
+  "palavrasChave": [
+    "dor nas costas",
+    "lombalgia",
+    "dor lombar",
+    "dor na coluna",
+    "travou a coluna",
+    "dor no fim das costas"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/lombalgia-dor-nas-costas/",
+  "conteudo": "A lombalgia é a dor na parte baixa das costas. Muito frequente, geralmente está ligada a esforço, má postura ou sedentarismo e melhora em algumas semanas com movimento leve. Repouso absoluto prolongado não é recomendado. Sinais como perda de força nas pernas, dormência na região genital ou perda do controle da urina ou das fezes exigem avaliação imediata.",
+  "condicoesRelacionadas": [
+    "lombalgia mecânica",
+    "distensão muscular",
+    "hérnia de disco",
+    "cólica renal"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor após esforço, que melhora com movimento leve e mudança de posição",
+    "moderado": "Dor que persiste por mais de 4 a 6 semanas ou irradia para a perna",
+    "urgente": "Dor com febre, perda de peso sem explicação ou após queda importante",
+    "emergencia": "Perda de força nas pernas, dormência na região genital ou perda do controle da urina ou das fezes"
+  },
+  "orientacoesGerais": "Manter-se ativo dentro do possível, fazer caminhadas leves, aplicar compressas mornas e cuidar da postura ao levantar peso.",
+  "sinaisAlerta": [
+    "Perda de força nas pernas",
+    "Dormência na região genital",
+    "Perda do controle da urina ou das fezes",
+    "Febre",
+    "Dor após queda ou acidente"
+  ]
+}

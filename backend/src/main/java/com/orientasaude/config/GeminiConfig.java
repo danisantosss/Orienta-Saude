@@ -18,4 +18,10 @@ public class GeminiConfig {
     private String modeloTexto = "gemini-3.5-flash-lite";
     private String modeloEmbedding = "gemini-embedding-001";
     private long timeoutMs = 10000;
+
+    /** Espera entre as tentativas da análise final (design: 2 s). */
+    private long intervaloTentativasMs = 2000;
+
+    /** Tempo máximo da análise final somando todas as tentativas (design: 30 s). */
+    private long limiteTotalAnaliseMs = 30000;
 }

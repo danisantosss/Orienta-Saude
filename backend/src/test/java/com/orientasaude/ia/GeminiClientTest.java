@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -137,5 +138,42 @@ class GeminiClientTest {
         assertThatThrownBy(() -> criarCliente("", 2000).gerarTexto("prompt"))
                 .isInstanceOf(IaIndisponivelException.class);
         assertThat(ultimoCaminho).isNull();
+    }
+
+    @Test
+    void gerarJsonPedeRespostaEmJsonAoModelo() {
+        corpoResposta = """
+                {"candidates":[{"content":{"parts":[{"text":"{\\"nivelUrgencia\\":\\"LEVE\\"}"}]}}]}
+                """;
+
+        String texto = criarCliente("chave-teste", 2000).gerarJson("Analise os sintomas");
+
+        assertThat(texto).isEqualTo("{\"nivelUrgencia\":\"LEVE\"}");
+        assertThat(ultimoCaminho).isEqualTo("/v1beta/models/modelo-texto:generateContent");
+        assertThat(ultimoCorpo).contains("\"responseMimeType\":\"application/json\"");
+    }
+
+    @Test
+    void gerarEmbeddingsEmLoteDevolveUmVetorPorTexto() {
+        corpoResposta = """
+                {"embeddings":[{"values":[0.1,0.2]},{"values":[0.3,0.4]}]}
+                """;
+
+        List<float[]> vetores = criarCliente("chave-teste", 2000).gerarEmbeddings(List.of("febre", "tosse"));
+
+        assertThat(vetores).hasSize(2);
+        assertThat(vetores.get(1)).containsExactly(0.3f, 0.4f);
+        assertThat(ultimoCaminho).isEqualTo("/v1beta/models/modelo-embedding:batchEmbedContents");
+        assertThat(ultimoCorpo).contains("models/modelo-embedding").contains("febre").contains("tosse");
+    }
+
+    @Test
+    void loteComQuantidadeDiferenteDeVetoresViraIaIndisponivel() {
+        corpoResposta = """
+                {"embeddings":[{"values":[0.1,0.2]}]}
+                """;
+
+        assertThatThrownBy(() -> criarCliente("chave-teste", 2000).gerarEmbeddings(List.of("febre", "tosse")))
+                .isInstanceOf(IaIndisponivelException.class);
     }
 }

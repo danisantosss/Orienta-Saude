@@ -1,0 +1,37 @@
+{
+  "id": "dor-abdominal-001",
+  "sintoma": "dor abdominal",
+  "palavrasChave": [
+    "dor abdominal",
+    "dor na barriga",
+    "dor de barriga",
+    "cólica",
+    "dor no lado direito da barriga",
+    "apendicite"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/apendicite/",
+  "conteudo": "A dor abdominal tem muitas causas, como gases, má digestão, gastroenterite e cólicas menstruais, que costumam ser leves. A apendicite costuma começar como dor em volta do umbigo que migra para o lado direito inferior da barriga, piora com o movimento e pode vir com febre, náusea e perda de apetite. Dor abdominal intensa e progressiva, com barriga rígida ou vômitos persistentes, precisa de avaliação urgente.",
+  "condicoesRelacionadas": [
+    "gastroenterite",
+    "gases e má digestão",
+    "apendicite",
+    "cólica renal",
+    "infecção urinária"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor leve, em cólica, que melhora após evacuar ou eliminar gases",
+    "moderado": "Dor que vai e volta por vários dias ou ligada às refeições",
+    "urgente": "Dor forte e contínua no lado direito inferior da barriga, ou dor com febre e vômitos",
+    "emergencia": "Dor muito intensa com barriga rígida, desmaio, vômito com sangue, fezes escuras como borra de café ou gravidez com sangramento"
+  },
+  "orientacoesGerais": "Preferir alimentação leve e líquidos em pequenos goles, repousar e observar a evolução da dor. Evitar se automedicar, porque isso pode mascarar sinais importantes.",
+  "sinaisAlerta": [
+    "Barriga dura e muito dolorida",
+    "Dor que piora progressivamente",
+    "Vômito com sangue",
+    "Fezes pretas ou com sangue",
+    "Febre com dor no lado direito inferior",
+    "Desmaio"
+  ]
+}

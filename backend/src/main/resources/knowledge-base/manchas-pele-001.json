@@ -1,0 +1,36 @@
+{
+  "id": "manchas-pele-001",
+  "sintoma": "manchas e coceira na pele",
+  "palavrasChave": [
+    "coceira",
+    "manchas na pele",
+    "urticária",
+    "alergia",
+    "vermelhidão na pele",
+    "placas na pele",
+    "empolado"
+  ],
+  "fonte": "Ministério da Saúde (Biblioteca Virtual em Saúde)",
+  "urlFonte": "https://bvsms.saude.gov.br/urticaria/",
+  "conteudo": "A urticária causa placas avermelhadas, elevadas e com coceira, que mudam de lugar e costumam sumir em horas. Pode ser desencadeada por alimentos, picadas de insetos, infecções, calor ou estresse. Quando a reação alérgica vem com inchaço nos lábios, língua ou garganta, falta de ar ou tontura, trata-se de anafilaxia, uma emergência.",
+  "condicoesRelacionadas": [
+    "urticária aguda",
+    "dermatite de contato",
+    "reação alérgica",
+    "picada de inseto"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Placas com coceira localizadas, sem outros sintomas",
+    "moderado": "Placas espalhadas pelo corpo ou que voltam com frequência",
+    "urgente": "Lesões com febre, bolhas ou dor importante na pele",
+    "emergencia": "Inchaço nos lábios, língua ou garganta, falta de ar, chiado, tontura ou desmaio após contato com alérgeno"
+  },
+  "orientacoesGerais": "Evitar coçar, usar compressas frias, preferir roupas leves e tentar identificar e evitar o possível desencadeante.",
+  "sinaisAlerta": [
+    "Inchaço de lábios, língua ou garganta",
+    "Falta de ar",
+    "Tontura ou desmaio",
+    "Manchas roxas que não somem ao pressionar",
+    "Bolhas pelo corpo"
+  ]
+}

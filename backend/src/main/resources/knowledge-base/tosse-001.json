@@ -1,0 +1,37 @@
+{
+  "id": "tosse-001",
+  "sintoma": "tosse",
+  "palavrasChave": [
+    "tosse",
+    "tosse seca",
+    "tosse com catarro",
+    "catarro",
+    "expectoração",
+    "pigarro"
+  ],
+  "fonte": "Organização Mundial da Saúde (OMS)",
+  "urlFonte": "https://www.who.int/news-room/fact-sheets/detail/pneumonia",
+  "conteudo": "A tosse é um reflexo de defesa das vias respiratórias. Na maioria das vezes está ligada a infecções virais, como resfriado e gripe, e melhora em até 3 semanas. Tosse acompanhada de febre alta, respiração rápida ou dificuldade para respirar pode indicar infecção pulmonar, como a pneumonia, que exige avaliação. Tosse que dura mais de 3 semanas também deve ser investigada, inclusive para tuberculose.",
+  "condicoesRelacionadas": [
+    "resfriado comum",
+    "gripe",
+    "bronquite",
+    "pneumonia",
+    "asma"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Tosse há poucos dias, com coriza, sem febre alta e sem falta de ar",
+    "moderado": "Tosse que dura mais de 2 a 3 semanas ou com catarro amarelado e febre baixa",
+    "urgente": "Tosse com febre alta persistente, dor no peito ao respirar ou respiração acelerada",
+    "emergencia": "Tosse com falta de ar intensa, lábios arroxeados, sangue em grande quantidade ou confusão mental"
+  },
+  "orientacoesGerais": "Manter hidratação, repousar, evitar fumaça e ambientes fechados, cobrir a boca ao tossir e lavar as mãos com frequência.",
+  "sinaisAlerta": [
+    "Falta de ar",
+    "Lábios ou unhas arroxeados",
+    "Tosse com sangue",
+    "Febre alta por mais de 3 dias",
+    "Dor no peito ao respirar",
+    "Tosse por mais de 3 semanas"
+  ]
+}

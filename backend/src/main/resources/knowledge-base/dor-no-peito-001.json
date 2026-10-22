@@ -1,0 +1,36 @@
+{
+  "id": "dor-no-peito-001",
+  "sintoma": "dor no peito",
+  "palavrasChave": [
+    "dor no peito",
+    "aperto no peito",
+    "pressão no peito",
+    "infarto",
+    "dor torácica",
+    "dor que irradia para o braço"
+  ],
+  "fonte": "Ministério da Saúde",
+  "urlFonte": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/i/infarto",
+  "conteudo": "A dor no peito pode ter causas musculares, digestivas ou emocionais, mas também pode indicar infarto. A dor do infarto costuma ser em aperto, pressão ou queimação no centro do peito, durar mais de alguns minutos e pode irradiar para o braço esquerdo, costas, pescoço ou mandíbula, com suor frio, náusea e falta de ar. Diante desses sinais, deve-se chamar o SAMU (192) imediatamente, porque o tempo até o atendimento é decisivo.",
+  "condicoesRelacionadas": [
+    "infarto agudo do miocárdio",
+    "angina",
+    "dor muscular",
+    "refluxo gastroesofágico",
+    "crise de ansiedade"
+  ],
+  "indicadoresUrgencia": {
+    "leve": "Dor localizada que piora ao apertar o local ou ao mover o tronco, sem outros sintomas",
+    "moderado": "Dor em queimação relacionada às refeições, sem falta de ar ou suor frio",
+    "urgente": "Dor no peito recorrente aos esforços que melhora com repouso",
+    "emergencia": "Dor em aperto ou pressão por mais de alguns minutos, irradiando para braço, costas ou mandíbula, com suor frio, falta de ar, náusea ou desmaio"
+  },
+  "orientacoesGerais": "Diante de dor no peito com suor frio, falta de ar ou irradiação, interromper qualquer atividade, não dirigir e ligar para o SAMU (192).",
+  "sinaisAlerta": [
+    "Dor em aperto que dura mais de alguns minutos",
+    "Dor que irradia para braço, costas ou mandíbula",
+    "Suor frio",
+    "Falta de ar",
+    "Desmaio"
+  ]
+}

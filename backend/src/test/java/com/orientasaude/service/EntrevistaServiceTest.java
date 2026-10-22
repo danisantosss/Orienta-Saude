@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Testa as regras da entrevista adaptativa com o Gemini simulado (mock).
- * Propriedade 5: mínimo de 2 e máximo de 10 perguntas complementares.
+ * Mínimo de 2 e máximo de 10 perguntas complementares.
  */
 class EntrevistaServiceTest {
 

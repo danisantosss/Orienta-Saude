@@ -14,7 +14,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Task 9.2: limites de validação da entrada da triagem (Requisitos 3.2, 3.3 e 3.4).
+ * Limites de validação da entrada da triagem.
  */
 class TriagemRequestValidacaoTest {
 
