@@ -1,0 +1,71 @@
+name: Deploy produção
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      versao:
+        description: Versão da release (ex. v1.0.0). Vazio = incrementa o último número da tag anterior
+        required: false
+        type: string
+
+concurrency:
+  group: deploy-producao
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  testes:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  deploy:
+    needs: testes
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ambiente: producao
+      sufixo: prod
+    secrets: inherit
+
+  release:
+    name: Tag e release
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calcular a versão
+        id: versao
+        env:
+          VERSAO_INFORMADA: ${{ inputs.versao }}
+        run: |
+          if [ -n "$VERSAO_INFORMADA" ]; then
+            versao="$VERSAO_INFORMADA"
+          else
+            ultima=$(git tag --list 'v*.*.*' --sort=-v:refname | head -n 1)
+            ultima=${ultima:-v0.0.0}
+            IFS=. read -r maior menor correcao <<< "${ultima#v}"
+            versao="v$maior.$menor.$((correcao + 1))"
+          fi
+          if ! [[ "$versao" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Versão inválida: $versao (use o formato vX.Y.Z)"
+            exit 1
+          fi
+          echo "versao=$versao" >> "$GITHUB_OUTPUT"
+
+      # Cria a tag no commit publicado e a release com as mudanças desde a anterior
+      - name: Criar a release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSAO: ${{ steps.versao.outputs.versao }}
+          URL: ${{ needs.deploy.outputs.url }}
+        run: |
+          gh release create "$VERSAO" --target "$GITHUB_SHA" --title "$VERSAO" --generate-notes \
+            --notes "Publicada em produção: $URL"

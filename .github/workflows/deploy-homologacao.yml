@@ -1,0 +1,29 @@
+name: Deploy homologação
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+# Um deploy por vez; o próximo espera o anterior terminar
+concurrency:
+  group: deploy-homologacao
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  testes:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  deploy:
+    needs: testes
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ambiente: homologacao
+      sufixo: homolog
+    secrets: inherit

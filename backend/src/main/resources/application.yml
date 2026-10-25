@@ -6,6 +6,18 @@ spring:
 
 server:
   port: 8080
+  # Respeita os cabeçalhos X-Forwarded-* enviados pelo nginx e pelo Azure
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
 ---
 # Profile: dev
@@ -55,7 +67,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      # Cria e atualiza as tabelas a partir das entidades
+      ddl-auto: ${JPA_DDL_AUTO:update}
     show-sql: false
 
 app:

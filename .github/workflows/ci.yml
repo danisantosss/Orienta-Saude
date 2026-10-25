@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
     branches: [main]
+  # Os workflows de deploy chamam este para rodar os testes antes de publicar
+  workflow_call:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -76,6 +78,8 @@ jobs:
   sonarcloud:
     name: SonarCloud (quality gate)
     needs: [backend, frontend]
+    # O plano gratuito só avalia o quality gate em Pull Requests
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
