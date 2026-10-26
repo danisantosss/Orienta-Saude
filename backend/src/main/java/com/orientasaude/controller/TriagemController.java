@@ -4,11 +4,16 @@ import com.orientasaude.dto.request.EnviarMensagemRequest;
 import com.orientasaude.dto.request.IniciarTriagemRequest;
 import com.orientasaude.dto.response.IniciarTriagemResponse;
 import com.orientasaude.dto.response.MensagemTriagemResponse;
+import com.orientasaude.dto.response.PaginaResponse;
 import com.orientasaude.dto.response.ResultadoTriagemResponse;
+import com.orientasaude.dto.response.SessaoTriagemResponse;
 import com.orientasaude.model.Usuario;
+import com.orientasaude.model.enums.NivelUrgencia;
+import com.orientasaude.service.HistoricoService;
 import com.orientasaude.service.TriagemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
 
 /**
  * Endpoints da entrevista de triagem (exigem token JWT).
@@ -29,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TriagemController {
 
     private final TriagemService triagemService;
+    private final HistoricoService historicoService;
 
     /**
      * POST /api/triagem/iniciar
@@ -84,5 +93,20 @@ public class TriagemController {
             @PathVariable Long id,
             @AuthenticationPrincipal Usuario usuario) {
         return ResponseEntity.ok(triagemService.obterResultado(id, usuario));
+    }
+
+    /**
+     * GET /api/triagem/historico?pagina=0&tamanho=20&inicio=2026-04-01&fim=2026-04-30&nivelUrgencia=URGENTE
+     * Triagens do usuário, da mais recente para a mais antiga. Todos os filtros são opcionais.
+     */
+    @GetMapping("/historico")
+    public ResponseEntity<PaginaResponse<SessaoTriagemResponse>> listarHistorico(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "20") int tamanho,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim,
+            @RequestParam(required = false) NivelUrgencia nivelUrgencia,
+            @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(historicoService.listar(usuario, pagina, tamanho, inicio, fim, nivelUrgencia));
     }
 }

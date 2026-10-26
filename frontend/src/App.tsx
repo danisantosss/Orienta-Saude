@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Triagem from './pages/Triagem';
 import Resultado from './pages/Resultado';
+import Historico from './pages/Historico';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/triagem" element={<Triagem />} />
               <Route path="/resultado/:id" element={<Resultado />} />
+              <Route path="/historico" element={<Historico />} />
             </Route>
           </Route>
         </Routes>

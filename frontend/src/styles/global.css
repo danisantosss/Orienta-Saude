@@ -475,6 +475,117 @@ select {
   .coluna-orientacoes { grid-column: auto; }
 }
 
+/* ---------- Página de Histórico ---------- */
+
+.pagina-historico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cabecalho-historico h1 { font-size: var(--font-size-3xl); }
+
+.grade-historico {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.filtros-historico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+}
+
+.filtros-historico fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.filtros-historico legend,
+.filtros-historico label[for='filtro-nivel'] { font-weight: 600; }
+
+.filtros-historico input,
+.filtros-historico select {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  min-height: 44px;
+}
+
+.filtros-historico .botao-secundario { margin-top: var(--spacing-md); }
+.filtros-historico .botao-secundario:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.lista-historico ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.item-historico {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-left-width: 6px;
+}
+
+.item-leve { border-left-color: var(--badge-leve); }
+.item-moderado { border-left-color: #ca8a04; }
+.item-urgente { border-left-color: var(--badge-urgente); }
+.item-emergencia { border-left-color: var(--badge-emergencia); }
+
+.item-historico-texto { flex: 1 1 260px; min-width: 0; }
+.item-historico time { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.item-historico-sintomas { font-weight: 600; overflow-wrap: anywhere; }
+
+.item-historico .botao-secundario,
+.historico-vazio .botao-primario {
+  display: inline-flex;
+  align-items: center;
+}
+
+.historico-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.historico-vazio .botao-primario:hover { text-decoration: none; }
+
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.paginacao button:disabled { opacity: 0.55; cursor: not-allowed; }
+.paginacao span,
+.paginacao button { white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .paginacao { gap: var(--spacing-sm); }
+  .paginacao .botao-secundario { padding: var(--spacing-sm) var(--spacing-md); }
+}
+
+@media (min-width: 768px) {
+  .pagina-historico { padding: var(--spacing-lg); }
+  .grade-historico { grid-template-columns: 260px 1fr; }
+}
+
 /* ---------- Cabeçalho (Layout) ---------- */
 
 .layout-header {

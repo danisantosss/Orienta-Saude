@@ -62,11 +62,11 @@ export interface SessaoTriagemResponse {
 }
 
 export interface Pagina<T> {
-  content: T[];
-  totalElements: number;
-  totalPages: number;
-  number: number;
-  size: number;
+  itens: T[];
+  pagina: number;
+  tamanho: number;
+  totalItens: number;
+  totalPaginas: number;
 }
 
 export interface FiltroHistorico {
