@@ -1,0 +1,109 @@
+name: Deploy
+
+# Reutilizado pelos deploys de homologação e de produção
+on:
+  workflow_call:
+    inputs:
+      ambiente:
+        description: Environment do GitHub (homologacao ou producao)
+        required: true
+        type: string
+      sufixo:
+        description: Sufixo dos Container Apps na Azure (homolog ou prod)
+        required: true
+        type: string
+    outputs:
+      url:
+        description: Endereço público do frontend
+        value: ${{ jobs.publicar.outputs.url }}
+
+env:
+  REGISTRO: ghcr.io/danisantosss
+  GRUPO: rg-orienta-saude
+
+jobs:
+  imagens:
+    name: Imagem ${{ matrix.componente }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        componente: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # A tag com o SHA do commit liga cada versão publicada ao código que a gerou
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./${{ matrix.componente }}
+          push: true
+          tags: |
+            ${{ env.REGISTRO }}/orienta-saude-${{ matrix.componente }}:${{ github.sha }}
+            ${{ env.REGISTRO }}/orienta-saude-${{ matrix.componente }}:${{ inputs.ambiente }}
+          cache-from: type=gha,scope=${{ matrix.componente }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.componente }}
+
+  publicar:
+    name: Publicar em ${{ inputs.ambiente }}
+    needs: imagens
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: ${{ inputs.ambiente }}
+      url: ${{ steps.endereco.outputs.url }}
+    outputs:
+      url: ${{ steps.endereco.outputs.url }}
+    steps:
+      # Login por OIDC: a Azure confia no token do GitHub, sem senha guardada no repositório
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Atualizar o backend
+        run: |
+          az containerapp update --resource-group "$GRUPO" --name "ca-orienta-backend-${{ inputs.sufixo }}" \
+            --image "$REGISTRO/orienta-saude-backend:${{ github.sha }}" --output none
+
+      - name: Atualizar o frontend
+        run: |
+          az containerapp update --resource-group "$GRUPO" --name "ca-orienta-frontend-${{ inputs.sufixo }}" \
+            --image "$REGISTRO/orienta-saude-frontend:${{ github.sha }}" --output none
+
+      - name: Endereço do ambiente
+        id: endereco
+        run: |
+          fqdn=$(az containerapp show --resource-group "$GRUPO" --name "ca-orienta-frontend-${{ inputs.sufixo }}" \
+            --query properties.configuration.ingress.fqdn -o tsv)
+          echo "url=https://$fqdn" >> "$GITHUB_OUTPUT"
+
+      # Confere se o frontend responde e se o nginx alcança o backend (401/403 = backend no ar, só falta o login).
+      # Os contêineres começam desligados (zero réplicas), então a primeira resposta pode demorar.
+      - name: Verificar se o ambiente está no ar
+        env:
+          URL: ${{ steps.endereco.outputs.url }}
+        run: |
+          for tentativa in $(seq 1 20); do
+            frontend=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 "$URL/" || true)
+            backend=$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 "$URL/api/triagem/historico" || true)
+            echo "Tentativa $tentativa: frontend $frontend, backend $backend"
+            if [ "$frontend" = "200" ] && { [ "$backend" = "401" ] || [ "$backend" = "403" ]; }; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "O ambiente não respondeu como esperado"
+          exit 1
