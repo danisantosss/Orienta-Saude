@@ -5,7 +5,8 @@
 # Pode ser executado de novo: o que já existe é mantido.
 set -euo pipefail
 
-LOCAL="${LOCAL:-brazilsouth}"
+# A conta Azure for Students só oferece o MySQL Flexible no México entre as regiões permitidas
+LOCAL="${LOCAL:-mexicocentral}"
 GRUPO="${GRUPO:-rg-orienta-saude}"
 REPOSITORIO="${REPOSITORIO:-danisantosss/Orienta-Saude}"
 AMBIENTE_CONTAINERS="cae-orienta-saude"

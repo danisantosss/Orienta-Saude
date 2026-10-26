@@ -22,7 +22,7 @@ O Orienta Saúde roda na Azure for Students com dois ambientes iguais:
    cd Orienta-Saude
    bash infra/azure/criar-infra.sh
    ```
-   O script pede a chave do Gemini e gera as demais senhas. Se a região `brazilsouth` não for permitida na assinatura, rode com outra: `LOCAL=eastus bash infra/azure/criar-infra.sh`.
+   O script pede a chave do Gemini e gera as demais senhas. A região padrão é `mexicocentral`: a assinatura Azure for Students só permite algumas regiões (`az policy assignment list`) e, entre elas, só o México oferece o MySQL Flexible Server. Para usar outra: `LOCAL=<regiao> bash infra/azure/criar-infra.sh`.
 3. No GitHub, em *Settings > Secrets and variables > Actions*, cadastre os três valores que o script imprime: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` e `AZURE_SUBSCRIPTION_ID`.
 4. Em *Packages* do perfil no GitHub, deixe `orienta-saude-backend` e `orienta-saude-frontend` como **Public** (depois do primeiro deploy, que cria os pacotes), para a Azure conseguir baixar as imagens sem senha.
 
