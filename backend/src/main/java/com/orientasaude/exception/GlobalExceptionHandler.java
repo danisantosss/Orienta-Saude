@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -41,6 +42,25 @@ public class GlobalExceptionHandler {
                 .mensagem("Um ou mais campos não atendem aos critérios de validação")
                 .caminho(request.getRequestURI())
                 .campos(campos)
+                .build();
+
+        return ResponseEntity.badRequest().body(resposta);
+    }
+
+    /**
+     * Parâmetro da URL com valor que não pode ser convertido (nível de urgência inexistente,
+     * data fora do formato aaaa-mm-dd, número inválido).
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErroResponse> tratarParametroInvalido(
+            MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .erro("Erro de Validação")
+                .mensagem("Valor inválido para o parâmetro " + ex.getName())
+                .caminho(request.getRequestURI())
                 .build();
 
         return ResponseEntity.badRequest().body(resposta);

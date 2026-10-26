@@ -8,6 +8,7 @@ import com.orientasaude.repository.MensagemTriagemRepository;
 import com.orientasaude.repository.SessaoTriagemRepository;
 import com.orientasaude.model.enums.StatusSessao;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -282,5 +285,55 @@ class TriagemControllerTest {
                 .andExpect(status().isNotFound());
         mockMvc.perform(get("/api/triagem/" + sessaoId + "/resultado").header("Authorization", tokenOutro))
                 .andExpect(status().isNotFound());
+    }
+
+    // ---------- sintoma crítico ----------
+
+    private static final String ANALISE_EMERGENCIA_JSON = """
+            {"nivelUrgencia": "EMERGENCIA", "condicoes": ["infarto agudo do miocárdio", "angina"],
+             "explicacaoEducativa": "Dor em aperto no peito com falta de ar pode estar relacionada a problemas do coração.",
+             "orientacoesGerais": "Interrompa qualquer atividade e não dirija.",
+             "sinaisAlerta": ["Dor que irradia para o braço", "Suor frio", "Desmaio"],
+             "quandoBuscarAtendimento": "Ligue agora para o SAMU (192) ou vá ao pronto-socorro mais próximo."}
+            """;
+
+    @Test
+    void dorNoPeitoComFaltaDeArChegaAoResultadoComoEmergencia() throws Exception {
+        String token = cadastrarELogar();
+        when(geminiClient.gerarTexto(anyString()))
+                .thenReturn("A dor irradia para o braço, costas ou mandíbula?")
+                .thenReturn("Você está com suor frio ou náusea?")
+                .thenReturn("[ENTREVISTA_COMPLETA]");
+        when(geminiClient.gerarEmbeddings(anyList())).thenThrow(new IaIndisponivelException("embeddings fora"));
+        when(geminiClient.gerarJson(anyString())).thenReturn(ANALISE_EMERGENCIA_JSON);
+
+        String corpo = mockMvc.perform(post("/api/triagem/iniciar")
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"sintomas\": \"Dor forte em aperto no peito e falta de ar há 20 minutos\", \"idade\": 58}"))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        long sessaoId = objectMapper.readTree(corpo).get("sessaoId").asLong();
+        responder(token, sessaoId, "Sim, vai para o braço esquerdo");
+        responder(token, sessaoId, "Estou suando frio");
+
+        mockMvc.perform(post("/api/triagem/" + sessaoId + "/analisar").header("Authorization", token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nivelUrgencia").value("EMERGENCIA"))
+                .andExpect(jsonPath("$.quandoBuscarAtendimento").value(containsString("192")))
+                .andExpect(jsonPath("$.fontes[*].sintoma").value(hasItems("dor no peito", "falta de ar")))
+                .andExpect(jsonPath("$.disclaimer").isNotEmpty());
+
+        // A IA recebeu do RAG os critérios de emergência da dor no peito e da falta de ar
+        ArgumentCaptor<String> prompt = ArgumentCaptor.forClass(String.class);
+        verify(geminiClient).gerarJson(prompt.capture());
+        assertThat(prompt.getValue())
+                .contains("[dor-no-peito-001]", "[falta-de-ar-001]")
+                .contains("emergência: Dor em aperto ou pressão por mais de alguns minutos");
+
+        mockMvc.perform(get("/api/triagem/historico").header("Authorization", token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itens[0].id").value(sessaoId))
+                .andExpect(jsonPath("$.itens[0].nivelUrgencia").value("EMERGENCIA"));
     }
 }
