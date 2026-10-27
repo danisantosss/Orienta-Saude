@@ -1,3 +1,5 @@
+import Icone from './Icone';
+
 export const TEXTO_DISCLAIMER =
   'O Orienta Saúde é um serviço exclusivamente educativo: não realiza diagnóstico e não substitui a avaliação ' +
   'de um profissional de saúde. Em caso de emergência, ligue para o SAMU (192).';
@@ -16,7 +18,7 @@ export default function Disclaimer({ texto = TEXTO_DISCLAIMER, confirmado = fals
   return (
     <div className="disclaimer" role="note" aria-label="Aviso importante">
       <p>
-        <span aria-hidden="true" className="disclaimer-icone">⚠️ </span>
+        <Icone nome="alerta" tamanho={20} className="disclaimer-icone" />
         {texto}
       </p>
       {aoConfirmar && (

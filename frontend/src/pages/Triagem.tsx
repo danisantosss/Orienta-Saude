@@ -2,6 +2,8 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BalaoChat from '../components/BalaoChat';
 import Disclaimer from '../components/Disclaimer';
+import Icone, { type NomeIcone } from '../components/Icone';
+import Ilustracao from '../components/Ilustracao';
 import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import ProgressoTriagem from '../components/ProgressoTriagem';
 import { useTriagem } from '../hooks/useTriagem';
@@ -10,6 +12,17 @@ export const SINTOMAS_COMUNS = [
   'Febre', 'Dor de cabeça', 'Tosse', 'Dor de garganta',
   'Dor de estômago', 'Dor nas articulações', 'Falta de ar', 'Náusea ou vômito',
 ];
+
+const ICONES_SINTOMAS: Record<string, NomeIcone> = {
+  'Febre': 'termometro',
+  'Dor de cabeça': 'raio',
+  'Tosse': 'vento',
+  'Dor de garganta': 'gota',
+  'Dor de estômago': 'estomago',
+  'Dor nas articulações': 'osso',
+  'Falta de ar': 'pulmao',
+  'Náusea ou vômito': 'onda',
+};
 
 const MAXIMO_CARACTERES = 1000;
 
@@ -97,8 +110,13 @@ export default function Triagem() {
 
         {!emEntrevista ? (
           <form onSubmit={enviarSintomas} aria-label="Sintomas" noValidate>
-            <h1>Quais seus principais sintomas?</h1>
-            <p>Escolha os sintomas que você está sentindo ou descreva com suas palavras. Você pode escolher mais de um.</p>
+            <div className="cabecalho-painel">
+              <div>
+                <h1>Quais seus principais sintomas?</h1>
+                <p>Escolha os sintomas que você está sentindo ou descreva com suas palavras. Você pode escolher mais de um.</p>
+              </div>
+              <Ilustracao variante="pensando" className="ilustracao-painel" />
+            </div>
 
             <fieldset className="sintomas-comuns">
               <legend>Selecione seus sintomas</legend>
@@ -110,7 +128,7 @@ export default function Triagem() {
                   aria-pressed={escolhidos.includes(sintoma)}
                   onClick={() => alternarSintoma(sintoma)}
                 >
-                  {sintoma}
+                  <Icone nome={ICONES_SINTOMAS[sintoma]} /> {sintoma}
                 </button>
               ))}
             </fieldset>

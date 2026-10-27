@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listarHistorico } from '../api/triagem';
 import BadgeUrgencia, { ROTULOS_URGENCIA } from '../components/BadgeUrgencia';
+import Icone from '../components/Icone';
 import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import type { FiltroHistorico, NivelUrgencia, Pagina, SessaoTriagemResponse } from '../types';
 
@@ -46,14 +47,17 @@ export default function Historico() {
   const [pagina, setPagina] = useState(0);
   const [dados, setDados] = useState<Pagina<SessaoTriagemResponse> | null>(null);
   const [erro, setErro] = useState(false);
+  const [carregando, setCarregando] = useState(true);
   const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
     let ativo = true;
     setErro(false);
+    setCarregando(true);
     listarHistorico(montarConsulta(pagina, filtros))
       .then((resposta) => { if (ativo) setDados(resposta); })
-      .catch(() => { if (ativo) setErro(true); });
+      .catch(() => { if (ativo) setErro(true); })
+      .finally(() => { if (ativo) setCarregando(false); });
     return () => { ativo = false; };
   }, [pagina, filtros, tentativa]);
 
@@ -95,11 +99,12 @@ export default function Historico() {
             {NIVEIS.map((nivel) => <option key={nivel} value={nivel}>{ROTULOS_URGENCIA[nivel]}</option>)}
           </select>
           <button type="button" className="botao-secundario" onClick={limparFiltros} disabled={!temFiltros}>
-            Limpar filtros
+            <Icone nome="lixeira" tamanho={18} /> Limpar filtros
           </button>
         </aside>
 
-        <section className="lista-historico" aria-label="Triagens anteriores" aria-busy={!dados && !erro}>
+        <section className={`lista-historico ${carregando && dados ? 'atualizando' : ''}`}
+          aria-label="Triagens anteriores" aria-busy={carregando}>
           {erro && (
             <div className="cartao">
               <p role="alert" className="form-error">Não foi possível carregar o histórico.</p>
@@ -110,6 +115,8 @@ export default function Historico() {
           )}
 
           {!erro && !dados && <IndicadorCarregamento mensagem="Carregando o histórico..." />}
+          {/* Ao trocar filtro ou página, a lista antiga fica apagada até chegar a nova, para não parecer o resultado do filtro novo */}
+          {!erro && dados && carregando && <IndicadorCarregamento mensagem="Atualizando o histórico..." />}
 
           {!erro && dados && dados.itens.length === 0 && (
             <div className="cartao historico-vazio">
@@ -129,6 +136,7 @@ export default function Historico() {
               <ul>
                 {dados.itens.map((item) => (
                   <li key={item.id} className={`cartao item-historico item-${item.nivelUrgencia?.toLowerCase() ?? 'pendente'}`}>
+                    <span className="item-historico-icone"><Icone nome="virus" tamanho={32} /></span>
                     <div className="item-historico-texto">
                       <time dateTime={item.iniciadaEm}>{formatarData(item.iniciadaEm)}</time>
                       <p className="item-historico-sintomas">{resumirSintomas(item.sintomasIniciais)}</p>

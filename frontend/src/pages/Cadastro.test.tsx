@@ -29,10 +29,10 @@ describe('Cadastro', () => {
 
   it('mostra erros de validação e não envia dados inválidos', async () => {
     renderizar();
-    await userEvent.type(screen.getByLabelText('Nome'), 'M');
+    await userEvent.type(screen.getByLabelText('Nome completo'), 'M');
     await userEvent.type(screen.getByLabelText('Email'), 'invalido');
     await userEvent.type(screen.getByLabelText('Senha'), '123');
-    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
 
     expect(screen.getByText('O nome deve ter entre 2 e 120 caracteres.')).toBeInTheDocument();
     expect(screen.getByText('Email inválido.')).toBeInTheDocument();
@@ -44,10 +44,11 @@ describe('Cadastro', () => {
     registrar.mockResolvedValue(undefined);
     login.mockResolvedValue(undefined);
     renderizar();
-    await userEvent.type(screen.getByLabelText('Nome'), 'Maria Silva');
+    await userEvent.type(screen.getByLabelText('Nome completo'), 'Maria Silva');
     await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
-    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'senhaSegura123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
 
     expect(registrar).toHaveBeenCalledWith({ nome: 'Maria Silva', email: 'maria@exemplo.com', senha: 'senhaSegura123' });
     expect(login).toHaveBeenCalledWith({ email: 'maria@exemplo.com', senha: 'senhaSegura123' });
@@ -57,11 +58,24 @@ describe('Cadastro', () => {
   it('mostra erro geral quando a API falha sem resposta', async () => {
     registrar.mockRejectedValue(new Error('rede'));
     renderizar();
-    await userEvent.type(screen.getByLabelText('Nome'), 'Maria Silva');
+    await userEvent.type(screen.getByLabelText('Nome completo'), 'Maria Silva');
     await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
-    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'senhaSegura123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível concluir o cadastro. Tente novamente.');
+  });
+
+  it('não envia quando a confirmação é diferente da senha', async () => {
+    renderizar();
+    await userEvent.type(screen.getByLabelText('Nome completo'), 'Maria Silva');
+    await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
+    await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'outraSenha123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
+
+    expect(screen.getByText('As senhas não são iguais.')).toBeInTheDocument();
+    expect(registrar).not.toHaveBeenCalled();
   });
 });

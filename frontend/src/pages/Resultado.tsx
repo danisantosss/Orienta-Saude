@@ -4,6 +4,7 @@ import axios from 'axios';
 import { obterResultado } from '../api/triagem';
 import BadgeUrgencia from '../components/BadgeUrgencia';
 import Disclaimer from '../components/Disclaimer';
+import Icone from '../components/Icone';
 import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import Toast from '../components/Toast';
 import type { NivelUrgencia, ResultadoTriagemResponse } from '../types';
@@ -115,7 +116,9 @@ export default function Resultado() {
             <h2 id="titulo-condicoes">Possíveis condições relacionadas</h2>
             <p className="texto-secundario">Os sintomas podem estar relacionados a estas condições. Só um profissional de saúde pode confirmar.</p>
             <ul className="lista-condicoes">
-              {resultado.condicoes.map((condicao) => <li key={condicao}>{condicao}</li>)}
+              {resultado.condicoes.map((condicao) => (
+                <li key={condicao}><Icone nome="virus" className="icone-condicao" /> {condicao}</li>
+              ))}
             </ul>
             <p>{resultado.explicacaoEducativa}</p>
           </section>
@@ -123,18 +126,18 @@ export default function Resultado() {
 
         <aside className="coluna-orientacoes">
           <section className="cartao destaque-lilas" aria-labelledby="titulo-orientacoes">
-            <h2 id="titulo-orientacoes">Orientações recomendadas</h2>
+            <h2 id="titulo-orientacoes"><Icone nome="copo" /> Orientações recomendadas</h2>
             <p>{resultado.orientacoesGerais}</p>
           </section>
           <section className="cartao sinais-alerta" aria-labelledby="titulo-sinais">
-            <h2 id="titulo-sinais">Procure atendimento se aparecer</h2>
+            <h2 id="titulo-sinais"><Icone nome="alerta" /> Procure atendimento se aparecer</h2>
             <ul>
               {resultado.sinaisAlerta.map((sinal) => <li key={sinal}>{sinal}</li>)}
             </ul>
           </section>
           {resultado.fontes.length > 0 && (
             <section className="cartao" aria-labelledby="titulo-fontes">
-              <h2 id="titulo-fontes">Fontes consultadas</h2>
+              <h2 id="titulo-fontes"><Icone nome="livro" /> Fontes consultadas</h2>
               <ul>
                 {resultado.fontes.map((fonte) => (
                   <li key={fonte.url + fonte.sintoma}>
@@ -145,6 +148,11 @@ export default function Resultado() {
             </section>
           )}
         </aside>
+      </div>
+
+      <div className="acoes-resultado">
+        <Link to="/triagem" className="botao-primario">Fazer nova triagem <Icone nome="seta" tamanho={18} /></Link>
+        <Link to="/historico" className="botao-secundario">Ver meu histórico</Link>
       </div>
 
       {mostrarToast && <Toast mensagem="Triagem concluída." aoFechar={fecharToast} />}
