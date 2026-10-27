@@ -149,4 +149,21 @@ describe('Historico', () => {
     expect(await screen.findByRole('listitem')).toBeInTheDocument();
     expect(triagemApi.listarHistorico).toHaveBeenCalledTimes(2);
   });
+
+  it('ao trocar o filtro, mostra que está atualizando até chegar a nova lista', async () => {
+    vi.mocked(triagemApi.listarHistorico).mockResolvedValueOnce(pagina([sessao()]));
+    renderizar();
+    await screen.findByRole('listitem');
+
+    let responder: (valor: Pagina<SessaoTriagemResponse>) => void = () => {};
+    vi.mocked(triagemApi.listarHistorico).mockReturnValueOnce(new Promise((resolver) => { responder = resolver; }));
+    await userEvent.selectOptions(screen.getByLabelText('Nível de urgência'), 'URGENTE');
+
+    expect(screen.getByRole('status')).toHaveTextContent('Atualizando o histórico...');
+    expect(screen.getByRole('region', { name: 'Triagens anteriores' })).toHaveAttribute('aria-busy', 'true');
+
+    responder(pagina([sessao({ nivelUrgencia: 'URGENTE' })]));
+    expect(await screen.findByLabelText('Nível de urgência: Urgente')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
 });
