@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orientasaude.config.RagConfig;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * Carga e validação dos documentos da base de conhecimento.
  */
 class BaseConhecimentoTest {
+
+    private static final List<String> DOMINIOS_OFICIAIS = List.of("gov.br", "fiocruz.br", "who.int");
 
     private BaseConhecimento carregar(String padrao) {
         RagConfig config = new RagConfig();
@@ -36,6 +39,27 @@ class BaseConhecimentoTest {
             assertThat(documento.palavrasChave()).isNotEmpty();
             assertThat(documento.sinaisAlerta()).isNotEmpty();
             assertThat(documento.indicadoresUrgencia()).containsKeys("leve", "moderado", "urgente", "emergencia");
+        });
+    }
+
+    /**
+     * Confere só o formato do link, sem acessar a internet: endereço https bem formado, de um domínio
+     * oficial de saúde e sem caracteres que apps de mensagem costumam cortar ao transformar em link.
+     */
+    @Test
+    void urlFonteDeTodosOsDocumentosEhUmLinkOficialBemFormado() {
+        List<DocumentoConhecimento> documentos = carregar("classpath:knowledge-base/*.json").listar();
+
+        assertThat(documentos).allSatisfy(documento -> {
+            String url = documento.urlFonte();
+            assertThat(url).as(documento.id()).doesNotContainAnyWhitespaces().doesNotContain("(", ")");
+
+            URI endereco = URI.create(url);
+            assertThat(endereco.getScheme()).as(documento.id()).isEqualTo("https");
+            assertThat(endereco.getHost()).as(documento.id()).isNotNull();
+            assertThat(DOMINIOS_OFICIAIS).as(documento.id())
+                    .anyMatch(dominio -> endereco.getHost().equals(dominio) || endereco.getHost().endsWith("." + dominio));
+            assertThat(endereco.getPath()).as(documento.id()).isNotBlank().isNotEqualTo("/");
         });
     }
 
