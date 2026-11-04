@@ -61,15 +61,15 @@ A partir dessa observação, identificou-se a necessidade de uma ferramenta que 
 
 Para validar essa necessidade, foi realizada uma pesquisa por meio de formulário online, com o objetivo de analisar o comportamento das pessoas ao lidar com sintomas de saúde. 
 
-![Gráfico - Busca de sintomas](images/grafico1.jpeg)
+![Gráfico - Busca de sintomas](../images/grafico1.jpeg)
 
 Observa-se que a maioria dos participantes já buscou informações sobre sintomas na internet, indicando um comportamento comum entre os usuários. 
 
-![Gráfico - Busca de sintomas](images/grafico2.jpeg)
+![Gráfico - Busca de sintomas](../images/grafico2.jpeg)
 
 Observa-se que o maior problema ao buscar sintomas na internet são a quantidade de possibilidades de doenças, causando um sentimento de confusão nas pessoas. 
 
-![Gráfico - Busca de sintomas](images/grafico3.jpeg)
+![Gráfico - Busca de sintomas](../images/grafico3.jpeg)
 
 Mais de 90% dos participantes demonstraram interesse em uma plataforma para triagem inicial de sintomas. 
 
@@ -90,7 +90,7 @@ Público Alvo: Usuários gerais.
 Funcionalidades Principais: Avaliação de sintomas com IA e pesquisas científicas.  
 Limitações: Respostas longas e complexas.
 
-![Benchmark](images/ada.jpeg)
+![Benchmark](../images/ada.jpeg)
 
 ### WebMD
 
@@ -99,7 +99,7 @@ Público Alvo: Estudantes da área de medicina e usuários gerais.
 Funcionalidades Principais: Conteúdo médico e verificação de sintomas.  
 Limitações: Foco em informação, não em triagem prática. 
 
-![Benchmark](images/webmd.jpeg) 
+![Benchmark](../images/webmd.jpeg) 
 
 ### Symptomate
 
@@ -108,7 +108,7 @@ Público Alvo: Usuários de internet.
 Funcionalidades Principais: Avaliação de sintomas com IA.  
 Limitações: Pode gerar múltiplas possibilidades sem indicar a urgência.
 
-![Benchmark](images/symptomate.jpeg)
+![Benchmark](../images/symptomate.jpeg)
 
 ---
 
@@ -222,7 +222,7 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 ---
 
 ## 2.2 Casos de Uso Principais
-![CasoDeUso](images/casodeuso.png)
+![CasoDeUso](../images/casodeuso.png)
 
 ---
 
@@ -286,11 +286,11 @@ Gustavo tem 35 anos, é motorista de aplicativo e evita ir ao hospital sem neces
 ## 3.1 Fluxo Principal do Usuário
 Diagrama de Atividades:
 
-![DiagramaAtv](images/diagrama-atv.png)
+![DiagramaAtv](../images/diagrama-atv.png)
 
 Diagrama de Sequência:
 
-![DiagramaSeq](images/diagrama-seq.png)
+![DiagramaSeq](../images/diagrama-seq.png)
 
 ## Fluxos Alternativos
 
@@ -325,7 +325,7 @@ Diagrama de Sequência:
 # 4. Mockups e Experiência do Usuário (UX)
 
 ## 4.1 Fluxo De Navegação
-![Navegacao](images/Navegacao.png)
+![Navegacao](../images/Navegacao.png)
 
 ## 4.2 Mockups das Telas
 Para o desenvolvimento dos mockups e protótipos da interface do sistema Orienta
@@ -338,7 +338,7 @@ https://www.figma.com/design/MwANCyJFVVgYpLfWUfv4zg/TCC?node-id=0-1&t=Vnxvd5OEJA
 
 ### Tela Inicial:
 
-![Tela1](images/TelaInicial.png)
+![Tela1](../images/TelaInicial.png)
 
 A tela inicial apresenta o sistema Orienta Saúde ao usuário, explicando de forma
 simples o objetivo da plataforma e permitindo iniciar o processo de triagem de
@@ -347,7 +347,7 @@ iniciar uma nova triagem.
 
 ### Tela de entrada de dados:
 
-![Tela2](images/TelaDados.png)
+![Tela2](../images/TelaDados.png)
 
 A tela de entrada de dados permite que o usuário realize seu cadastro na plataforma
 Orienta Saúde, informando dados pessoais necessários para acesso ao sistema.
@@ -356,7 +356,7 @@ data de nascimento e senha para criar sua conta e iniciar a triagem de sintomas.
 
 ### Fluxo Principal:
 
-![Tela3](images/TelaPrincipal.png)
+![Tela3](../images/TelaPrincipal.png)
 
 A tela de fluxo principal representa a principal funcionalidade do sistema Orienta
 Saúde, permitindo que o usuário informe seus sintomas e acompanhe o progresso
@@ -366,7 +366,7 @@ receber o resultado da triagem com orientações educativas e nível estimado de
 
 ### Tela de Resultado:
 
-![Tela4](images/TelaResultado.png)
+![Tela4](../images/TelaResultado.png)
 
 A tela de resultado apresenta ao usuário a análise realizada pelo sistema com base
 nos sintomas informados durante a triagem. Nessa etapa, o usuário pode visualizar
@@ -377,21 +377,21 @@ cuidados tomar.
 ## 4.3 Fluxo de Interação do Usuário
 1- O usuário acessa a plataforma através da tela inicial
 
-![Tela1](images/TelaInicial.png)
+![Tela1](../images/TelaInicial.png)
 
 2- O usuário realiza login ou cria uma nova conta para acessar o sistema.
 
-![Tela2](images/TelaDados.png)
+![Tela2](../images/TelaDados.png)
 
 3- Após acessar o sistema, o usuário inicia uma nova triagem, informa os
 sintomas e intensidade.
 
-![Tela3](images/TelaPrincipal.png)
+![Tela3](../images/TelaPrincipal.png)
 
 4- O usuário visualiza possíveis condições relacionadas, nível de urgência e
 orientações educativas.
 
-![Tela4](images/TelaResultado.png)
+![Tela4](../images/TelaResultado.png)
 
 ---
 # 5. Arquitetura do Sistema
@@ -399,28 +399,28 @@ orientações educativas.
 ## 5.1 Diagrama C4
 ### Nível 1 - Diagrama de Contexto:
 
-![DiagramaC1](images/C1.png)
+![DiagramaC1](../images/C1.png)
 
 ### Nível 2 - Diagrama de Containers:
 
-![DiagramaC2](images/C2.png)
+![DiagramaC2](../images/C2.png)
 
 ### Nível 3 - Diagrama de Componentes:
 
-![DiagramaC3](images/C3.png)
+![DiagramaC3](../images/C3.png)
 
 ## 5.2 Modelo de Dados
 ### DER (diagrama entidade relacionamento):
 
-![DiagramaDER](images/DER.png)
+![DiagramaDER](../images/DER.png)
 
 ### Esquema Relacional:
 
-![DiagramaER](images/ER.png)
+![DiagramaER](../images/ER.png)
 
 ### Modelo de Documentos (NoSQL):
 
-![DiagramaSQL](images/NoSQL.png)
+![DiagramaSQL](../images/NoSQL.png)
 
 ## 5.3 Principais Componentes
 
@@ -565,7 +565,7 @@ BRASIL. _Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dad
 
 A tela de Histórico de Triagens permite que o usuário visualize todas as triagens realizadas anteriormente de forma organizada e cronológica. Nela são exibidos a data e horário da consulta, os principais sintomas informados, o nível de urgência identificado e um botão para acessar os detalhes completos de cada análise, junto com filtros para facilitar a busca. 
 
-![Mockup](images/mockup.png)
+![Mockup](../images/mockup.png)
 
 ## 9.2 Repositório do Projeto
 
