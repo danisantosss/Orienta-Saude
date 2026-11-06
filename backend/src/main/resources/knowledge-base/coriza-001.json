@@ -9,8 +9,8 @@
     "espirros",
     "resfriado"
   ],
-  "fonte": "Fiocruz (Canal Saúde)",
-  "urlFonte": "https://www.canalsaude.fiocruz.br/noticias/noticiaAberta/voce-sabe-a-diferenca-entre-gripes-e-os-resfriados-2016-03-29",
+  "fonte": "Ministério da Saúde (Cadernos de Atenção Básica nº 28, v. II, seção 2.18 Rinossinusites/síndromes gripais)",
+  "urlFonte": "https://bvsms.saude.gov.br/bvs/publicacoes/acolhimento_demanda_espontanea_queixas_comuns_cab28v2.pdf",
   "conteudo": "Coriza, espirros e nariz entupido são típicos do resfriado comum, uma infecção viral leve que costuma melhorar em até uma semana. A gripe, causada pelo vírus influenza, começa de forma mais abrupta, com febre alta, dor no corpo e cansaço intenso. Rinite alérgica também causa coriza e espirros, mas sem febre.",
   "condicoesRelacionadas": [
     "resfriado comum",
