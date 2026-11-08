@@ -1038,3 +1038,104 @@ textarea[aria-invalid='true'] { border-color: var(--color-error); }
 @media (min-width: 768px) {
   .grade-historico { grid-template-columns: 260px 1fr; }
 }
+
+/* Privacidade e LGPD: consentimento, política e perfil */
+.form-aviso {
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+}
+
+.texto-pequeno { font-size: var(--font-size-sm); }
+
+.campo-consentimento {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-md) 0;
+}
+
+.caixa-consentimento {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.caixa-consentimento input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--color-marinho);
+}
+
+.rodape-links {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  padding-bottom: var(--spacing-md);
+}
+
+.pagina-politica {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+.pagina-politica h1 { font-size: var(--font-size-3xl); }
+.pagina-politica h2 { margin-top: var(--spacing-md); }
+.pagina-politica ul { padding-left: var(--spacing-lg); display: flex; flex-direction: column; gap: var(--spacing-xs); }
+
+.pagina-perfil {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.pagina-perfil h1 { font-size: var(--font-size-3xl); margin-bottom: var(--spacing-md); }
+
+.dados-perfil {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-xs) var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.dados-perfil dt { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.dados-perfil dd { font-weight: 600; margin-bottom: var(--spacing-sm); overflow-wrap: anywhere; }
+
+@media (min-width: 640px) {
+  .dados-perfil { grid-template-columns: max-content 1fr; }
+  .dados-perfil dd { margin-bottom: 0; }
+}
+
+.zona-exclusao { border-color: #fecaca; display: flex; flex-direction: column; gap: var(--spacing-md); align-items: flex-start; }
+.form-exclusao { width: 100%; display: flex; flex-direction: column; gap: var(--spacing-md); }
+.acoes-exclusao { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
+
+.botao-perigo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  min-height: 44px;
+  background: var(--color-error);
+  color: #fff;
+  border: 1px solid var(--color-error);
+}
+
+.botao-perigo:hover:not(:disabled) { background: #991b1b; }
+.botao-perigo:disabled { opacity: 0.5; cursor: not-allowed; }

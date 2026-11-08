@@ -6,7 +6,7 @@ import CartaoBeneficios from '../components/CartaoBeneficios';
 import Icone from '../components/Icone';
 import type { ErroResponse } from '../types';
 
-type Campo = 'nome' | 'email' | 'senha' | 'confirmacao';
+type Campo = 'nome' | 'email' | 'senha' | 'confirmacao' | 'consentimento';
 
 export default function Cadastro() {
   const { registrar, login } = useAuth();
@@ -15,6 +15,7 @@ export default function Cadastro() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmacao, setConfirmacao] = useState('');
+  const [consentimento, setConsentimento] = useState(false);
   const [erros, setErros] = useState<Partial<Record<Campo, string>>>({});
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
@@ -33,6 +34,9 @@ export default function Cadastro() {
     if (confirmacao !== senha) {
       novosErros.confirmacao = 'As senhas não são iguais.';
     }
+    if (!consentimento) {
+      novosErros.consentimento = 'Para criar a conta, aceite a Política de Privacidade e os Termos de Uso.';
+    }
     return novosErros;
   }
 
@@ -47,7 +51,7 @@ export default function Cadastro() {
     setErroGeral(null);
     setEnviando(true);
     try {
-      await registrar({ nome, email, senha });
+      await registrar({ nome, email, senha, consentimento });
       await login({ email, senha }); // backend não retorna token no registro, então logamos em seguida
       navigate('/triagem');
     } catch (err) {
@@ -107,6 +111,21 @@ export default function Cadastro() {
               autoComplete="new-password" placeholder="Repita a senha" aria-invalid={Boolean(erros.confirmacao)} />
             {erros.confirmacao && <p className="field-error">{erros.confirmacao}</p>}
           </div>
+        </div>
+
+        <div className="campo-consentimento">
+          <label className="caixa-consentimento">
+            <input type="checkbox" checked={consentimento} onChange={(e) => setConsentimento(e.target.checked)}
+              aria-invalid={Boolean(erros.consentimento)} aria-describedby="explicacao-consentimento" />
+            <span>
+              Li e aceito a <Link to="/privacidade" target="_blank" rel="noopener">Política de Privacidade e os Termos de Uso</Link>.
+            </span>
+          </label>
+          <p id="explicacao-consentimento" className="texto-secundario texto-pequeno">
+            Os sintomas que você informar são dados de saúde. Eles são usados só para a sua triagem e o seu histórico,
+            e você pode excluir tudo quando quiser.
+          </p>
+          {erros.consentimento && <p className="field-error">{erros.consentimento}</p>}
         </div>
 
         <button type="submit" className="botao-primario botao-largo" disabled={enviando}>

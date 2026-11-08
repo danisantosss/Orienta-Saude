@@ -13,6 +13,7 @@ export interface RegistroRequest {
   nome: string;
   email: string;
   senha: string;
+  consentimento: boolean;
 }
 
 export interface AutenticacaoResponse {
@@ -110,4 +111,7 @@ export interface PerfilUsuario {
   nome: string;
   email: string;
   criadoEm: string;
+  /** Nulo para contas criadas antes do registro de consentimento. */
+  consentimentoEm: string | null;
+  versaoPolitica: string | null;
 }

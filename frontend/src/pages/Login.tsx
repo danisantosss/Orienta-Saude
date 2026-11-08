@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import CartaoBeneficios from '../components/CartaoBeneficios';
@@ -9,6 +9,9 @@ import type { ErroResponse } from '../types';
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  // Mensagem enviada por outra página ao redirecionar para cá (ex.: conta excluída)
+  const aviso = (location.state as { aviso?: string } | null)?.aviso;
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState<string | null>(null);
@@ -55,6 +58,7 @@ export default function Login() {
         <h1>Entrar</h1>
         <p className="texto-secundario">Use o email e a senha que você cadastrou.</p>
 
+        {aviso && <p role="status" className="form-aviso">{aviso}</p>}
         {erro && <p role="alert" className="form-error">{erro}</p>}
 
         <div className="campo">

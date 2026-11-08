@@ -61,7 +61,7 @@ describe('useAuth', () => {
   it('registrar chama a API de cadastro', async () => {
     vi.mocked(authApi.registrar).mockResolvedValue();
     const { result } = renderHook(() => useAuth(), { wrapper });
-    const dados = { nome: 'Maria', email: 'maria@exemplo.com', senha: 'senhaSegura123' };
+    const dados = { nome: 'Maria', email: 'maria@exemplo.com', senha: 'senhaSegura123', consentimento: true };
 
     await act(() => result.current.registrar(dados));
 
