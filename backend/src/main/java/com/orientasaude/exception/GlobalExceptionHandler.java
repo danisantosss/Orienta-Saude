@@ -111,6 +111,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resposta);
     }
 
+    @ExceptionHandler(SenhaIncorretaException.class)
+    public ResponseEntity<ErroResponse> tratarSenhaIncorreta(
+            SenhaIncorretaException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.FORBIDDEN.value())
+                .erro("Proibido")
+                .mensagem(ex.getMessage())
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(resposta);
+    }
+
     @ExceptionHandler(TransicaoInvalidaException.class)
     public ResponseEntity<ErroResponse> tratarTransicaoInvalida(
             TransicaoInvalidaException ex, HttpServletRequest request) {
