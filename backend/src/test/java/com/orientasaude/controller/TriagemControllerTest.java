@@ -61,7 +61,7 @@ class TriagemControllerTest {
         String email = "usuario-" + UUID.randomUUID() + "@exemplo.com";
         mockMvc.perform(post("/api/auth/registro")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nome\": \"Pessoa Teste\", \"email\": \"" + email + "\", \"senha\": \"senhaSegura123\"}"))
+                        .content("{\"nome\": \"Pessoa Teste\", \"email\": \"" + email + "\", \"senha\": \"senhaSegura123\", \"consentimento\": true}"))
                 .andExpect(status().isCreated());
         String corpo = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
