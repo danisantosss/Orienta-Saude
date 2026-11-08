@@ -45,6 +45,7 @@ export default function Layout() {
               <>
                 <NavLink to="/triagem">Nova triagem</NavLink>
                 <NavLink to="/historico">Histórico</NavLink>
+                <NavLink to="/perfil">Meu perfil</NavLink>
               </>
             )}
           </nav>
@@ -79,6 +80,9 @@ export default function Layout() {
         <p className="rodape-final">
           Orienta Saúde é um serviço educativo e não substitui a avaliação de um profissional.
           Em caso de emergência, ligue para o <strong>SAMU (192)</strong>.
+        </p>
+        <p className="rodape-links">
+          <Link to="/privacidade">Política de Privacidade</Link>
         </p>
       </footer>
     </div>

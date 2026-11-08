@@ -25,7 +25,7 @@ class AutenticacaoControllerTest {
         mockMvc.perform(post("/api/auth/registro")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nome": "Maria Silva", "email": "maria@exemplo.com", "senha": "senhaSegura123"}
+                                {"nome": "Maria Silva", "email": "maria@exemplo.com", "senha": "senhaSegura123", "consentimento": true}
                                 """))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.mensagem").value("Cadastro realizado com sucesso"));
@@ -51,7 +51,20 @@ class AutenticacaoControllerTest {
                 .andExpect(jsonPath("$.caminho").value("/api/auth/registro"))
                 .andExpect(jsonPath("$.campos.nome").exists())
                 .andExpect(jsonPath("$.campos.email").exists())
-                .andExpect(jsonPath("$.campos.senha").exists());
+                .andExpect(jsonPath("$.campos.senha").exists())
+                .andExpect(jsonPath("$.campos.consentimento").exists());
+    }
+
+    @Test
+    void registrarSemAceitarAPoliticaDePrivacidadeEhRecusado() throws Exception {
+        mockMvc.perform(post("/api/auth/registro")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"nome": "Ana Lima", "email": "ana@exemplo.com", "senha": "senhaSegura123", "consentimento": false}
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.campos.consentimento").value(
+                        "Para usar a triagem é preciso aceitar a Política de Privacidade, pois ela trata dados de saúde"));
     }
 
     @Test
@@ -68,7 +81,7 @@ class AutenticacaoControllerTest {
     @Test
     void registrarEmailDuplicadoRetornaConflito() throws Exception {
         String corpo = """
-                {"nome": "João Souza", "email": "joao@exemplo.com", "senha": "senhaSegura123"}
+                {"nome": "João Souza", "email": "joao@exemplo.com", "senha": "senhaSegura123", "consentimento": true}
                 """;
         mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON).content(corpo))
                 .andExpect(status().isCreated());

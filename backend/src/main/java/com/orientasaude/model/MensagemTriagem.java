@@ -1,6 +1,7 @@
 package com.orientasaude.model;
 
 import com.orientasaude.model.enums.PapelMensagem;
+import com.orientasaude.security.CriptografiaConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class MensagemTriagem {
     private PapelMensagem papel;
 
     @NotBlank
+    @Convert(converter = CriptografiaConverter.class)
     @Column(nullable = false, columnDefinition = "TEXT")
     private String conteudo;
 

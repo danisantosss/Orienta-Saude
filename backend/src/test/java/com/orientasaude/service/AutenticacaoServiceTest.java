@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -32,9 +34,21 @@ class AutenticacaoServiceTest {
         when(usuarioRepository.existsByEmail("maria@exemplo.com")).thenReturn(true);
 
         assertThatThrownBy(() -> service.registrar(
-                new RegistroRequest("Maria", " Maria@Exemplo.com ", "senhaSegura123")))
+                new RegistroRequest("Maria", " Maria@Exemplo.com ", "senhaSegura123", true)))
                 .isInstanceOf(EmailJaCadastradoException.class);
         verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
+    void registrarGuardaADataEAVersaoDaPoliticaAceita() {
+        when(passwordEncoder.encode("senhaSegura123")).thenReturn("hash");
+        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocacao -> invocacao.getArgument(0));
+        LocalDateTime antes = LocalDateTime.now();
+
+        Usuario salvo = service.registrar(new RegistroRequest("Maria", "maria@exemplo.com", "senhaSegura123", true));
+
+        assertThat(salvo.getConsentimentoEm()).isBetween(antes, LocalDateTime.now());
+        assertThat(salvo.getVersaoPolitica()).isEqualTo(AutenticacaoService.VERSAO_POLITICA_PRIVACIDADE);
     }
 
     @Test

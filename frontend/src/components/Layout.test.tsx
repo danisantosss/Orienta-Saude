@@ -35,12 +35,14 @@ describe('Layout', () => {
     expect(screen.getByRole('link', { name: 'Entrar' })).toHaveAttribute('href', '/login');
     expect(screen.getByRole('link', { name: 'Cadastrar' })).toHaveAttribute('href', '/cadastro');
     expect(screen.queryByRole('link', { name: 'Histórico' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Meu perfil' })).not.toBeInTheDocument();
   });
 
   it('com login, mostra o email, as páginas privadas e sai da conta', async () => {
     renderizar(true);
     expect(screen.getByText('maria@exemplo.com')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Histórico' })).toHaveAttribute('href', '/historico');
+    expect(screen.getByRole('link', { name: 'Meu perfil' })).toHaveAttribute('href', '/perfil');
 
     await userEvent.click(screen.getByRole('button', { name: 'Sair' }));
     expect(logout).toHaveBeenCalled();
@@ -61,5 +63,10 @@ describe('Layout', () => {
     expect(screen.getByRole('heading', { name: 'Como funciona?' })).toBeInTheDocument();
     expect(screen.getAllByRole('listitem')).toHaveLength(4);
     expect(screen.getByText(/SAMU \(192\)/)).toBeInTheDocument();
+  });
+
+  it('tem link para a Política de Privacidade no rodapé', () => {
+    renderizar(false);
+    expect(screen.getByRole('link', { name: 'Política de Privacidade' })).toHaveAttribute('href', '/privacidade');
   });
 });

@@ -72,6 +72,7 @@ criar_aplicacoes() {
       --ingress internal --target-port 8080 \
       --cpu 0.5 --memory 1.0Gi --min-replicas 0 --max-replicas 1 \
       --secrets "db-password=$SENHA_BANCO" "jwt-secret=$(openssl rand -hex 48)" "gemini-api-key=$GEMINI_API_KEY" \
+        "criptografia-chave=$(openssl rand -base64 32)" \
       --env-vars \
         SPRING_PROFILES_ACTIVE=prod \
         "DB_URL=jdbc:mysql://$SERVIDOR_MYSQL.mysql.database.azure.com:3306/$banco?sslMode=REQUIRED&serverTimezone=UTC" \
@@ -79,6 +80,7 @@ criar_aplicacoes() {
         DB_PASSWORD=secretref:db-password \
         JWT_SECRET=secretref:jwt-secret \
         GEMINI_API_KEY=secretref:gemini-api-key \
+        APP_CRIPTOGRAFIA_CHAVE=secretref:criptografia-chave \
       --output none
   fi
   local fqdn_backend

@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Entidade que representa um usuário cadastrado no sistema.
- * Armazena apenas dados mínimos conforme LGPD: nome, email e senha.
+ * Armazena apenas dados mínimos conforme LGPD: nome, email, senha e o registro do consentimento.
  */
 @Entity
 @Table(name = "usuarios")
@@ -55,6 +55,14 @@ public class Usuario {
     @Builder.Default
     @Column(nullable = false)
     private Boolean ativo = true;
+
+    /** Quando o usuário aceitou a política de privacidade (prova do consentimento). */
+    @Column(name = "consentimento_em")
+    private LocalDateTime consentimentoEm;
+
+    /** Versão da política de privacidade que o usuário aceitou. */
+    @Column(name = "versao_politica", length = 20)
+    private String versaoPolitica;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

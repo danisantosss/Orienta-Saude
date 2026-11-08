@@ -53,6 +53,9 @@ app:
     limiar-similaridade: 0.7
     maximo-documentos: 10
     timeout-busca-ms: 8000
+  criptografia:
+    # Chave AES-256 em Base64 (openssl rand -base64 32). Esta é só para desenvolvimento local.
+    chave: ${APP_CRIPTOGRAFIA_CHAVE:ZGV2LWxvY2FsLW9yaWVudGEtc2F1ZGUtMzItYnl0ZXM=}
 
 ---
 # Profile: prod
@@ -86,3 +89,6 @@ app:
     limiar-similaridade: 0.7
     maximo-documentos: 10
     timeout-busca-ms: 8000
+  criptografia:
+    # Obrigatória em produção: sem ela a aplicação não sobe. Perder a chave = perder os dados cifrados.
+    chave: ${APP_CRIPTOGRAFIA_CHAVE}

@@ -8,6 +8,8 @@ import Cadastro from './pages/Cadastro';
 import Triagem from './pages/Triagem';
 import Resultado from './pages/Resultado';
 import Historico from './pages/Historico';
+import Perfil from './pages/Perfil';
+import PoliticaPrivacidade from './pages/PoliticaPrivacidade';
 
 function App() {
   return (
@@ -18,10 +20,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/privacidade" element={<PoliticaPrivacidade />} />
             <Route element={<PrivateRoute />}>
               <Route path="/triagem" element={<Triagem />} />
               <Route path="/resultado/:id" element={<Resultado />} />
               <Route path="/historico" element={<Historico />} />
+              <Route path="/perfil" element={<Perfil />} />
             </Route>
           </Route>
         </Routes>

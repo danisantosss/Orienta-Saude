@@ -16,6 +16,7 @@ function renderizar() {
       <Routes>
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/triagem" element={<p>Página de triagem</p>} />
+        <Route path="/privacidade" element={<p>Página da política</p>} />
       </Routes>
     </MemoryRouter>
   );
@@ -37,6 +38,7 @@ describe('Cadastro', () => {
     expect(screen.getByText('O nome deve ter entre 2 e 120 caracteres.')).toBeInTheDocument();
     expect(screen.getByText('Email inválido.')).toBeInTheDocument();
     expect(screen.getByText('A senha deve ter entre 8 e 128 caracteres.')).toBeInTheDocument();
+    expect(screen.getByText('Para criar a conta, aceite a Política de Privacidade e os Termos de Uso.')).toBeInTheDocument();
     expect(registrar).not.toHaveBeenCalled();
   });
 
@@ -48,9 +50,12 @@ describe('Cadastro', () => {
     await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
     await userEvent.type(screen.getByLabelText('Confirmar senha'), 'senhaSegura123');
+    await userEvent.click(screen.getByRole('checkbox'));
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
 
-    expect(registrar).toHaveBeenCalledWith({ nome: 'Maria Silva', email: 'maria@exemplo.com', senha: 'senhaSegura123' });
+    expect(registrar).toHaveBeenCalledWith({
+      nome: 'Maria Silva', email: 'maria@exemplo.com', senha: 'senhaSegura123', consentimento: true,
+    });
     expect(login).toHaveBeenCalledWith({ email: 'maria@exemplo.com', senha: 'senhaSegura123' });
     expect(await screen.findByText('Página de triagem')).toBeInTheDocument();
   });
@@ -62,6 +67,7 @@ describe('Cadastro', () => {
     await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
     await userEvent.type(screen.getByLabelText('Confirmar senha'), 'senhaSegura123');
+    await userEvent.click(screen.getByRole('checkbox'));
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível concluir o cadastro. Tente novamente.');
@@ -77,5 +83,19 @@ describe('Cadastro', () => {
 
     expect(screen.getByText('As senhas não são iguais.')).toBeInTheDocument();
     expect(registrar).not.toHaveBeenCalled();
+  });
+
+  it('não envia sem o aceite da política e tem link para lê-la', async () => {
+    renderizar();
+    await userEvent.type(screen.getByLabelText('Nome completo'), 'Maria Silva');
+    await userEvent.type(screen.getByLabelText('Email'), 'maria@exemplo.com');
+    await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'senhaSegura123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta e continuar' }));
+
+    expect(screen.getByText('Para criar a conta, aceite a Política de Privacidade e os Termos de Uso.')).toBeInTheDocument();
+    expect(registrar).not.toHaveBeenCalled();
+    expect(screen.getByRole('link', { name: 'Política de Privacidade e os Termos de Uso' }))
+      .toHaveAttribute('href', '/privacidade');
   });
 });

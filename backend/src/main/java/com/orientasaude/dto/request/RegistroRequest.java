@@ -1,7 +1,9 @@
 package com.orientasaude.dto.request;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +11,15 @@ import lombok.NoArgsConstructor;
 
 /**
  * DTO de requisição para cadastro de novo usuário.
- * Coleta apenas dados mínimos conforme LGPD: nome, email e senha.
+ * Coleta apenas dados mínimos conforme LGPD: nome, email, senha e o aceite da política de privacidade.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistroRequest {
+
+    private static final String MENSAGEM_CONSENTIMENTO =
+            "Para usar a triagem é preciso aceitar a Política de Privacidade, pois ela trata dados de saúde";
 
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 2, max = 120, message = "O nome deve ter entre 2 e 120 caracteres")
@@ -27,4 +32,12 @@ public class RegistroRequest {
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, max = 128, message = "A senha deve ter entre 8 e 128 caracteres")
     private String senha;
+
+    /**
+     * Aceite da Política de Privacidade. Dados de saúde são dados sensíveis (LGPD, art. 11),
+     * então o tratamento depende de consentimento explícito: sem ele não há cadastro.
+     */
+    @NotNull(message = MENSAGEM_CONSENTIMENTO)
+    @AssertTrue(message = MENSAGEM_CONSENTIMENTO)
+    private Boolean consentimento;
 }

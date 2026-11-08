@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 /**
  * Serviço responsável pelo cadastro e autenticação de usuários.
  */
@@ -20,13 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AutenticacaoService {
 
+    /** Versão da Política de Privacidade exibida em /privacidade. Mudou o texto, muda a versão. */
+    public static final String VERSAO_POLITICA_PRIVACIDADE = "1.0";
+
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * Registra um novo usuário no sistema.
-     * Valida unicidade do email e armazena a senha com BCrypt.
+     * Valida unicidade do email, armazena a senha com BCrypt e registra quando e qual versão
+     * da política de privacidade foi aceita (o aceite em si já foi exigido na validação do DTO).
      */
     @Transactional
     public Usuario registrar(RegistroRequest request) {
@@ -39,6 +45,8 @@ public class AutenticacaoService {
                 .email(request.getEmail().trim().toLowerCase())
                 .senhaHash(passwordEncoder.encode(request.getSenha()))
                 .ativo(true)
+                .consentimentoEm(LocalDateTime.now())
+                .versaoPolitica(VERSAO_POLITICA_PRIVACIDADE)
                 .build();
 
         return usuarioRepository.save(usuario);
