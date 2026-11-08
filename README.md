@@ -30,7 +30,9 @@ Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) na Universidade 
 - [Estrutura do repositório](#-estrutura-do-repositório)
 - [Documentação completa (RFC)](#-documentação-completa-rfc)
 - [Roadmap](#-roadmap)
+- [Privacidade e LGPD](#-privacidade-e-lgpd)
 - [Autor](#-autor)
+- [Licença](#-licença)
 
 ---
 
@@ -49,6 +51,7 @@ O **Orienta Saúde** propõe uma abordagem direta: em vez de listar dezenas de c
 - 📝 Orientações educativas, sinais de alerta e recomendações, sem diagnóstico nem prescrição (as respostas da IA passam por uma validação ética antes de chegar ao usuário)
 - 🕘 Histórico de triagens anteriores, com filtros e paginação
 - 🛡 Nome e e-mail do usuário nunca são enviados ao modelo de IA
+- 🔏 LGPD: consentimento no cadastro, política de privacidade, perfil com os dados da conta, exclusão da conta e de todas as triagens, e dados de saúde criptografados no banco (AES-256-GCM)
 - 📱 Interface responsiva
 
 ## 🛠 Stack tecnológica
@@ -141,6 +144,7 @@ No Docker Compose, os valores vêm do arquivo `.env` na raiz (modelo em [`.env.e
 | `GEMINI_API_KEY` | Chave da API do Gemini (obrigatória para a triagem) | vazio |
 | `DB_PASSWORD` | Senha do usuário `root` do MySQL | `root` |
 | `JWT_SECRET` | Chave de assinatura dos tokens JWT (mínimo 256 bits) | chave de desenvolvimento |
+| `APP_CRIPTOGRAFIA_CHAVE` | Chave AES-256 em Base64 que cifra os dados de saúde no banco (`openssl rand -base64 32`). Obrigatória no profile `prod` | chave de desenvolvimento |
 | `GRAFANA_PASSWORD` | Senha do usuário `admin` do Grafana | `admin` |
 
 Outras variáveis lidas pelo backend:
@@ -204,7 +208,7 @@ Orienta-Saude/
 ├── frontend/           # Aplicação web (React + Vite + TypeScript) e config do nginx
 ├── infra/azure/        # Script e instruções da infraestrutura na Azure
 ├── monitoramento/      # Configuração do Prometheus e do Grafana
-├── documents/          # RFC do TCC
+├── documents/          # RFC do TCC e ADRs (decisões de arquitetura)
 ├── images/             # Diagramas, mockups e gráficos usados na documentação
 ├── .github/workflows/  # CI e deploys
 ├── docker-compose.yml  # Ambiente local completo
@@ -214,6 +218,15 @@ Orienta-Saude/
 ## 📄 Documentação completa (RFC)
 
 O RFC completo (contexto, personas, requisitos funcionais e não funcionais, mockups, arquitetura C4 e cronograma) está em [`documents/RFC.md`](./documents/RFC.md).
+
+## 🔏 Privacidade e LGPD
+
+- **Consentimento**: o cadastro só é aceito com a caixa da Política de Privacidade marcada; a data e a versão aceita ficam gravadas.
+- **Política de Privacidade e Termos de Uso**: página `/privacidade`, com link no cadastro e no rodapé.
+- **Meu perfil** (`/perfil`): nome, email, data de cadastro e data do consentimento (`GET /api/usuario/perfil`).
+- **Exclusão da conta**: `DELETE /api/usuario/conta` com a senha de confirmação apaga a conta, as triagens, as mensagens e os resultados; o login e os tokens antigos deixam de funcionar.
+- **Criptografia em repouso**: sintomas, mensagens e textos do resultado são cifrados com AES-256-GCM antes de ir para o banco.
+- **IA**: só idade, sintomas e respostas vão para a API Gemini. A decisão de usar o plano gratuito está em [`documents/adr/0001-plano-gratuito-gemini.md`](./documents/adr/0001-plano-gratuito-gemini.md).
 
 ## 🗺 Roadmap
 
@@ -231,6 +244,10 @@ O RFC completo (contexto, personas, requisitos funcionais e não funcionais, moc
 
 **Daniel Douglas dos Santos**
 Projeto de TCC - Universidade Católica de Santa Catarina
+
+## 📜 Licença
+
+Distribuído sob a licença MIT. Veja [`LICENSE`](./LICENSE).
 
 ---
 
