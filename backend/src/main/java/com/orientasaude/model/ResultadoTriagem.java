@@ -1,6 +1,7 @@
 package com.orientasaude.model;
 
 import com.orientasaude.model.enums.NivelUrgencia;
+import com.orientasaude.security.CriptografiaConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,22 +42,27 @@ public class ResultadoTriagem {
     private NivelUrgencia nivelUrgencia;
 
     @NotBlank
-    @Column(name = "condicoes_json", nullable = false, columnDefinition = "JSON")
+    @Convert(converter = CriptografiaConverter.class)
+    @Column(name = "condicoes_json", nullable = false, columnDefinition = "TEXT")
     private String condicoesJson;
 
     @NotBlank
+    @Convert(converter = CriptografiaConverter.class)
     @Column(name = "explicacao_educativa", nullable = false, columnDefinition = "TEXT")
     private String explicacaoEducativa;
 
     @NotBlank
+    @Convert(converter = CriptografiaConverter.class)
     @Column(name = "orientacoes_gerais", nullable = false, columnDefinition = "TEXT")
     private String orientacoesGerais;
 
     @NotBlank
+    @Convert(converter = CriptografiaConverter.class)
     @Column(name = "sinais_alerta", nullable = false, columnDefinition = "TEXT")
     private String sinaisAlerta;
 
     @NotBlank
+    @Convert(converter = CriptografiaConverter.class)
     @Column(name = "quando_buscar_atendimento", nullable = false, columnDefinition = "TEXT")
     private String quandoBuscarAtendimento;
 
@@ -64,6 +70,7 @@ public class ResultadoTriagem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String disclaimer;
 
+    @Convert(converter = CriptografiaConverter.class)
     @Column(name = "nota_limitacao", columnDefinition = "TEXT")
     private String notaLimitacao;
 

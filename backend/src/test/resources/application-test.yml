@@ -18,3 +18,5 @@ app:
     intervalo-tentativas-ms: 0
   rag:
     indexar-na-inicializacao: false
+  criptografia:
+    chave: dGVzdGUtb3JpZW50YS1zYXVkZS1jaGF2ZS0zMi1ieXQ=

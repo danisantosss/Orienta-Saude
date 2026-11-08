@@ -2,6 +2,7 @@ package com.orientasaude.model;
 
 import com.orientasaude.model.enums.MotivoEncerramento;
 import com.orientasaude.model.enums.StatusSessao;
+import com.orientasaude.security.CriptografiaConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -44,7 +45,8 @@ public class SessaoTriagem {
 
     @NotBlank
     @Size(min = 10, max = 1000)
-    @Column(name = "sintomas_iniciais", nullable = false, length = 1000)
+    @Convert(converter = CriptografiaConverter.class)
+    @Column(name = "sintomas_iniciais", nullable = false, columnDefinition = "TEXT")
     private String sintomasIniciais;
 
     @Min(1)
