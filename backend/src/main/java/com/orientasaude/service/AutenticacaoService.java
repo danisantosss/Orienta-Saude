@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 public class AutenticacaoService {
 
     /** Versão da Política de Privacidade exibida em /privacidade. Mudou o texto, muda a versão. */
-    public static final String VERSAO_POLITICA_PRIVACIDADE = "1.0";
+    public static final String VERSAO_POLITICA_PRIVACIDADE = "1.1";
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
