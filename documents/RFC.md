@@ -4,7 +4,7 @@
 Orienta Saúde  
 
 ## Linha de Projeto (Direction):
-Plataforma Web 
+Web Apps 
 
 ## Autor:
 Daniel Douglas dos Santos  
@@ -14,6 +14,8 @@ Daniel Douglas dos Santos
 
 ## Versão:
 1.4
+
+> **Nota sobre a implementação (10/11/2026):** este documento é a proposta elaborada no PAC VII e foi mantido como estava, com exceção do nome da linha de projeto e de uma observação no modelo NoSQL. O que mudou durante o desenvolvimento está registrado na [Wiki](https://github.com/danisantosss/Orienta-Saude/wiki): a arquitetura implementada e o C4 atual em [Arquitetura](https://github.com/danisantosss/Orienta-Saude/wiki/Arquitetura), o modelo de dados real em [Modelo de Dados](https://github.com/danisantosss/Orienta-Saude/wiki/Modelo-de-Dados) e as decisões, com o motivo de cada mudança, em [Decisões Técnicas](https://github.com/danisantosss/Orienta-Saude/wiki/Decisoes-Tecnicas). As principais diferenças: o administrador virou um papel do usuário em vez de uma tabela própria, os sintomas ficam no texto da entrevista em vez de uma tabela de sintomas, o modelo NoSQL não foi usado e a infraestrutura ficou na Azure (Container Apps, MySQL Flexible Server e Application Insights).
 
 ---
 
@@ -419,6 +421,8 @@ orientações educativas.
 ![DiagramaER](../images/ER.png)
 
 ### Modelo de Documentos (NoSQL):
+
+_Alternativa estudada na proposta e não adotada: o sistema usa só o MySQL._
 
 ![DiagramaSQL](../images/NoSQL.png)
 
