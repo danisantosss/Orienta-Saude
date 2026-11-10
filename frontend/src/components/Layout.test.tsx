@@ -9,9 +9,10 @@ vi.mock('../hooks/useAuth');
 
 const logout = vi.fn();
 
-function renderizar(autenticado: boolean) {
+function renderizar(autenticado: boolean, ehAdmin = false) {
   vi.mocked(useAuth).mockReturnValue({
     autenticado,
+    ehAdmin,
     usuario: autenticado ? { id: 1, email: 'maria@exemplo.com' } : null,
     logout,
   } as unknown as ReturnType<typeof useAuth>);
@@ -43,10 +44,16 @@ describe('Layout', () => {
     expect(screen.getByText('maria@exemplo.com')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Histórico' })).toHaveAttribute('href', '/historico');
     expect(screen.getByRole('link', { name: 'Meu perfil' })).toHaveAttribute('href', '/perfil');
+    expect(screen.queryByRole('link', { name: 'Painel' })).not.toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Sair' }));
     expect(logout).toHaveBeenCalled();
     expect(screen.getByText('Página de login')).toBeInTheDocument();
+  });
+
+  it('mostra o link do painel só para o administrador', () => {
+    renderizar(true, true);
+    expect(screen.getByRole('link', { name: 'Painel' })).toHaveAttribute('href', '/admin');
   });
 
   it('abre e fecha o menu do celular', async () => {

@@ -33,7 +33,8 @@ describe('useAuth', () => {
     await act(() => result.current.login({ email: 'maria@exemplo.com', senha: 'senhaSegura123' }));
 
     expect(result.current.autenticado).toBe(true);
-    expect(result.current.usuario).toEqual({ id: 7, email: 'maria@exemplo.com' });
+    expect(result.current.usuario).toEqual({ id: 7, email: 'maria@exemplo.com', papel: 'USUARIO' });
+    expect(result.current.ehAdmin).toBe(false);
     expect(tokenStorage.get()).toBe(tokenValido);
   });
 
@@ -66,5 +67,15 @@ describe('useAuth', () => {
     await act(() => result.current.registrar(dados));
 
     expect(authApi.registrar).toHaveBeenCalledWith(dados);
+  });
+
+  it('reconhece o administrador pela claim papel do token', async () => {
+    tokenStorage.set(criarToken({ sub: '1', email: 'admin@exemplo.com', papel: 'ADMIN', exp: Date.now() / 1000 + 3600 }));
+    const { result } = renderHook(() => useAuth(), { wrapper });
+
+    await waitFor(() => expect(result.current.autenticado).toBe(true));
+
+    expect(result.current.ehAdmin).toBe(true);
+    expect(result.current.usuario?.papel).toBe('ADMIN');
   });
 });

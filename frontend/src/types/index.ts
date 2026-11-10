@@ -2,6 +2,7 @@
 export type NivelUrgencia = 'LEVE' | 'MODERADO' | 'URGENTE' | 'EMERGENCIA';
 export type StatusSessao = 'EM_PROGRESSO' | 'ANALISANDO' | 'CONCLUIDA' | 'CANCELADA' | 'ERRO';
 export type PapelMensagem = 'SISTEMA' | 'USUARIO' | 'ASSISTENTE';
+export type PapelUsuario = 'USUARIO' | 'ADMIN';
 
 // Autenticação
 export interface LoginRequest {
@@ -114,4 +115,24 @@ export interface PerfilUsuario {
   /** Nulo para contas criadas antes do registro de consentimento. */
   consentimentoEm: string | null;
   versaoPolitica: string | null;
+}
+
+// Painel administrativo (só números agregados)
+export interface TotalPorPeriodo {
+  /** Dia, ou primeiro dia do mês quando o agrupamento é MES (aaaa-mm-dd). */
+  inicio: string;
+  total: number;
+}
+
+export interface IndicadoresResponse {
+  inicio: string;
+  fim: string;
+  agrupamento: 'DIA' | 'MES';
+  totalTriagens: number;
+  triagensPorPeriodo: TotalPorPeriodo[];
+  distribuicaoUrgencia: Record<NivelUrgencia, number>;
+  triagensFinalizadas: number;
+  encerradasAntecipadamente: number;
+  /** Em %, com uma casa decimal. */
+  taxaEncerramentoAntecipado: number;
 }

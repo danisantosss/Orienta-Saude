@@ -1,17 +1,20 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import * as authApi from '../api/auth';
 import { tokenStorage } from '../api/client';
-import type { LoginRequest, RegistroRequest } from '../types';
+import type { LoginRequest, PapelUsuario, RegistroRequest } from '../types';
 
 interface UsuarioAutenticado {
   id: number;
   email: string;
+  papel: PapelUsuario;
 }
 
 interface AuthContextValue {
   usuario: UsuarioAutenticado | null;
   token: string | null;
   autenticado: boolean;
+  /** Só decide o que a tela mostra; quem barra o acesso de verdade é o backend (403). */
+  ehAdmin: boolean;
   carregando: boolean;
   login: (dados: LoginRequest) => Promise<void>;
   registrar: (dados: RegistroRequest) => Promise<void>;
@@ -27,7 +30,9 @@ function decodificarUsuario(token: string): UsuarioAutenticado | null {
     if (decodificado.exp && decodificado.exp * 1000 < Date.now()) {
       return null;
     }
-    return { id: Number(decodificado.sub), email: decodificado.email };
+    // Tokens emitidos antes da claim "papel" existir valem como USUARIO
+    const papel: PapelUsuario = decodificado.papel === 'ADMIN' ? 'ADMIN' : 'USUARIO';
+    return { id: Number(decodificado.sub), email: decodificado.email, papel };
   } catch {
     return null;
   }
@@ -70,7 +75,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const value = useMemo(
-    () => ({ usuario, token, autenticado: !!token, carregando, login, registrar, logout }),
+    () => ({
+      usuario, token, autenticado: !!token, ehAdmin: usuario?.papel === 'ADMIN', carregando, login, registrar, logout,
+    }),
     [usuario, token, carregando]
   );
 

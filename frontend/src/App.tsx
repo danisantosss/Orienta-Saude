@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
@@ -10,6 +11,7 @@ import Resultado from './pages/Resultado';
 import Historico from './pages/Historico';
 import Perfil from './pages/Perfil';
 import PoliticaPrivacidade from './pages/PoliticaPrivacidade';
+import PainelAdmin from './pages/PainelAdmin';
 
 function App() {
   return (
@@ -26,6 +28,9 @@ function App() {
               <Route path="/resultado/:id" element={<Resultado />} />
               <Route path="/historico" element={<Historico />} />
               <Route path="/perfil" element={<Perfil />} />
+            </Route>
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<PainelAdmin />} />
             </Route>
           </Route>
         </Routes>
