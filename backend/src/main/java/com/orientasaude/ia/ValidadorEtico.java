@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Confere a resposta da IA antes de ela ser gravada ou exibida (Propriedades 2 e 4):
+ * Confere a resposta da IA antes de ela ser gravada ou exibida:
  * nada de certeza diagnóstica, nada de prescrição e nível de urgência sempre válido.
  * O texto é comparado em minúsculas e sem acentos, para "Você tem" e "VOCE TEM" serem a mesma coisa.
  */
