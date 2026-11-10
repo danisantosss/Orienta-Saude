@@ -5,6 +5,7 @@ import com.orientasaude.dto.request.RegistroRequest;
 import com.orientasaude.dto.response.AutenticacaoResponse;
 import com.orientasaude.dto.response.MensagemResponse;
 import com.orientasaude.service.AutenticacaoService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,10 +41,12 @@ public class AutenticacaoController {
     /**
      * POST /api/auth/login
      * Autentica um usuário e retorna o token JWT.
+     * O IP (já corrigido pelos cabeçalhos X-Forwarded-* do proxy) alimenta o bloqueio de login.
      */
     @PostMapping("/login")
-    public ResponseEntity<AutenticacaoResponse> login(@Valid @RequestBody LoginRequest request) {
-        AutenticacaoResponse resposta = autenticacaoService.login(request);
+    public ResponseEntity<AutenticacaoResponse> login(@Valid @RequestBody LoginRequest request,
+                                                      HttpServletRequest requisicao) {
+        AutenticacaoResponse resposta = autenticacaoService.login(request, requisicao.getRemoteAddr());
         return ResponseEntity.ok(resposta);
     }
 }

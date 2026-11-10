@@ -21,6 +21,7 @@ import com.orientasaude.model.enums.MotivoEncerramento;
 import com.orientasaude.model.enums.NivelUrgencia;
 import com.orientasaude.model.enums.PapelMensagem;
 import com.orientasaude.model.enums.StatusSessao;
+import com.orientasaude.model.enums.TipoEventoAuditoria;
 import com.orientasaude.rag.BaseConhecimento;
 import com.orientasaude.rag.ContextoRag;
 import com.orientasaude.rag.RagService;
@@ -64,9 +65,10 @@ class TriagemServiceTest {
     private final AnaliseService analiseService = mock(AnaliseService.class);
     private final BaseConhecimento baseConhecimento = criarBaseConhecimento();
     private final SimpleMeterRegistry metricas = new SimpleMeterRegistry();
+    private final AuditoriaService auditoriaService = mock(AuditoriaService.class);
     private final TriagemService service = new TriagemService(sessaoRepository, mensagemRepository,
             resultadoRepository, entrevistaService, ragService, analiseService, baseConhecimento, new ObjectMapper(),
-            metricas);
+            metricas, auditoriaService);
 
     private final Usuario dono = Usuario.builder().id(1L).nome("Ana").email("ana@exemplo.com").build();
     private final Usuario outro = Usuario.builder().id(2L).nome("Beto").email("beto@exemplo.com").build();
@@ -203,6 +205,7 @@ class TriagemServiceTest {
         assertThatThrownBy(() -> service.encerrar(10L, outro))
                 .isInstanceOf(RecursoNaoEncontradoException.class);
         verify(mensagemRepository, never()).save(any());
+        verify(auditoriaService, times(2)).registrar(TipoEventoAuditoria.ACESSO_NEGADO, 2L);
     }
 
     @Test

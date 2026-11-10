@@ -20,6 +20,7 @@ import com.orientasaude.model.Usuario;
 import com.orientasaude.model.enums.MotivoEncerramento;
 import com.orientasaude.model.enums.PapelMensagem;
 import com.orientasaude.model.enums.StatusSessao;
+import com.orientasaude.model.enums.TipoEventoAuditoria;
 import com.orientasaude.rag.BaseConhecimento;
 import com.orientasaude.rag.ContextoRag;
 import com.orientasaude.rag.RagService;
@@ -29,8 +30,6 @@ import com.orientasaude.repository.SessaoTriagemRepository;
 import com.orientasaude.util.Sanitizador;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +60,6 @@ public class TriagemService {
             "A entrevista foi encerrada antes da conclusão, então o resultado pode ser menos preciso.";
 
     private static final int MINIMO_CARACTERES_SINTOMAS = 10;
-    private static final Logger auditoria = LoggerFactory.getLogger("AUDITORIA");
 
     /** Contador de triagens concluídas por nível de urgência, exposto no Actuator e no Application Insights. */
     public static final String METRICA_TRIAGENS_CONCLUIDAS = "orienta.triagens.concluidas";
@@ -75,6 +73,7 @@ public class TriagemService {
     private final BaseConhecimento baseConhecimento;
     private final ObjectMapper objectMapper;
     private final MeterRegistry meterRegistry;
+    private final AuditoriaService auditoriaService;
 
     /**
      * Cria a sessão com os sintomas sanitizados e devolve a primeira pergunta do Gemini.
@@ -288,8 +287,7 @@ public class TriagemService {
         SessaoTriagem sessao = sessaoRepository.findById(sessaoId)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Sessão de triagem não encontrada"));
         if (!sessao.getUsuario().getId().equals(usuario.getId())) {
-            auditoria.warn("Acesso negado: usuário {} tentou acessar a sessão {} de outro usuário",
-                    usuario.getId(), sessaoId);
+            auditoriaService.registrar(TipoEventoAuditoria.ACESSO_NEGADO, usuario.getId());
             throw new RecursoNaoEncontradoException("Sessão de triagem não encontrada");
         }
         return sessao;

@@ -20,3 +20,6 @@ app:
     indexar-na-inicializacao: false
   criptografia:
     chave: dGVzdGUtb3JpZW50YS1zYXVkZS1jaGF2ZS0zMi1ieXQ=
+  seguranca:
+    # A suíte inteira roda do mesmo IP (127.0.0.1); o teste do limite usa um valor baixo só para ele
+    limite-requisicoes-por-minuto: 100000

@@ -116,7 +116,7 @@ class UsuarioControllerTest {
 
     @Test
     void perfilExigeToken() throws Exception {
-        mockMvc.perform(get("/api/usuario/perfil")).andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/usuario/perfil")).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -163,7 +163,7 @@ class UsuarioControllerTest {
         assertThat(contar("SELECT COUNT(*) FROM sessoes_triagem WHERE id = ?", sessaoDeOutraPessoa)).isOne();
 
         // O token antigo deixa de valer e o login com as mesmas credenciais é recusado
-        mockMvc.perform(get("/api/usuario/perfil").header("Authorization", token)).andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/usuario/perfil").header("Authorization", token)).andExpect(status().isUnauthorized());
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\": \"" + email + "\", \"senha\": \"" + SENHA + "\"}"))

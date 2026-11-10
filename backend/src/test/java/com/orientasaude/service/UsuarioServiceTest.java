@@ -3,6 +3,8 @@ package com.orientasaude.service;
 import com.orientasaude.dto.response.PerfilResponse;
 import com.orientasaude.exception.SenhaIncorretaException;
 import com.orientasaude.model.Usuario;
+import com.orientasaude.model.enums.TipoEventoAuditoria;
+import com.orientasaude.repository.LogAuditoriaRepository;
 import com.orientasaude.repository.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +24,10 @@ class UsuarioServiceTest {
 
     private final UsuarioRepository usuarioRepository = mock(UsuarioRepository.class);
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-    private final UsuarioService service = new UsuarioService(usuarioRepository, passwordEncoder);
+    private final LogAuditoriaRepository logAuditoriaRepository = mock(LogAuditoriaRepository.class);
+    private final AuditoriaService auditoriaService = mock(AuditoriaService.class);
+    private final UsuarioService service =
+            new UsuarioService(usuarioRepository, passwordEncoder, logAuditoriaRepository, auditoriaService);
 
     private final Usuario usuario = Usuario.builder()
             .id(7L)
@@ -53,6 +58,7 @@ class UsuarioServiceTest {
         assertThatThrownBy(() -> service.excluirConta(usuario, "errada123"))
                 .isInstanceOf(SenhaIncorretaException.class);
         verify(usuarioRepository, never()).delete(any());
+        verify(auditoriaService, never()).registrar(any(), any());
     }
 
     @Test
@@ -63,5 +69,8 @@ class UsuarioServiceTest {
         service.excluirConta(usuario, "senhaSegura123");
 
         verify(usuarioRepository).delete(usuario);
+        // A auditoria esquece de quem eram os eventos antigos e registra a exclusão sem id
+        verify(logAuditoriaRepository).anonimizarUsuario(7L);
+        verify(auditoriaService).registrar(TipoEventoAuditoria.EXCLUSAO_SOLICITADA, null);
     }
 }

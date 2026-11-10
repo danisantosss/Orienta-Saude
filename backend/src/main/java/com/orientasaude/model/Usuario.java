@@ -1,5 +1,6 @@
 package com.orientasaude.model;
 
+import com.orientasaude.model.enums.PapelUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -55,6 +56,15 @@ public class Usuario {
     @Builder.Default
     @Column(nullable = false)
     private Boolean ativo = true;
+
+    /**
+     * USUARIO por padrão. O DEFAULT na coluna preenche as contas que já existiam quando a coluna
+     * foi criada; ADMIN só se atribui no banco ou pela variável APP_ADMIN_EMAILS.
+     */
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(10) not null default 'USUARIO'")
+    private PapelUsuario papel = PapelUsuario.USUARIO;
 
     /** Quando o usuário aceitou a política de privacidade (prova do consentimento). */
     @Column(name = "consentimento_em")
