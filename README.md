@@ -66,7 +66,7 @@ O **Orienta Saúde** propõe uma abordagem direta: em vez de listar dezenas de c
 | Testes | JUnit 5 + Testcontainers (MySQL) + JaCoCo · Vitest + Testing Library |
 | Qualidade | ESLint · SonarCloud |
 | Infraestrutura | Docker, GitHub Actions, GitHub Container Registry, Azure Container Apps, Azure Database for MySQL |
-| Monitoramento | Spring Boot Actuator + Micrometer, Prometheus e Grafana |
+| Monitoramento | Spring Boot Actuator + Micrometer · Azure Application Insights (produção) · Prometheus e Grafana (local) |
 
 ## 🏗 Arquitetura
 
@@ -198,7 +198,10 @@ Os dois ambientes rodam na Azure (Azure for Students, região `mexicocentral`) e
 
 ## 📈 Monitoramento
 
-O backend expõe `/actuator/health` e `/actuator/prometheus` (Spring Boot Actuator + Micrometer). No ambiente local do Docker Compose, o Prometheus ([`monitoramento/prometheus.yml`](./monitoramento/prometheus.yml)) coleta essas métricas e o Grafana já vem com o Prometheus configurado como fonte de dados.
+O backend expõe `/actuator/health` e `/actuator/prometheus` (Spring Boot Actuator + Micrometer), além da métrica de negócio `orienta.triagens.concluidas`, que conta as triagens concluídas por nível de urgência.
+
+- **Produção e homologação (Azure):** o agente Java do **Application Insights** vai na imagem do backend e é ligado pela variável `APPLICATIONINSIGHTS_CONNECTION_STRING`. Ele envia requisições, tempos de resposta, exceções, chamadas ao MySQL e ao Gemini, logs e as métricas do Micrometer. Em produção, três alertas mandam e-mail (requisições com erro, falhas em dependências e reinícios do contêiner). A configuração está em [`infra/azure/configurar-monitoramento.sh`](./infra/azure/configurar-monitoramento.sh), as consultas prontas em [`infra/azure/consultas-monitoramento.kql`](./infra/azure/consultas-monitoramento.kql) e a decisão no [ADR 0002](./documents/adr/0002-monitoramento-application-insights.md).
+- **Local (Docker Compose):** o Prometheus ([`monitoramento/prometheus.yml`](./monitoramento/prometheus.yml)) coleta as métricas e o Grafana já vem com o Prometheus configurado como fonte de dados. O agente fica desligado.
 
 ## 📂 Estrutura do repositório
 
@@ -207,7 +210,7 @@ Orienta-Saude/
 ├── backend/            # API REST (Java 17 + Spring Boot)
 ├── frontend/           # Aplicação web (React + Vite + TypeScript) e config do nginx
 ├── infra/azure/        # Script e instruções da infraestrutura na Azure
-├── monitoramento/      # Configuração do Prometheus e do Grafana
+├── monitoramento/      # Configuração local do Prometheus e do Grafana
 ├── documents/          # RFC do TCC e ADRs (decisões de arquitetura)
 ├── images/             # Diagramas, mockups e gráficos usados na documentação
 ├── .github/workflows/  # CI e deploys

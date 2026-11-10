@@ -26,6 +26,23 @@ O Orienta Saúde roda na Azure for Students com dois ambientes iguais:
 3. No GitHub, em *Settings > Secrets and variables > Actions*, cadastre os três valores que o script imprime: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` e `AZURE_SUBSCRIPTION_ID`.
 4. Em *Packages* do perfil no GitHub, deixe `orienta-saude-backend` e `orienta-saude-frontend` como **Public** (depois do primeiro deploy, que cria os pacotes), para a Azure conseguir baixar as imagens sem senha.
 
+## Monitoramento (uma vez)
+
+Depois do `criar-infra.sh`, rode no Cloud Shell:
+
+```bash
+EMAIL_ALERTA=seu@email.com bash infra/azure/configurar-monitoramento.sh
+```
+
+O script:
+
+- cria um **Application Insights** para cada ambiente (`appi-orienta-saude-homolog` e `appi-orienta-saude-prod`) no mesmo Log Analytics que já recebe os logs dos contêineres;
+- grava a connection string como *secret* do backend e define `APPLICATIONINSIGHTS_CONNECTION_STRING`, o que liga o agente Java na inicialização;
+- limita a ingestão do Log Analytics a 0,15 GB por dia, abaixo dos 5 GB mensais gratuitos;
+- cria o grupo de ações `ag-orienta-saude` (e-mail) e três alertas de produção: mais de 5 requisições com erro em 5 min, mais de 5 falhas em chamadas externas (Gemini ou banco) em 5 min e mais de 2 reinícios do backend em 15 min.
+
+Para ver os dados: portal > `rg-orienta-saude` > `appi-orienta-saude-prod`. Os painéis prontos são **Mapa do aplicativo**, **Falhas**, **Desempenho** e **Métricas ao vivo**; em **Logs** dá para colar as consultas de [`consultas-monitoramento.kql`](./consultas-monitoramento.kql), como triagens por nível de urgência e falhas do Gemini. Não há teste de disponibilidade periódico de propósito: ele deixaria o backend sempre ligado e acabaria com a escala a zero.
+
 ## Chave de criptografia (bancos criados antes dela)
 
 Os dados de saúde são cifrados no banco com a chave `APP_CRIPTOGRAFIA_CHAVE`, obrigatória no profile `prod`. O `criar-infra.sh` já cria essa chave; para os backends que existiam antes, rode uma vez no Cloud Shell, **antes** do deploy que traz a criptografia:

@@ -16,9 +16,13 @@ WORKDIR /app
 
 RUN addgroup -S app && adduser -S app -G app
 COPY --from=build /app/target/orienta-saude-*.jar app.jar
+# Agente do Application Insights e a configuração dele (precisam ficar na mesma pasta)
+COPY --from=build /app/target/agente/applicationinsights-agent.jar agente/
+COPY monitoramento/applicationinsights.json agente/
+COPY monitoramento/iniciar.sh .
 USER app
 
 EXPOSE 8080
 # Usa até 75% da memória do contêiner para o heap
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
-ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["sh", "/app/iniciar.sh"]

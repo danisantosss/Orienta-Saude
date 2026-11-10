@@ -134,4 +134,6 @@ Pronto. Cadastre estes três secrets no GitHub (Settings > Secrets and variables
 
 Homologação: https://$URL_HOMOLOG
 Produção:    https://$URL_PROD
+
+Para ligar o monitoramento: EMAIL_ALERTA=seu@email.com bash infra/azure/configurar-monitoramento.sh
 FIM

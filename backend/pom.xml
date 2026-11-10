@@ -21,6 +21,7 @@
         <java.version>17</java.version>
         <jjwt.version>0.12.6</jjwt.version>
         <testcontainers.version>1.21.4</testcontainers.version>
+        <applicationinsights-agent.version>3.7.10</applicationinsights-agent.version>
     </properties>
 
     <dependencies>
@@ -133,6 +134,32 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+
+            <!-- Copia o agente do Application Insights para target/agente; a imagem Docker usa em produção -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copiar-agente-application-insights</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.microsoft.azure</groupId>
+                                    <artifactId>applicationinsights-agent</artifactId>
+                                    <version>${applicationinsights-agent.version}</version>
+                                    <destFileName>applicationinsights-agent.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/agente</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- JaCoCo - Cobertura de testes (threshold 75%) -->

@@ -1,0 +1,29 @@
+{
+  "role": {
+    "name": "orienta-saude-backend"
+  },
+  "sampling": {
+    "percentage": 100,
+    "overrides": [
+      {
+        "telemetryType": "request",
+        "attributes": [
+          {
+            "key": "url.path",
+            "value": "/actuator.*",
+            "matchType": "regexp"
+          }
+        ],
+        "percentage": 0
+      }
+    ]
+  },
+  "instrumentation": {
+    "logging": {
+      "level": "INFO"
+    }
+  },
+  "preview": {
+    "captureHttpServer4xxAsError": false
+  }
+}

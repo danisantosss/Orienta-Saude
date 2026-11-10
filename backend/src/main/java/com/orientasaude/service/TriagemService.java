@@ -27,6 +27,7 @@ import com.orientasaude.repository.MensagemTriagemRepository;
 import com.orientasaude.repository.ResultadoTriagemRepository;
 import com.orientasaude.repository.SessaoTriagemRepository;
 import com.orientasaude.util.Sanitizador;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,9 @@ public class TriagemService {
     private static final int MINIMO_CARACTERES_SINTOMAS = 10;
     private static final Logger auditoria = LoggerFactory.getLogger("AUDITORIA");
 
+    /** Contador de triagens concluídas por nível de urgência, exposto no Actuator e no Application Insights. */
+    public static final String METRICA_TRIAGENS_CONCLUIDAS = "orienta.triagens.concluidas";
+
     private final SessaoTriagemRepository sessaoRepository;
     private final MensagemTriagemRepository mensagemRepository;
     private final ResultadoTriagemRepository resultadoRepository;
@@ -70,6 +74,7 @@ public class TriagemService {
     private final AnaliseService analiseService;
     private final BaseConhecimento baseConhecimento;
     private final ObjectMapper objectMapper;
+    private final MeterRegistry meterRegistry;
 
     /**
      * Cria a sessão com os sintomas sanitizados e devolve a primeira pergunta do Gemini.
@@ -176,6 +181,8 @@ public class TriagemService {
             // Outra requisição concluiu a mesma sessão ao mesmo tempo: vale o resultado que já foi gravado
             return obterResultadoGravado(sessao);
         }
+        // Só o nível entra na métrica: nada que identifique o usuário ou os sintomas
+        meterRegistry.counter(METRICA_TRIAGENS_CONCLUIDAS, "nivel", analise.nivelUrgencia().name()).increment();
         return montarResposta(sessao, resultado, mensagens);
     }
 
