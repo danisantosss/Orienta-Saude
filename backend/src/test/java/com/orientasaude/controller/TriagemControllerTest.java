@@ -143,7 +143,7 @@ class TriagemControllerTest {
         mockMvc.perform(post("/api/triagem/iniciar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"sintomas\": \"Febre alta desde ontem\", \"idade\": 30}"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

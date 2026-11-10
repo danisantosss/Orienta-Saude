@@ -5,7 +5,9 @@ import com.orientasaude.dto.request.RegistroRequest;
 import com.orientasaude.dto.response.AutenticacaoResponse;
 import com.orientasaude.exception.EmailJaCadastradoException;
 import com.orientasaude.model.Usuario;
+import com.orientasaude.model.enums.TipoEventoAuditoria;
 import com.orientasaude.repository.UsuarioRepository;
+import com.orientasaude.security.BloqueioLoginService;
 import com.orientasaude.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,6 +30,8 @@ public class AutenticacaoService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final BloqueioLoginService bloqueioLoginService;
+    private final AuditoriaService auditoriaService;
 
     /**
      * Registra um novo usuário no sistema.
@@ -55,21 +59,32 @@ public class AutenticacaoService {
     /**
      * Autentica um usuário e retorna o token JWT.
      * Retorna mensagem genérica se credenciais inválidas (não revela se email existe).
+     * Cada falha vai para a auditoria e conta para o bloqueio do IP; com o IP bloqueado,
+     * nem a senha certa entra até o bloqueio vencer.
      */
-    public AutenticacaoResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByEmail(request.getEmail().trim().toLowerCase())
-                .orElseThrow(() -> new BadCredentialsException("Credenciais inválidas"));
+    public AutenticacaoResponse login(LoginRequest request, String ip) {
+        bloqueioLoginService.verificar(ip);
 
-        if (!usuario.getAtivo()) {
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail().trim().toLowerCase()).orElse(null);
+        boolean credenciaisValidas = usuario != null
+                && Boolean.TRUE.equals(usuario.getAtivo())
+                && passwordEncoder.matches(request.getSenha(), usuario.getSenhaHash());
+
+        if (!credenciaisValidas) {
+            registrarFalha(usuario, ip);
             throw new BadCredentialsException("Credenciais inválidas");
         }
 
-        if (!passwordEncoder.matches(request.getSenha(), usuario.getSenhaHash())) {
-            throw new BadCredentialsException("Credenciais inválidas");
-        }
-
-        String token = jwtTokenProvider.gerarToken(usuario.getId(), usuario.getEmail());
+        bloqueioLoginService.registrarSucesso(ip);
+        String token = jwtTokenProvider.gerarToken(usuario.getId(), usuario.getEmail(), usuario.getPapel());
 
         return new AutenticacaoResponse(token, jwtTokenProvider.getExpiracaoMs());
+    }
+
+    private void registrarFalha(Usuario usuario, String ip) {
+        auditoriaService.registrar(TipoEventoAuditoria.LOGIN_FALHO, usuario != null ? usuario.getId() : null, ip);
+        if (bloqueioLoginService.registrarFalha(ip)) {
+            auditoriaService.registrar(TipoEventoAuditoria.LOGIN_BLOQUEADO, null, ip);
+        }
     }
 }

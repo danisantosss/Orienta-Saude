@@ -4,10 +4,10 @@ import com.orientasaude.dto.response.PerfilResponse;
 import com.orientasaude.exception.RecursoNaoEncontradoException;
 import com.orientasaude.exception.SenhaIncorretaException;
 import com.orientasaude.model.Usuario;
+import com.orientasaude.model.enums.TipoEventoAuditoria;
+import com.orientasaude.repository.LogAuditoriaRepository;
 import com.orientasaude.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UsuarioService {
 
-    private static final Logger auditoria = LoggerFactory.getLogger("AUDITORIA");
-
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LogAuditoriaRepository logAuditoriaRepository;
+    private final AuditoriaService auditoriaService;
 
     public PerfilResponse obterPerfil(Usuario usuario) {
         return PerfilResponse.builder()
@@ -38,7 +38,8 @@ public class UsuarioService {
      * Apaga a conta na hora. O cascade das entidades remove junto as sessões de triagem,
      * e cada sessão remove suas mensagens e seu resultado. Sem o usuário no banco,
      * o login e qualquer token antigo passam a ser recusados.
-     * O registro de auditoria não guarda id, nome nem email: só que a exclusão aconteceu.
+     * Na auditoria, os eventos antigos da conta perdem o id do usuário, e a exclusão
+     * fica registrada sem id, nome nem email: só que aconteceu, de qual IP e quando.
      */
     @Transactional
     public void excluirConta(Usuario usuario, String senha) {
@@ -50,6 +51,7 @@ public class UsuarioService {
         }
 
         usuarioRepository.delete(salvo);
-        auditoria.info("Exclusão de conta solicitada pelo titular e concluída");
+        logAuditoriaRepository.anonimizarUsuario(salvo.getId());
+        auditoriaService.registrar(TipoEventoAuditoria.EXCLUSAO_SOLICITADA, null);
     }
 }

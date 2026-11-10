@@ -5,6 +5,14 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
+    # Cabeçalhos de segurança: o navegador só executa scripts do próprio site (CSP), não deixa
+    # outro site abrir a página num iframe e não tenta adivinhar o tipo dos arquivos.
+    # "always" manda os cabeçalhos também nas respostas de erro.
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
     # Chamadas da API vão para o backend; o navegador só conhece o endereço do frontend
     location /api/ {
         proxy_pass ${BACKEND_URL};
@@ -12,15 +20,20 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        # Para o navegador, /api é do mesmo site que o frontend. Sem o Origin, o backend não trata
+        # essas chamadas como CORS (o endereço interno dele é diferente do endereço público)
+        proxy_set_header Origin "";
         proxy_ssl_server_name on;
         # A análise final pode levar até 30 s por causa das novas tentativas da IA
         proxy_read_timeout 60s;
     }
 
     # Arquivos com hash no nome podem ficar em cache por muito tempo
+    # (um add_header dentro do location substitui os de cima, por isso eles são repetidos)
     location /assets/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
+        add_header X-Content-Type-Options "nosniff" always;
     }
 
     # Rotas do React Router (/login, /triagem...) devolvem o index.html

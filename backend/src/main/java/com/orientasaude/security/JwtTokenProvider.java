@@ -1,5 +1,6 @@
 package com.orientasaude.security;
 
+import com.orientasaude.model.enums.PapelUsuario;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,8 @@ import java.util.Date;
 /**
  * Componente responsável por gerar e validar tokens JWT.
  * O token contém o ID do usuário como subject e expira em 24 horas.
+ * A claim "papel" só serve para o frontend decidir o que mostrar (ex.: o link do painel);
+ * quem decide o acesso no backend é o papel gravado no banco, lido a cada requisição.
  */
 @Component
 public class JwtTokenProvider {
@@ -29,13 +32,14 @@ public class JwtTokenProvider {
     /**
      * Gera um token JWT para o usuário informado.
      */
-    public String gerarToken(Long usuarioId, String email) {
+    public String gerarToken(Long usuarioId, String email, PapelUsuario papel) {
         Date agora = new Date();
         Date expiracao = new Date(agora.getTime() + expiracaoMs);
 
         return Jwts.builder()
                 .subject(usuarioId.toString())
                 .claim("email", email)
+                .claim("papel", papel.name())
                 .issuedAt(agora)
                 .expiration(expiracao)
                 .signWith(chaveSecreta)

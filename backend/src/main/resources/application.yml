@@ -56,6 +56,18 @@ app:
   criptografia:
     # Chave AES-256 em Base64 (openssl rand -base64 32). Esta é só para desenvolvimento local.
     chave: ${APP_CRIPTOGRAFIA_CHAVE:ZGV2LWxvY2FsLW9yaWVudGEtc2F1ZGUtMzItYnl0ZXM=}
+  seguranca:
+    limite-requisicoes-por-minuto: 100
+    maximo-falhas-login: 5
+    minutos-bloqueio-login: 15
+  cors:
+    # Vite em desenvolvimento (npm run dev usa a porta 3000; 5173 é a padrão do Vite)
+    origens-permitidas: ${APP_CORS_ORIGENS:http://localhost:3000,http://localhost:5173}
+  admin:
+    # Emails das contas que recebem o papel ADMIN ao subir a aplicação (separados por vírgula)
+    emails: ${APP_ADMIN_EMAILS:}
+  auditoria:
+    retencao-dias: 180  # o mínimo exigido é 90
 
 ---
 # Profile: prod
@@ -92,3 +104,14 @@ app:
   criptografia:
     # Obrigatória em produção: sem ela a aplicação não sobe. Perder a chave = perder os dados cifrados.
     chave: ${APP_CRIPTOGRAFIA_CHAVE}
+  seguranca:
+    limite-requisicoes-por-minuto: 100
+    maximo-falhas-login: 5
+    minutos-bloqueio-login: 15
+  cors:
+    # O navegador chama a API pelo nginx do frontend (mesma origem), então nada precisa ser liberado
+    origens-permitidas: ${APP_CORS_ORIGENS:}
+  admin:
+    emails: ${APP_ADMIN_EMAILS:}
+  auditoria:
+    retencao-dias: 180

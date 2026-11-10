@@ -56,7 +56,7 @@ class HistoricoTriagemControllerTest {
     @BeforeEach
     void preparar() {
         usuario = criarUsuario();
-        token = "Bearer " + jwtTokenProvider.gerarToken(usuario.getId(), usuario.getEmail());
+        token = "Bearer " + jwtTokenProvider.gerarToken(usuario.getId(), usuario.getEmail(), usuario.getPapel());
     }
 
     private Usuario criarUsuario() {
@@ -202,6 +202,6 @@ class HistoricoTriagemControllerTest {
     @Test
     void semTokenNaoAcessaOHistorico() throws Exception {
         mockMvc.perform(get("/api/triagem/historico"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 }

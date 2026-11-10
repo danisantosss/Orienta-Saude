@@ -4,6 +4,7 @@ import com.orientasaude.dto.response.ErroResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -156,6 +157,23 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(resposta);
+    }
+
+    @ExceptionHandler(LoginBloqueadoException.class)
+    public ResponseEntity<ErroResponse> tratarLoginBloqueado(
+            LoginBloqueadoException ex, HttpServletRequest request) {
+
+        ErroResponse resposta = ErroResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.TOO_MANY_REQUESTS.value())
+                .erro("Muitas Tentativas")
+                .mensagem(ex.getMessage())
+                .caminho(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getSegundosRestantes()))
+                .body(resposta);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

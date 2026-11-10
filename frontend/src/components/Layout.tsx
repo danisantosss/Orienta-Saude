@@ -5,7 +5,7 @@ import ComoFunciona from './ComoFunciona';
 import Icone from './Icone';
 
 export default function Layout() {
-  const { autenticado, usuario, logout } = useAuth();
+  const { autenticado, ehAdmin, usuario, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [menuAberto, setMenuAberto] = useState(false);
@@ -46,6 +46,7 @@ export default function Layout() {
                 <NavLink to="/triagem">Nova triagem</NavLink>
                 <NavLink to="/historico">Histórico</NavLink>
                 <NavLink to="/perfil">Meu perfil</NavLink>
+                {ehAdmin && <NavLink to="/admin">Painel</NavLink>}
               </>
             )}
           </nav>
