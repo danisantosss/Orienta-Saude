@@ -44,6 +44,12 @@ describe('Triagem', () => {
     comEstado();
   });
 
+  it('mostra a ilustração da triagem com texto alternativo', () => {
+    renderizar();
+
+    expect(screen.getByRole('img', { name: /Mulher pensativa com a mão no queixo/ })).toBeInTheDocument();
+  });
+
   it('mostra o aviso no topo e só libera o envio depois da confirmação', async () => {
     renderizar();
 

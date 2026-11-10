@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import BalaoChat from '../components/BalaoChat';
 import Disclaimer from '../components/Disclaimer';
 import Icone, { type NomeIcone } from '../components/Icone';
-import Ilustracao from '../components/Ilustracao';
+import ilustracaoTriagem from '../assets/ilustracoes/triagem.webp';
 import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import ProgressoTriagem from '../components/ProgressoTriagem';
 import { useTriagem } from '../hooks/useTriagem';
@@ -115,7 +115,13 @@ export default function Triagem() {
                 <h1>Quais seus principais sintomas?</h1>
                 <p>Escolha os sintomas que você está sentindo ou descreva com suas palavras. Você pode escolher mais de um.</p>
               </div>
-              <Ilustracao variante="pensando" className="ilustracao-painel" />
+              <img
+                src={ilustracaoTriagem}
+                alt="Mulher pensativa com a mão no queixo, ao lado de um balão de conversa e de um coração com batimentos"
+                width={244}
+                height={173}
+                className="ilustracao-painel"
+              />
             </div>
 
             <fieldset className="sintomas-comuns">

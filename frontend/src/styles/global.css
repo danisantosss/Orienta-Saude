@@ -659,7 +659,7 @@ textarea[aria-invalid='true'] { border-color: var(--color-error); }
 .cartao-beneficios li svg { color: var(--color-teal); }
 .cartao-beneficios li span { display: block; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 
-.beneficios-ilustracao { display: none; width: 100%; height: auto; margin-top: var(--spacing-lg); }
+.beneficios-ilustracao { display: none; width: 100%; height: auto; margin-top: var(--spacing-lg); border-radius: var(--radius-lg); }
 
 @media (min-width: 640px) {
   .grade-campos { grid-template-columns: 1fr 1fr; }
@@ -751,7 +751,7 @@ textarea[aria-invalid='true'] { border-color: var(--color-error); }
   gap: var(--spacing-lg);
 }
 
-.ilustracao-painel { display: none; width: 200px; height: auto; }
+.ilustracao-painel { display: none; width: 220px; height: auto; border-radius: var(--radius-lg); }
 
 .campo-idade { max-width: 140px; }
 
@@ -873,6 +873,9 @@ textarea[aria-invalid='true'] { border-color: var(--color-error); }
 .resumo-triagem summary { cursor: pointer; margin-top: var(--spacing-md); font-weight: 600; }
 .resumo-triagem dt { font-weight: 600; margin-top: var(--spacing-sm); }
 
+/* No celular o resumo vem antes do resultado, então a ilustração só aparece em telas maiores */
+.ilustracao-resultado { display: none; width: 100%; max-width: 160px; height: auto; margin: var(--spacing-lg) auto 0; }
+
 .destaque-lilas { background: var(--color-lilas); border-color: #e0e3fa; }
 
 .lista-condicoes {
@@ -908,6 +911,7 @@ textarea[aria-invalid='true'] { border-color: var(--color-error); }
 
 @media (min-width: 768px) {
   .grade-resultado { grid-template-columns: 1fr 2fr; }
+  .ilustracao-resultado { display: block; }
   .coluna-orientacoes { grid-column: 1 / -1; }
 }
 

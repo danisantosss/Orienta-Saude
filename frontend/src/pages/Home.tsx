@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Icone from '../components/Icone';
-import Ilustracao from '../components/Ilustracao';
+import ilustracaoInicio from '../assets/ilustracoes/inicio.webp';
 
 /** Página inicial: apresenta o serviço e leva para a triagem (ou para o login, se a pessoa não entrou). */
 export default function Home() {
@@ -26,7 +26,13 @@ export default function Home() {
             <a href="#como-funciona" className="botao-secundario">Saiba mais</a>
           </div>
         </div>
-        <Ilustracao variante="celular" className="hero-ilustracao" />
+        <img
+          src={ilustracaoInicio}
+          alt="Mulher olhando o celular, cercada por cartões de análise inteligente, possíveis condições, nível de urgência e orientações"
+          width={574}
+          height={396}
+          className="hero-ilustracao"
+        />
       </section>
     </div>
   );

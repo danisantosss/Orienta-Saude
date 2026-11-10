@@ -28,6 +28,12 @@ describe('Cadastro', () => {
     vi.mocked(useAuth).mockReturnValue({ registrar, login } as unknown as ReturnType<typeof useAuth>);
   });
 
+  it('mostra a ilustração do cadastro com texto alternativo', () => {
+    renderizar();
+
+    expect(screen.getByRole('img', { name: /Mulher sorrindo enquanto usa o celular/ })).toBeInTheDocument();
+  });
+
   it('mostra erros de validação e não envia dados inválidos', async () => {
     renderizar();
     await userEvent.type(screen.getByLabelText('Nome completo'), 'M');
