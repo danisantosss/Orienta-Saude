@@ -20,4 +20,19 @@ describe('PoliticaPrivacidade', () => {
     expect(screen.getByText(/processado pelo Google/)).toBeInTheDocument();
     expect(screen.getByText(/nunca seu nome, seu email/)).toBeInTheDocument();
   });
+
+  it('informa onde os dados ficam guardados e que isso é uma transferência internacional', () => {
+    render(<MemoryRouter><PoliticaPrivacidade /></MemoryRouter>);
+
+    expect(screen.getByRole('heading', { name: 'Onde os dados ficam guardados' })).toBeInTheDocument();
+    expect(screen.getByText(/Microsoft Azure, na região do México/)).toBeInTheDocument();
+    expect(screen.getByText(/transferência internacional de dados/)).toBeInTheDocument();
+  });
+
+  it('lista as mudanças de cada versão no fim da página', () => {
+    render(<MemoryRouter><PoliticaPrivacidade /></MemoryRouter>);
+
+    expect(screen.getByRole('heading', { name: 'Alterações nesta política' })).toBeInTheDocument();
+    expect(screen.getByText(/1\.1 \(10\/11\/2026\): informa onde os dados ficam guardados/)).toBeInTheDocument();
+  });
 });
