@@ -27,6 +27,7 @@ import com.orientasaude.rag.RagService;
 import com.orientasaude.repository.MensagemTriagemRepository;
 import com.orientasaude.repository.ResultadoTriagemRepository;
 import com.orientasaude.repository.SessaoTriagemRepository;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,8 +63,10 @@ class TriagemServiceTest {
     private final RagService ragService = mock(RagService.class);
     private final AnaliseService analiseService = mock(AnaliseService.class);
     private final BaseConhecimento baseConhecimento = criarBaseConhecimento();
+    private final SimpleMeterRegistry metricas = new SimpleMeterRegistry();
     private final TriagemService service = new TriagemService(sessaoRepository, mensagemRepository,
-            resultadoRepository, entrevistaService, ragService, analiseService, baseConhecimento, new ObjectMapper());
+            resultadoRepository, entrevistaService, ragService, analiseService, baseConhecimento, new ObjectMapper(),
+            metricas);
 
     private final Usuario dono = Usuario.builder().id(1L).nome("Ana").email("ana@exemplo.com").build();
     private final Usuario outro = Usuario.builder().id(2L).nome("Beto").email("beto@exemplo.com").build();
@@ -315,6 +318,16 @@ class TriagemServiceTest {
     }
 
     @Test
+    void analisarContaATriagemConcluidaPeloNivelDeUrgencia() {
+        prepararAnalise(MotivoEncerramento.SUFICIENTE, new ContextoRag("contexto", List.of("febre-001"), null));
+
+        service.analisar(10L, dono);
+
+        assertThat(metricas.counter(TriagemService.METRICA_TRIAGENS_CONCLUIDAS, "nivel", "MODERADO").count())
+                .isEqualTo(1.0);
+    }
+
+    @Test
     void coletaInconclusivaEPoucosDocumentosEntramNaNotaDeLimitacao() {
         prepararAnalise(MotivoEncerramento.LIMITE_PERGUNTAS,
                 new ContextoRag("contexto", List.of("febre-001"), RagService.NOTA_POUCOS_DOCUMENTOS));
@@ -399,6 +412,8 @@ class TriagemServiceTest {
 
         assertThat(resposta.getNivelUrgencia()).isEqualTo(NivelUrgencia.URGENTE);
         assertThat(resposta.getFontes()).isEmpty();
+        // A triagem foi contada pela requisição que gravou primeiro
+        assertThat(metricas.find(TriagemService.METRICA_TRIAGENS_CONCLUIDAS).counters()).isEmpty();
     }
 
     @Test
