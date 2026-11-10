@@ -1,0 +1,39 @@
+// Consultas do Orienta Saúde para o Application Insights (portal > appi-orienta-saude-prod > Logs).
+// Copie uma consulta por vez. Em "Visualização" dá para trocar a tabela por gráfico e fixar no painel.
+
+// 1. Triagens concluídas por nível de urgência, por dia (métrica do backend: orienta.triagens.concluidas)
+customMetrics
+| where timestamp > ago(30d) and name == "orienta.triagens.concluidas"
+| extend nivel = tostring(customDimensions.nivel)
+| summarize triagens = sum(valueSum) by bin(timestamp, 1d), nivel
+| render columnchart
+
+// 2. Requisições com erro nas últimas 24 h, por rota e código
+requests
+| where timestamp > ago(24h) and success == false
+| summarize erros = count() by name, resultCode
+| order by erros desc
+
+// 3. Tempo de resposta das rotas da API (mediana e p95, em ms)
+requests
+| where timestamp > ago(7d)
+| summarize total = count(), mediana = percentile(duration, 50), p95 = percentile(duration, 95) by name
+| order by total desc
+
+// 4. Chamadas ao Gemini: quantidade, falhas e tempo
+dependencies
+| where timestamp > ago(7d) and target has "generativelanguage.googleapis.com"
+| summarize chamadas = count(), falhas = countif(success == false), p95_ms = percentile(duration, 95) by bin(timestamp, 1h)
+| render timechart
+
+// 5. Exceções recentes com a requisição que as causou (operation_Id liga as duas)
+exceptions
+| where timestamp > ago(24h)
+| project timestamp, type, outerMessage, operation_Name, operation_Id
+| order by timestamp desc
+
+// 6. Logs de aviso e erro do backend (IA indisponível, busca por palavras-chave, auditoria)
+traces
+| where timestamp > ago(24h) and severityLevel >= 2
+| project timestamp, severityLevel, message, operation_Id
+| order by timestamp desc
