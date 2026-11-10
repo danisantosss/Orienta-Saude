@@ -7,6 +7,7 @@ import Disclaimer from '../components/Disclaimer';
 import Icone from '../components/Icone';
 import IndicadorCarregamento from '../components/IndicadorCarregamento';
 import Toast from '../components/Toast';
+import ilustracaoResultado from '../assets/ilustracoes/resultado.webp';
 import type { NivelUrgencia, ResultadoTriagemResponse } from '../types';
 
 /** O que fazer em cada nível. */
@@ -95,6 +96,14 @@ export default function Resultado() {
               </dl>
             </details>
           )}
+          <img
+            src={ilustracaoResultado}
+            alt="Mulher de máscara tossindo, com a mão na frente da boca"
+            width={157}
+            height={189}
+            loading="lazy"
+            className="ilustracao-resultado"
+          />
         </aside>
 
         <section className="conteudo-resultado">

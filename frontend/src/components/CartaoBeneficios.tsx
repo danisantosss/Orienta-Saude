@@ -1,5 +1,5 @@
 import Icone, { type NomeIcone } from './Icone';
-import Ilustracao from './Ilustracao';
+import ilustracaoConta from '../assets/ilustracoes/cadastro.webp';
 
 const BENEFICIOS: { titulo: string; texto: string; icone: NomeIcone }[] = [
   { titulo: 'Seus dados protegidos', texto: 'Seu nome e email nunca são enviados para a IA.', icone: 'cadeado' },
@@ -24,7 +24,14 @@ export default function CartaoBeneficios({ titulo, texto }: { titulo: string; te
           </li>
         ))}
       </ul>
-      <Ilustracao variante="cuidado" className="beneficios-ilustracao" />
+      <img
+        src={ilustracaoConta}
+        alt="Mulher sorrindo enquanto usa o celular, com um coração com uma cruz ao fundo"
+        width={212}
+        height={171}
+        loading="lazy"
+        className="beneficios-ilustracao"
+      />
     </aside>
   );
 }

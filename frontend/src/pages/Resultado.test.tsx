@@ -58,6 +58,7 @@ describe('Resultado', () => {
     expect(within(condicoes).getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByText('Beba bastante água e descanse.')).toBeInTheDocument();
     expect(screen.getByText('Falta de ar')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /Mulher de máscara tossindo/ })).toBeInTheDocument();
     expect(screen.getByText('Estou com febre, tosse')).toBeInTheDocument();
     const fonte = screen.getByRole('link', { name: /Ministério da Saúde/ });
     expect(fonte).toHaveAttribute('href', 'https://www.gov.br/saude');
