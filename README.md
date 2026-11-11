@@ -13,6 +13,8 @@ Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) na Universidade 
 
 > Os ambientes escalam até zero quando ninguém usa, então o primeiro acesso pode levar alguns segundos.
 
+📚 **Documentação completa na [Wiki](https://github.com/danisantosss/Orienta-Saude/wiki)**: requisitos e histórias de usuário, fluxos de negócio, arquitetura C4, modelo de dados, pipeline de IA e RAG, decisões técnicas (ADRs), segurança e LGPD, deploy e monitoramento.
+
 ---
 
 ## 📋 Índice
@@ -26,11 +28,13 @@ Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) na Universidade 
 - [Variáveis de ambiente](#-variáveis-de-ambiente)
 - [Testes e cobertura](#-testes-e-cobertura)
 - [CI/CD e ambientes](#-cicd-e-ambientes)
+- [Voltar para a versão anterior](#-voltar-para-a-versão-anterior)
 - [Monitoramento](#-monitoramento)
 - [Estrutura do repositório](#-estrutura-do-repositório)
 - [Documentação completa (RFC)](#-documentação-completa-rfc)
 - [Roadmap](#-roadmap)
 - [Privacidade e LGPD](#-privacidade-e-lgpd)
+- [Segurança](#-segurança)
 - [Autor](#-autor)
 - [Licença](#-licença)
 
@@ -50,6 +54,7 @@ O **Orienta Saúde** propõe uma abordagem direta: em vez de listar dezenas de c
 - 🚦 Classificação de urgência em 4 níveis: **Leve · Moderado · Urgente · Emergência**
 - 📝 Orientações educativas, sinais de alerta e recomendações, sem diagnóstico nem prescrição (as respostas da IA passam por uma validação ética antes de chegar ao usuário)
 - 🕘 Histórico de triagens anteriores, com filtros e paginação
+- 📊 Painel administrativo com indicadores só agregados (triagens por período, distribuição por nível de urgência, encerramentos antecipados), sem nenhum dado pessoal
 - 🛡 Nome e e-mail do usuário nunca são enviados ao modelo de IA
 - 🔏 LGPD: consentimento no cadastro, política de privacidade, perfil com os dados da conta, exclusão da conta e de todas as triagens, e dados de saúde criptografados no banco (AES-256-GCM)
 - 📱 Interface responsiva
@@ -84,8 +89,11 @@ Principais rotas da API:
 | POST | `/api/triagem/{id}/analisar` | Gera a análise final (urgência e orientações) |
 | GET | `/api/triagem/{id}/resultado` | Consulta o resultado de uma triagem |
 | GET | `/api/triagem/historico` | Lista as triagens do usuário |
+| GET | `/api/usuario/perfil` | Dados da conta e do consentimento |
+| DELETE | `/api/usuario/conta` | Exclui a conta e todos os dados (pede a senha) |
+| GET | `/api/admin/indicadores` | Indicadores agregados do painel (só papel ADMIN) |
 
-Diagramas C4, DER e de sequência estão no [RFC](./documents/RFC.md).
+A arquitetura atual (C4), o modelo de dados e as decisões técnicas estão na [Wiki](https://github.com/danisantosss/Orienta-Saude/wiki). O [RFC](./documents/RFC.md) guarda a proposta original, com os diagramas de antes da implementação.
 
 ## 🐳 Executar com Docker (recomendado)
 
@@ -145,6 +153,7 @@ No Docker Compose, os valores vêm do arquivo `.env` na raiz (modelo em [`.env.e
 | `DB_PASSWORD` | Senha do usuário `root` do MySQL | `root` |
 | `JWT_SECRET` | Chave de assinatura dos tokens JWT (mínimo 256 bits) | chave de desenvolvimento |
 | `APP_CRIPTOGRAFIA_CHAVE` | Chave AES-256 em Base64 que cifra os dados de saúde no banco (`openssl rand -base64 32`). Obrigatória no profile `prod` | chave de desenvolvimento |
+| `APP_ADMIN_EMAILS` | Contas que viram ADMIN ao subir a aplicação | vazio |
 | `GRAFANA_PASSWORD` | Senha do usuário `admin` do Grafana | `admin` |
 
 Outras variáveis lidas pelo backend:
@@ -157,6 +166,9 @@ Outras variáveis lidas pelo backend:
 | `GEMINI_MODELO_TEXTO` | Modelo de texto (padrão `gemini-3.5-flash-lite`) |
 | `GEMINI_MODELO_EMBEDDING` | Modelo de embeddings (padrão `gemini-embedding-001`) |
 | `JPA_DDL_AUTO` | Estratégia do Hibernate no profile `prod` (padrão `update`) |
+| `APP_ADMIN_EMAILS` | Emails, separados por vírgula, das contas que recebem o papel ADMIN ao subir a aplicação (a conta precisa já existir) |
+| `APP_CORS_ORIGENS` | Origens liberadas no CORS. Em `dev`, `http://localhost:3000` e `http://localhost:5173`; em `prod`, vazio, porque o nginx serve site e API na mesma origem |
+| `APPLICATIONINSIGHTS_CONNECTION_STRING` | Liga o agente do Application Insights (só na Azure) |
 
 No frontend, `VITE_API_URL` define o endereço da API. Sem ela, o padrão é `http://localhost:8080`; vazia, as chamadas vão para `/api` no mesmo endereço do site (como no Docker e na Azure).
 
@@ -196,6 +208,18 @@ Os dois ambientes rodam na Azure (Azure for Students, região `mexicocentral`) e
 | Homologação | `dev` | https://ca-orienta-frontend-homolog.gentlehill-9074b666.mexicocentral.azurecontainerapps.io |
 | Produção | `main` | https://ca-orienta-frontend-prod.gentlehill-9074b666.mexicocentral.azurecontainerapps.io |
 
+## ⏪ Voltar para a versão anterior
+
+Cada deploy publica as imagens com o hash do commit como tag, então as versões anteriores continuam no GitHub Container Registry. Para voltar a produção para uma release boa, no Azure Cloud Shell:
+
+```bash
+SHA=<commit da release boa>   # aparece na página da release
+az containerapp update -g rg-orienta-saude -n ca-orienta-backend-prod --image ghcr.io/danisantosss/orienta-saude-backend:$SHA
+az containerapp update -g rg-orienta-saude -n ca-orienta-frontend-prod --image ghcr.io/danisantosss/orienta-saude-frontend:$SHA
+```
+
+Depois, a correção definitiva é um `git revert` em `dev`, conferido em homologação e levado para a `main` por PR. Para publicar com um número de versão escolhido (ex.: `v1.0.0`), rode *Actions → Deploy produção → Run workflow* e informe a versão.
+
 ## 📈 Monitoramento
 
 O backend expõe `/actuator/health` e `/actuator/prometheus` (Spring Boot Actuator + Micrometer), além da métrica de negócio `orienta.triagens.concluidas`, que conta as triagens concluídas por nível de urgência.
@@ -225,11 +249,20 @@ O RFC completo (contexto, personas, requisitos funcionais e não funcionais, moc
 ## 🔏 Privacidade e LGPD
 
 - **Consentimento**: o cadastro só é aceito com a caixa da Política de Privacidade marcada; a data e a versão aceita ficam gravadas.
-- **Política de Privacidade e Termos de Uso**: página `/privacidade`, com link no cadastro e no rodapé.
+- **Política de Privacidade e Termos de Uso**: página `/privacidade`, com link no cadastro e no rodapé. Informa que os dados ficam na Azure, região México (transferência internacional, LGPD art. 33).
 - **Meu perfil** (`/perfil`): nome, email, data de cadastro e data do consentimento (`GET /api/usuario/perfil`).
 - **Exclusão da conta**: `DELETE /api/usuario/conta` com a senha de confirmação apaga a conta, as triagens, as mensagens e os resultados; o login e os tokens antigos deixam de funcionar.
 - **Criptografia em repouso**: sintomas, mensagens e textos do resultado são cifrados com AES-256-GCM antes de ir para o banco.
 - **IA**: só idade, sintomas e respostas vão para a API Gemini. A decisão de usar o plano gratuito está em [`documents/adr/0001-plano-gratuito-gemini.md`](./documents/adr/0001-plano-gratuito-gemini.md).
+
+## 🛡 Segurança
+
+- Senhas com BCrypt e login por JWT de 24 h; rotas protegidas respondem 401 (sem login) ou 403 (sem permissão) em JSON.
+- Cada usuário só acessa as próprias triagens; abrir a de outra pessoa responde 404.
+- Limite de 100 requisições por minuto por IP (acima disso, 429) e bloqueio do login por 15 minutos depois de 5 senhas erradas seguidas.
+- Log de auditoria no banco (`logs_auditoria`) com os eventos de segurança, sem nenhum dado de saúde.
+- Cabeçalhos de segurança no nginx: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options` e `Referrer-Policy`.
+- Papel ADMIN só por configuração (`APP_ADMIN_EMAILS`) ou direto no banco, nunca pelo cadastro.
 
 ## 🗺 Roadmap
 

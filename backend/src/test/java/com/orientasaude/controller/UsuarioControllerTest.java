@@ -10,6 +10,7 @@ import com.orientasaude.model.enums.NivelUrgencia;
 import com.orientasaude.model.enums.PapelMensagem;
 import com.orientasaude.repository.SessaoTriagemRepository;
 import com.orientasaude.repository.UsuarioRepository;
+import com.orientasaude.service.AutenticacaoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.email").value(email))
                 .andExpect(jsonPath("$.criadoEm").isNotEmpty())
                 .andExpect(jsonPath("$.consentimentoEm").isNotEmpty())
-                .andExpect(jsonPath("$.versaoPolitica").value("1.0"))
+                .andExpect(jsonPath("$.versaoPolitica").value(AutenticacaoService.VERSAO_POLITICA_PRIVACIDADE))
                 .andExpect(jsonPath("$.senhaHash").doesNotExist())
                 .andExpect(jsonPath("$.id").doesNotExist());
     }

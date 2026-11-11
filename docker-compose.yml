@@ -25,6 +25,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-root}
       JWT_SECRET: ${JWT_SECRET:-orienta-saude-dev-secret-key-min-256-bits-for-hs256-algorithm}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      APP_CRIPTOGRAFIA_CHAVE: ${APP_CRIPTOGRAFIA_CHAVE:-ZGV2LWxvY2FsLW9yaWVudGEtc2F1ZGUtMzItYnl0ZXM=}
+      APP_ADMIN_EMAILS: ${APP_ADMIN_EMAILS:-}
     ports:
       - "8080:8080"
     depends_on:
