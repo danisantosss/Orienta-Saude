@@ -585,4 +585,4 @@ Figma: https://www.figma.com/design/MwANCyJFVVgYpLfWUfv4zg/TCC?node-id=0-1&t=AtY
 
 # 10. Parecer do Comitê de Avaliação 
 
-Em Andamento...
+RFC aprovada pelo Comitê de Avaliação no PAC VII.
